@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Test</title>
+<script src='vue.js' type='text/javascript'></script>
+</head>
+<body>
+<div id='abc'>
+{{abc}}
+</div>
+<script type='text/javascript'>
+var app;
+window.onload = () => {
+	app = new Vue({
+		el: "#abc",
+		data: {
+			abc: 123
+		}
+	})
+}
+</script>
+</body>
+</html>
