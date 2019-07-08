@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>语法选择器demo</title> 
+<script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js">
+</script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("p").toggle(500);//对应21、22行的段落，500ms内消失或是显示。
+      
+    $("#div-one").toggle(1000);//通过‘#’选择id为div-one的div
+      
+    $(".class-one").toggle(2500);//通过‘.’选择class为class-one的div
+  });
+});
+</script>
+</head>
+
+<body>
+<h2>这是一个标题</h2>
+<p>这是一个段落。</p>
+<p class="test">这是另一个段落。</p>
+    
+<div id="div-one">这是id为"div-one"的div。</div>
+    
+<div class="class-one">这是class为class-one的div。</div>
+<button>点我</button>
+</body>
+</html>
