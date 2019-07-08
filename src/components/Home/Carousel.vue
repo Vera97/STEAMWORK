@@ -1,82 +1,9 @@
 <template>
-  <div class="Cooldog_container">
-    <div class="row category-box-row1">
-      <div class="Cooldog_content">
-        <ul>
-          <li v-for="item in courses" class="p1" v-bind:key="item.title">
-            <div class="col-md-4">
-              <a href="videos-grid.htm" class="category-box-item1">
-                <i class="fa fa-cogs fa-5x"></i>
-                <h2>{{ item.title }}</h2>
-              </a>
-            </div>
-          </li>
-<!--          <li class="p1">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目七</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p2">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目六</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p3">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目五</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p4">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目四</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p5">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目三</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p5">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目二</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="p5">-->
-<!--            <div class="col-md-4">-->
-<!--              <a href="videos-grid.htm" class="category-box-item1">-->
-<!--                <i class="fa fa-cogs fa-5x"></i>-->
-<!--                <h2>科目一</h2>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </li>-->
-        </ul>
-      </div>
-    </div>
-    <a href="javascript:;" class="btn_left">
-      <i class="iconfont icon-zuoyoujiantou"></i>
-    </a>
-    <a href="javascript:;" class="btn_right">
-      <i class="iconfont icon-zuoyoujiantou-copy-copy"></i>
-    </a>
-  </div>
+  <el-carousel :interval="4000" type="card">
+    <el-carousel-item v-for="item in 6" :key="item">
+      <h3 class="medium">{{item}}</h3>
+    </el-carousel-item>
+  </el-carousel>
 </template>
 
 <script>
@@ -100,7 +27,25 @@
     }
 </script>
 
-<style scoped>
-  @import '../../assets/css/Cooldog.css';
-  @import '../../assets/css/iconfont.css';
+<style scoped lang="scss">
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+
+  .el-carousel {
+    width: 80%;
+    margin: 0 auto;
+  }
 </style>
