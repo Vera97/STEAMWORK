@@ -18,17 +18,17 @@ const router = new VueRouter({
     routes: routes
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.path === '/home') {
-        sessionStorage.removeItem('user');
-    }
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    if (user === null && to.path !== '/home') {
-        next({path: '/home'});
-    } else {
-        next();
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (to.path === '/home') {
+//         sessionStorage.removeItem('user');
+//     }
+//     let user = JSON.parse(sessionStorage.getItem('user'));
+//     if (user === null && to.path !== '/home') {
+//         next({path: '/home'});
+//     } else {
+//         next();
+//     }
+// });
 
 new Vue({
     render: h => h(App),

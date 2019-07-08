@@ -1,15 +1,7 @@
 <template>
   <el-row>
     <el-col :span="4" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 1 : 0">
-      <el-card :body-style="{ padding: '0px' }">
-        <div style="padding: 14px;">
-          <span>{{title+o}}</span>
-          <div class="bottom">
-            <span class="info">{{introduction+o}}</span>
-            <el-button type="text" class="button">查看详情</el-button>
-          </div>
-        </div>
-      </el-card>
+      <CourseCell :title="title+o" :introduction="introduction+o" :id="123"></CourseCell>
     </el-col>
     <el-col>
     <el-button-group>
@@ -22,9 +14,11 @@
 </template>
 
 <script>
+    import CourseCell from "../Course-cell";
     export default {
         name: "ClassList",
-      data(){
+        components: {CourseCell},
+        data(){
           return {
               title:'科目xxxx',
               introduction:'一句话的简介xxxx',
@@ -49,8 +43,5 @@
   }
   .bottom{
     padding-top:10px;
-  }
-  .info{
-    color:#CCCCCC;
   }
 </style>

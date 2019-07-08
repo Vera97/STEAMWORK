@@ -15,7 +15,7 @@
     import Search from "../../components/Home/Search";
     import Carousel from "../../components/Home/Carousel";
     import ClassList from "../../components/Home/ClassList";
-    import Footer from "../../components/Home/Footer";
+    import Footer from "../../components/Footer";
     export default {
         name: "home",
         components: {Footer, ClassList, Carousel, Search, Nav},

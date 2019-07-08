@@ -9,26 +9,22 @@ const labinfo = loadcomponents => require.ensure([], () => loadcomponents(requir
 */
 
 import notFound from "./views/NotFound/NotFound";
+import Course from "./views/course/Course";
 
-const CourseTable = () => import('./components/selected_course_table.vue');
-// const TestPage = () => import('./components/TestPages.vue');
-const home = () => import('./views/Home/Home.vue');
+const Home = () => import('./views/Home/Home.vue');
 
 ///正确的姿势建议应该是在组件的created钩子中，或者在组件的beforeEach导航钩子中从服务器请求资
 // 源然后提交vuex，组件再同一从vuex中获取数据
 
 let routes = [
     {
-        path: '/',
-        component: home,
-        redirect: '/home',
-        children: [
-            {
-                path: '/home',
-                component: CourseTable,
-                name: 'home'
-            },
-        ]
+        path: '/home',
+        component: Home
+    },
+    {
+        path: '/course/:id',
+        component: Course,
+        props: true
     },
     {
         path: '*',
