@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import Nav from "../../components/Home/Nav";
+    import Nav from "../../components/Nav";
     import Footer from "../../components/Footer";
     import Periods from "../../components/Course/Periods";
     import Introduction from "../../components/Course/Introduction";

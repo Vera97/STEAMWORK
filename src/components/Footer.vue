@@ -18,4 +18,8 @@
     background-color:#409EFF;
     padding:20px;
   }
+
+  .copyright {
+    width: 100%;
+  }
 </style>
