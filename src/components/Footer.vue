@@ -14,9 +14,12 @@
 
 <style scoped>
   .copyright{
-    color:#ffffff;
-    background-color:#409EFF;
-    padding:20px;
+      color:#ffffff;
+      background-color:#409EFF;
+      padding:20px;
+      bottom: 0px;
+      position: absolute;
+      width: 100%;
   }
 
   .copyright {
