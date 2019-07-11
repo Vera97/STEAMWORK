@@ -19,7 +19,6 @@
 <style scoped>
     .periods-length {
         width: 100%;
-        width: 100%;
         text-align: center;
         margin: 0.1%;
 

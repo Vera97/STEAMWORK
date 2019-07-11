@@ -8,7 +8,6 @@ Vue.use(Vuex);
 // 应用初始状态
 // 应用挂载后从服务器加载实验室包含实验的总表、用户已选择的总表
 const state = {
-    course: [],
     login_state: false
 };
 
@@ -17,6 +16,12 @@ const mutations = {
     PUSH_COURSE(state, course){
         state.course = course
     },
+    LOG_IN(state) {
+        state.login_state = true
+    },
+    LOG_OUT(state) {
+        state.login_state = false
+    }
 };
 // 定义所需的 actions
 const actions = {
@@ -29,6 +34,9 @@ const getters = {
     get_course(state){
         return state.course
     },
+    get_login_state(state) {
+        return state.login_state
+    }
 };
 
 // 创建 store 实例
