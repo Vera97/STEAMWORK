@@ -17,7 +17,21 @@
       </div>
       <div class="login">
         <i class="el-icon-user-solid" v-if="login_state"></i>
-        <el-button type="primary" round size="mini" v-else @click="login">登陆</el-button>
+        <el-popover placement="left" trigger="click" v-else>
+          <el-button slot="reference" type="primary" round size="mini" @click="login">登陆</el-button>
+          <el-form class="login-form-wrapper">
+            <el-form-item label="用户名：">
+              <el-input placeholder="请输入用户名" v-model="username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码：">
+              <el-input placeholder="请输入密码" type="password" v-model="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" class="login-button" @click="login">登陆</el-button>
+            </el-form-item>
+          </el-form>
+        </el-popover>
+
       </div>
     </el-menu>
   </div>
@@ -25,6 +39,8 @@
 
 <script>
     import store from '@/store'
+    import md5 from 'md5'
+    import api from '@/api'
 
     export default {
         name: "Nav",
@@ -36,8 +52,8 @@
         data() {
             return {
                 activeIndex: '1',
-                username: '登录',
-                register: '注册'
+                username: '',
+                password: ''
             };
         },
         methods: {
@@ -46,7 +62,11 @@
                 // console.log(key, keyPath);
             },
             login() {
-                store.commit('LOG_IN')
+                let username = this.username;
+                let password = md5(this.password);
+                api.requestLogin({username: username, password: password}).then(res => {
+                    store.commit('LOG_IN')
+                });
             },
             logout() {
                 store.commit('LOG_OUT')
@@ -65,5 +85,13 @@
     float:right;
     color:#ffffff;
     margin:15px;
+  }
+
+  .login-form-wrapper {
+    padding: 1em;
+  }
+
+  .login-button {
+    width: 100%;
   }
 </style>
