@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import Nav from "../../components/Home/Nav";
+    import Nav from "../../components/Nav";
     import Search from "../../components/Home/Search";
     import Carousel from "../../components/Home/Carousel";
     import ClassList from "../../components/Home/ClassList";

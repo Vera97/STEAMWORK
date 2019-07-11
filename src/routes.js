@@ -10,6 +10,7 @@ const labinfo = loadcomponents => require.ensure([], () => loadcomponents(requir
 
 import notFound from "./views/NotFound/NotFound";
 import Course from "./views/course/Course";
+import Assignment from "./views/Assignment/Assignment";
 
 const Home = () => import('./views/Home/Home.vue');
 
@@ -24,6 +25,11 @@ let routes = [
     {
         path: '/course/:id',
         component: Course,
+        props: true
+    },
+    {
+        path: '/assignment',
+        component: Assignment,
         props: true
     },
     {
