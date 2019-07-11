@@ -23,6 +23,8 @@
         width:100%;
     }
     .box-card{
+        font-size:110px;
+        text-align:center;
         width:100%;
         height:100%;
     }

@@ -40,6 +40,7 @@
             }
         }
     }
+  }
 </script>
 
 <style scoped>
@@ -80,5 +81,8 @@
     margin-top:15px;
     margin-left:15%;
     margin-right:15%;
+  }
+  .el-main{
+    overflow: hidden;
   }
 </style>
