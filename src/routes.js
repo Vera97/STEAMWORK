@@ -10,7 +10,7 @@ const labinfo = loadcomponents => require.ensure([], () => loadcomponents(requir
 
 import notFound from "./views/NotFound/NotFound";
 import Course from "./views/course/Course";
-import Assignment from "./views/Assignment/Assignment";
+import Assignment from "./views/assignment/Assignment";
 
 const Home = () => import('./views/Home/Home.vue');
 
