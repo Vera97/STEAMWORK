@@ -5,30 +5,33 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        select: [],
-        outputList: []
+        /* the courses in the carousel, must have title, introduction, id fields. */
+        courses: [
+            {
+                title: '课程1',
+                introduction: '我是一门好课',
+                id: '1'
+            },
+            {
+                title: '课程2',
+                introduction: '我是一门好课',
+                id: '2'
+            },
+            {
+                title: '课程3',
+                introduction: '我是一门好课',
+                id: '3'
+            },
+            {
+                title: '课程4',
+                introduction: '我是一门好课',
+                id: '4'
+            }
+        ]
     },
     mutations: {
-        select: (state, item) => {
-            state.select.push(item)
-        },
-        delete: (state, key) => {
-            let tmp = {};
-            for(let i in state.select) {
-                if(i === key) {
-                    tmp[i] = state.select[i];
-                    break;
-                }
-            }
-
-            let index = state.select.indexOf(tmp);
-            state.select.splice(index, 1);
-        },
-        clear: (state) => {
-            state.select = [];
-        },
-        filter: state => {
-
+        addCourses(state, course) {
+            state.courses.push(...course)   /* the response is pushed into the original courses. So that the course won't be empty. */
         }
     }
 });

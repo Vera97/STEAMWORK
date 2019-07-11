@@ -3,39 +3,23 @@
     <el-carousel-item v-for="item in courses" :key="item.id">
       <h3>{{item.title}}</h3>
       <p>{{item.introduction}}</p>
-      <el-link>查看详情</el-link>
+      <el-link :href="'course/' + item.id">查看详情</el-link>
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script>
+    import store from '@/views/Home/store'
+
     export default {
         name: "Carousel",
-        data () {
-            return {
-                courses: [
-                    {
-                        title: '课程1',
-                        introduction: '我是一门好课',
-                        id: '1'
-                    },
-                    {
-                        title: '课程2',
-                        introduction: '我是一门好课',
-                        id: '2'
-                    },
-                    {
-                        title: '课程3',
-                        introduction: '我是一门好课',
-                        id: '3'
-                    },
-                    {
-                        title: '课程4',
-                        introduction: '我是一门好课',
-                        id: '4'
-                    }
-                ]
+        computed: {
+            courses () {
+                return store.state.courses
             }
+        },
+        data () {
+            return {}
         }
     }
 </script>
