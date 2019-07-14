@@ -38,41 +38,41 @@
 </template>
 
 <script>
-    import store from '@/store'
-    import md5 from 'md5'
-    import api from '@/api'
+  import store from '@/store'
+  import md5 from 'md5'
+  import api from '@/api'
 
-    export default {
-        name: "Nav",
-        computed: {
-            login_state () {
-                return store.getters.get_login_state
-            }
-        },
-        data() {
-            return {
-                activeIndex: '1',
-                username: '',
-                password: ''
-            };
-        },
-        methods: {
-            // eslint-disable-next-line no-unused-vars
-            handleSelect(key, keyPath) {
-                // console.log(key, keyPath);
-            },
-            login() {
-                let username = this.username;
-                let password = md5(this.password);
-                api.requestLogin({username: username, password: password}).then(res => {
-                    store.commit('LOG_IN')
-                });
-            },
-            logout() {
-                store.commit('LOG_OUT')
-            }
-        }
+  export default {
+    name: "Nav",
+    computed: {
+      login_state () {
+        return store.getters.get_login_state
+      }
+    },
+    data() {
+      return {
+        activeIndex: '1',
+        username: '',
+        password: ''
+      };
+    },
+    methods: {
+      // eslint-disable-next-line no-unused-vars
+      handleSelect(key, keyPath) {
+        // console.log(key, keyPath);
+      },
+      login() {
+        let username = this.username;
+        let password = md5(this.password);
+        api.requestLogin({username: username, password: password}).then(res => {
+          store.commit('LOG_IN')
+        });
+      },
+      logout() {
+        store.commit('LOG_OUT')
+      }
     }
+  }
 </script>
 
 <style scoped>
