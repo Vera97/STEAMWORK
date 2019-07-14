@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import Nav from "../../components/Home/Nav";
+    import Nav from "../../components/Nav";
     import Coursedirectory from "../../components/Coursedirectory";
     import PPTshow from "../../components/PPT/PPTshow";
     import Footer from "../../components/Footer";

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import Nav from "../../components/Home/Nav";
+    import Nav from "../../components/Nav";
     import Footer from "../../components/Footer";
     import Content from "../../components/Design/Content";
     import Coursedirectory from "../../components/Coursedirectory";
