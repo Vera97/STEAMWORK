@@ -11,20 +11,49 @@
         <el-menu-item index="3-3">班级三</el-menu-item>
       </el-submenu>
       <el-menu-item index="4">开始上课</el-menu-item>
-      <div class="login"><el-button round size="mini" v-on:click="loginOut">{{register}}</el-button></div>
-      <div class="login"><el-button type="primary" round size="mini" v-on:click="loginIn">{{username}}</el-button></div>
+      <div class="login">
+        <el-button type="primary" round size="mini" @click="logout" v-if="login_state">注销</el-button>
+        <el-button round size="mini" @click="login" v-else>注册</el-button>
+      </div>
+      <div class="login">
+        <i class="el-icon-user-solid" v-if="login_state"></i>
+        <el-popover placement="left" trigger="click" v-else>
+          <el-button slot="reference" type="primary" round size="mini" @click="login">登陆</el-button>
+          <el-form class="login-form-wrapper">
+            <el-form-item label="用户名：">
+              <el-input placeholder="请输入用户名" v-model="username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码：">
+              <el-input placeholder="请输入密码" type="password" v-model="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" class="login-button" @click="login">登陆</el-button>
+            </el-form-item>
+          </el-form>
+        </el-popover>
+
+      </div>
     </el-menu>
   </div>
 </template>
 
 <script>
+  import store from '@/store'
+  import md5 from 'md5'
+  import api from '@/api'
+
   export default {
     name: "Nav",
+    computed: {
+      login_state () {
+        return store.getters.get_login_state
+      }
+    },
     data() {
       return {
         activeIndex: '1',
-        username: '登录',
-        register: '注册'
+        username: '',
+        password: ''
       };
     },
     methods: {
@@ -32,13 +61,15 @@
       handleSelect(key, keyPath) {
         // console.log(key, keyPath);
       },
-      loginIn() {
-        this.username = '小明';
-        this.register = '注销';
+      login() {
+        let username = this.username;
+        let password = md5(this.password);
+        api.requestLogin({username: username, password: password}).then(res => {
+          store.commit('LOG_IN')
+        });
       },
-      loginOut() {
-        this.username = '登录';
-        this.register = '注册';
+      logout() {
+        store.commit('LOG_OUT')
       }
     }
   }
@@ -55,10 +86,12 @@
     color:#ffffff;
     margin:15px;
   }
-  .el-menu-demo{
-    z-index: 99;
-    display: inline-block;
-    position: fixed;
+
+  .login-form-wrapper {
+    padding: 1em;
+  }
+
+  .login-button {
     width: 100%;
   }
 </style>
