@@ -9,16 +9,13 @@
         </el-main>
         <el-footer><Footer></Footer></el-footer>
     </el-container>
-
-
-
 </template>
 
 <script>
     import Nav from "../../components/Home/Nav";
     import Footer from "../../components/Footer";
     import Content from "../../components/Design/Content";
-    import Coursedirectory from "../../components/PPT/Coursedirectory";
+    import Coursedirectory from "../../components/Coursedirectory";
     export default {
         name: "Design",
         components: {Footer, Content, Coursedirectory, Nav}
