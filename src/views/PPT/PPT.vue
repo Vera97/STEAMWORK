@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header><Nav></Nav></el-header>
-          <el-main>
+          <el-main class="w">
              <el-row :gutter="40">
                  <el-col :span="5" float="left"><Coursedirectory></Coursedirectory></el-col>
                  <el-col :span="18" float="right">
@@ -18,6 +18,7 @@
                              :file-list="fileList">
                      </el-upload>
                      <PPTshow></PPTshow>
+                     <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">上传相关学习资源（上传后将出现在学生端“课程资源”处）</el-button>
                      <el-upload
                              class="upload-demo"
                              action="https://jsonplaceholder.typicode.com/posts/"
@@ -29,21 +30,23 @@
                              :on-exceed="handleExceed"
                              :file-list="fileList">
                      </el-upload>
-                     <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">上传相关学习资源（上传后将出现在学生端“课程资源”处）</el-button>
                      <a href="#" class="ll">导出内容</a>
                  </el-col>
              </el-row>
           </el-main>
+        <el-footer><Footer></Footer></el-footer>
     </el-container>
+
 </template>
 
 <script>
     import Nav from "../../components/Home/Nav";
     import Coursedirectory from "../../components/PPT/Coursedirectory";
     import PPTshow from "../../components/PPT/PPTshow";
+    import Footer from "../../components/Footer";
     export default {
         name: "PPT",
-        components: {PPTshow ,Coursedirectory, Nav},
+        components: {PPTshow ,Coursedirectory, Nav, Footer},
         props: [
             'id'
         ],
@@ -72,9 +75,19 @@
 </script>
 
 <style scoped>
+    *{
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
   .ll{
       float:right;
       margin-top:5%;
       margin-bottom:5%;
   }
+    .w{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 </style>

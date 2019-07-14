@@ -55,4 +55,10 @@
     color:#ffffff;
     margin:15px;
   }
+  .el-menu-demo{
+    z-index: 99;
+    display: inline-block;
+    position: fixed;
+    width: 100%;
+  }
 </style>

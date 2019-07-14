@@ -14,7 +14,6 @@
 </template>
 
 <script>
-    import CourseCell from "../Course-cell";
     export default {
         name: "videoshow",
     }
