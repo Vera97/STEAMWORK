@@ -14,7 +14,7 @@
     import Nav from "../../components/Home/Nav";
     import Search from "../../components/Home/Search";
     import Carousel from "../../components/Home/Carousel";
-    import ClassList from "../../components/Home/ClassList";
+    import ClassList from "../../components/PPT/ClassList";
     import Footer from "../../components/Footer";
     export default {
         name: "home",
