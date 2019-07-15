@@ -36,3 +36,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ##### 2019.7.7 # 页面去除了原本使用的JQuery和Bootstrap框架，替换为Element UI框架（https://element.eleme.cn/2.0/#/zh-CN/component/installation）
 ##### 2019.7.8 # 重新组织了项目，新增了课程信息介绍的页面，为其添加了路由，并且定义了内部用到的组件，具体内容可以直接在这些组件上添加，参看Course.vue中的注释。原先上传的文档现在统一放在/communication文件夹下。大家可以从这次提交开始新建自己的分支
 ##### 2019.7.9 # 补充了课程信息介绍静态页面
+##### 2019.7.15 # 修改了主页的几个数据绑定，修改了筛选条件，修改了全局的状态管理器以存放用户名与简介等等
