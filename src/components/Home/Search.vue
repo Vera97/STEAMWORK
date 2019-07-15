@@ -8,15 +8,15 @@
         <el-button type="primary" @click="search">搜索</el-button>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.kind" placeholder="<请选择类别>">
+      <el-select v-model="selected.type" placeholder="<请选择类别>">
         <el-option :label="'<请选择类别>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.kind" :key="item.type" :label="item.type" :value="item.type"></el-option>
+        <el-option v-for="item in conditions.type" :key="item.type" :label="item.type" :value="item.type"></el-option>
       </el-select>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.class" placeholder="<请选择课程>">
-        <el-option :label="'<请选择课程>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.class" :key="item.type" :label="item.type" :value="item.type"></el-option>
+      <el-select v-model="selected.coursename" placeholder="<请选择课程名称>">
+        <el-option :label="'<请选择课程名称>'" :value="''"></el-option>
+        <el-option v-for="item in conditions.coursename" :key="item.type" :label="item.type" :value="item.type"></el-option>
       </el-select>
       </el-form-item>
       <el-form-item class="filter">
@@ -32,10 +32,7 @@
       </el-select>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.other" placeholder="<请选择其它条件>">
-        <el-option :label="'<请选择其它条件>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.other" :key="item.type" :label="item.type" :value="item.type"></el-option>
-      </el-select>
+        <el-checkbox v-model="selected.favorite">已收藏</el-checkbox>
       </el-form-item>
       <el-form-item>
       <el-button type="primary" class="filter-button" @click="filter">筛选</el-button>
@@ -54,12 +51,12 @@
             return {
                 keyword: '',
                 conditions: {
-                    kind: [
+                    type: [
                         {type: '类别1'},
                         {type: '类别2'},
                         {type: '类别3'}
                     ],
-                    class: [
+                    coursename: [
                         {type: '课程1'},
                         {type: '课程2'},
                         {type: '课程3'}
@@ -73,32 +70,34 @@
                         {type: '1'},
                         {type: '2'},
                         {type: '3'}
-                    ],
-                    other: [
-                        {type: '其它1'},
-                        {type: '其它2'},
-                        {type: '其它3'}
                     ]
                 },
                 selected: {
-                    kind: '',
-                    class: '',
+                    type: '',
+                    coursename: '',
                     teacher: '',
                     time: '',
-                    other: ''
+                    favorite: false
                 },
             }
         },
         methods: {
             search () {
-                api.searchByKeyword({keyword: this.keyword}).then(res => {
+                api.getCourses({code: 'search', course_name_keyword: this.keyword}).then(res => {
                     store.commit('addCourses', res.data)
-                });
+                })
             },
             filter () {
-                api.searchByCondition(this.selected).then(res => {
+                api.getCourses({
+                    code: 'filter',
+                    type: this.selected.type,
+                    coursename: this.selected.coursename,
+                    teacher: this.selected.teacher,
+                    time: this.selected.time,
+                    favorite: this.selected.favorite
+                }).then(res => {
                     store.commit('addCourses', res.data)
-                });
+                })
             }
         }
     }

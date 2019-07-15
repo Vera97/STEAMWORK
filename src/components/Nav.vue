@@ -16,15 +16,15 @@
         <el-button round size="mini" @click="login" v-else>注册</el-button>
       </div>
       <div class="login">
-        <i class="el-icon-user-solid" v-if="login_state"></i>
+        <el-avatar :src="avatar" v-if="login_state"></el-avatar>
         <el-popover placement="left" trigger="click" v-else>
           <el-button slot="reference" type="primary" round size="mini" @click="login">登陆</el-button>
           <el-form class="login-form-wrapper">
             <el-form-item label="用户名：">
-              <el-input placeholder="请输入用户名" v-model="username"></el-input>
+              <el-input placeholder="请输入用户名" v-model="form_username"></el-input>
             </el-form-item>
             <el-form-item label="密码：">
-              <el-input placeholder="请输入密码" type="password" v-model="password"></el-input>
+              <el-input placeholder="请输入密码" type="password" v-model="form_password"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" class="login-button" @click="login">登陆</el-button>
@@ -41,19 +41,26 @@
     import store from '@/store'
     import md5 from 'md5'
     import api from '@/api'
+    import home_store from '@/views/Home/store'
 
     export default {
         name: "Nav",
         computed: {
             login_state () {
                 return store.getters.get_login_state
+            },
+            username () {
+                return store.getters.get_username
+            },
+            avatar () {
+                return store.getters.get_avatar_url
             }
         },
         data() {
             return {
                 activeIndex: '1',
-                username: '',
-                password: ''
+                form_username: '',    /* these two is for the form input. */
+                form_password: ''
             };
         },
         methods: {
@@ -65,7 +72,14 @@
                 let username = this.username;
                 let password = md5(this.password);
                 api.requestLogin({username: username, password: password}).then(res => {
-                    store.commit('LOG_IN')
+                    if(res.data.code === 1) {
+                        store.commit('LOG_IN', res.data.userdata);
+                        api.getCourses({code: 'like', username: this.username}).then(res => {
+                            home_store.commit('addCourses', res.data)
+                        })
+                    } else {
+                        alert('用户名或密码错误')
+                    }
                 });
             },
             logout() {
@@ -75,16 +89,30 @@
     }
 </script>
 
-<style scoped>
-  .nav-type{
-    float:left;
-    margin:20px;
-    padding-right:100px;
+<style scoped lang="scss">
+  .el-menu {
+    height: 4em;
+
+    .nav-type{
+      float:left;
+      margin:20px;
+      padding-right:100px;
+    }
+
+    .el-menu-item, .el-submenu {
+      position: relative;
+      bottom: 0;
+    }
   }
+
+
   .login{
     float:right;
     color:#ffffff;
-    margin:15px;
+    margin: 0 15px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .login-form-wrapper {
