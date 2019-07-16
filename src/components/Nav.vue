@@ -76,6 +76,12 @@
 </script>
 
 <style scoped>
+  .el-menu-demo{
+    display: inline-block;
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+  }
   .nav-type{
     float:left;
     margin:20px;
