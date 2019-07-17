@@ -30,7 +30,7 @@
         ],
         data () {
             return {
-                name: '3d打印'
+                name: 'startClass'
             }
         }
     }
