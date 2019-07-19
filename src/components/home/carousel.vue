@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import store from '@/views/Home/store'
+    import store from '@/views/home/store'
 
     export default {
         name: "Carousel",

@@ -1,48 +1,154 @@
 <template>
   <el-container>
-    <el-header><Nav></Nav></el-header>
+    <el-header>
+      <Nav></Nav>
+    </el-header>
     <el-main>
       <el-row :gutter="75">
         <!-- 这里是课时介绍栏，应该展示相应课程的id和课时列表 -->
-        <el-col :span="16" ><Periods></Periods></el-col>
+        <el-col :span="16">
+          <Periods :title="title" :period-list="periodList"></Periods>
+        </el-col>
         <!-- 这里是课程信息介绍，对应图右上角 -->
-        <el-col :span="8"><Introduction></Introduction></el-col>
+        <el-col :span="8">
+          <Introduction :introduction="introduction" :src="src"></Introduction>
+        </el-col>
       </el-row>
       <el-row :gutter="75">
         <!-- 相关课程，课程卡片我提取成了独立的组件，在Course-cell.vue中，使用的时候传入标题，介绍，id即可。现在可以给它们随意传入一些信息，真实的标题介绍等内容以后加上 -->
-       <el-col :span="16"><Related></Related></el-col>
-       <!-- 这里是按钮，对应图右下角 -->
+        <el-col :span="16">
+          <Related :related-list="relatedList"></Related>
+        </el-col>
+        <!-- 这里是按钮，对应图右下角 -->
         <el-col :span="8">
-          <el-button type="primary">收藏课程 </el-button><br>
-          <el-button type="primary">另存为“我的课程”</el-button>
+          <el-button type="primary" @click="toggleFav">{{ inFav ? '取消收藏' : '收藏课程' }}</el-button>
+          <br>
+          <el-button type="primary" @click="toggleList">{{ inList ? '从我的课程列表移出' : '另存为“我的课程”' }}</el-button>
         </el-col>
       </el-row>
     </el-main>
-    <el-footer><Footer></Footer></el-footer>
+    <el-footer>
+      <Footer></Footer>
+    </el-footer>
   </el-container>
 </template>
 
 <script>
     import Nav from "../../components/Nav";
     import Footer from "../../components/Footer";
-    import Periods from "../../components/Course/Periods";
-    import Introduction from "../../components/Course/Introduction";
-    import Related from "../../components/Course/Related";
+    import Periods from "../../components/course/Periods";
+    import Introduction from "../../components/course/Introduction";
+    import Related from "../../components/course/Related";
+    import api from '@/api';
+    import store from '@/store';
+
     export default {
         name: "Course",
         components: {Related, Introduction, Periods, Footer, Nav},
         props: [
-            'id'
+            'courseId'
         ],
         data () {
             return {
-                name: '3d打印'
+                title: '3d打印',
+                introduction: '我是一门好课',
+                src: '#',
+                relatedId: [],
+                inFav: false,
+                inList: false,
+                periodList: [
+                    {
+                        title: '课时1'
+                    },{
+                        title: '课时2'
+                    },{
+                        title: '课时3'
+                    },{
+                        title: '课时4'
+                    },{
+                        title: '课时5'
+                    },
+                ],
+                relatedList: [
+                    {
+                        title: '课程1',
+                        introduction: '我是一门好课',
+                        courseId: '1',
+                        cover: ''
+                    },
+                    {
+                        title: '课程2',
+                        introduction: '我是一门好课',
+                        courseId: '2',
+                        cover: ''
+                    },
+                    {
+                        title: '课程3',
+                        introduction: '我是一门好课',
+                        courseId: '3',
+                        cover: ''
+                    },
+                    {
+                        title: '课程4',
+                        introduction: '我是一门好课',
+                        courseId: '4',
+                        cover: ''
+                    }
+                ]
+            }
+        },
+        created() {
+            api.courseDetail({
+                code: 'course_detail',
+                courseId: this.courseId.toString()
+            }).then(res => {
+                this.name = res.data.name;
+                this.introduction = res.data.courseIntro;
+                this.src = res.data.courseImgVideo;
+                this.periodList.push(...res.data.courseList);
+                this.relatedId.push(...res.data.relatedCourse)
+            });
+
+            for(let i of this.relatedId) {
+                api.getCourses({
+                    code: 'course_detail',
+                    courseId: i.toString()
+                }).then(res => {
+                    this.relatedList.push({
+                        title: res.data.title,
+                        introduction: res.data.courseIntro,
+                        courseId: i.toString(),
+                        cover: ''                               /* maybe this field will matter in the future. */
+                    })
+                })
+            }
+        },
+        methods: {
+            toggleFav() {
+                let that = this;
+                let code = this.inFav ? 'remove_favorite' : 'add_favorite';
+
+                api.courseDetail({
+                    code: code,
+                    userName: store.state.userName,
+                    courseId: this.courseId,
+                }).then(() => that.inFav = !that.inFav);
+            },
+            toggleList() {
+                let that = this;
+                let code = this.inList ? 'remove_course_self' : 'add_course_self';
+
+                api.courseDetail({
+                    code: code,
+                    userName: store.state.userName,
+                    courseId: this.courseId,
+                }).then(() => that.inList = !that.inList);
             }
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .el-header{
     padding:0;
   }
@@ -50,7 +156,8 @@
     padding:0;
   }
   .el-row {
-    margin-bottom: 0px;
+    margin-bottom: 0;
+    width: 100%;
   &:last-child {
      margin-bottom: 0;
    }

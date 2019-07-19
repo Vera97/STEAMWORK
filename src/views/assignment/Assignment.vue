@@ -35,6 +35,7 @@
 </script>
 
 <style scoped>
+
   .template{
     overflow: hidden;
   }
