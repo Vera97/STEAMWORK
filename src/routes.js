@@ -15,6 +15,8 @@ import PPT from "./views/PPT/PPT";
 import Design from "./views/Design/Design";
 import studentsList from "./views/studentsList/studentsList";
 import startClass from "./views/startClass/startClass";
+import mySuccess from "./views/mySuccess/mySuccess";
+import resource from "./views/resource/resource";
 
 const Home = () => import('./views/Home/Home.vue');
 
@@ -56,7 +58,16 @@ let routes = [
         component: startClass,
         props: true
     },
-
+    {
+        path: '/mysuccess',
+        component: mySuccess,
+        props: true
+    },
+    {
+        path: '/resourse',
+        component: resource,
+        props: true
+    },
     {
         path: '*',
         component: notFound

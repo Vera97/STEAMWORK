@@ -4,7 +4,7 @@
     <el-main>
       <Search></Search>
       <Carousel></Carousel>
-      <ClassList></ClassList>
+      <classList></classList>
     </el-main>
     <el-footer><Footer></Footer></el-footer>
   </el-container>
@@ -14,11 +14,11 @@
     import Nav from "../../components/Nav";
     import Search from "../../components/Home/Search";
     import Carousel from "../../components/Home/Carousel";
-    import ClassList from "../../components/Home/ClassList";
+    import classList from "../../components/classList";
     import Footer from "../../components/Footer";
     export default {
         name: "home",
-        components: {Footer, ClassList, Carousel, Search, Nav},
+        components: {Footer, classList, Carousel, Search, Nav},
         // beforeRouteEnter(to, from, next) {
         //     get();
         //     next(vm => {

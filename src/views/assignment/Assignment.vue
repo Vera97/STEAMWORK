@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header><Nav></Nav></el-header>
-    <el-main class="main-box">
+    <el-main>
       <h3 style="margin-top:5px;">3D打印&nbsp;课时1：&nbsp;#课时1的标题#</h3>
       <el-row :gutter="0">
         <!-- 这里是教学步骤栏，放置一列按钮组展示相应课程的教学步骤 -->
@@ -37,13 +37,12 @@
 <style scoped>
   *{
     margin-left: 0px;
+    margin-right: 0px;
     padding-left: 0px;
-  }
-  .main-box{
-    margin-left: 10px;
+    padding-right: 0px;
   }
   .template{
-    overflow-x: hidden;
+    overflow: hidden;
   }
   .vshow{
     float: right;
