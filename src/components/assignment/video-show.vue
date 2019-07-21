@@ -1,6 +1,6 @@
 <template>
     <el-card class="box-card">
-        <h5 style="margin-top:5px;margin-bottom:0px;">步骤2</h5><br>
+        <h5 style="margin-top:5px;margin-bottom:0;">步骤2</h5><br>
         <h5 style="margin-top:5px;margin-bottom:5px;">文字描述</h5>
         <div v-for="o in 3" :key="o" class="text item">
             {{'·&emsp;关键点 ' + o }}
@@ -24,7 +24,6 @@
         width:100%;
         height:20%;
         margin-top:5px;
-        margin-bottom:0px;
+        margin-bottom:0;
     }
 </style>
->

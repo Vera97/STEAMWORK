@@ -15,23 +15,23 @@
 </template>
 
 <script>
-  import Nav from "../../components/Nav";
-  import Footer from "../../components/Footer";
-  import Steps from "../../components/Assignment/Steps";
-  import Videoshow from "../../components/Assignment/Videoshow";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import Steps from "../../components/assignment/steps";
+    import Videoshow from "../../components/assignment/video-show";
 
-  export default {
-    name: "Assignment",
-    components: {Videoshow ,Steps, Footer, Nav},
-    props: [
-      'id'
-    ],
-    data () {
-      return {
-        name: '3d打印'
-      }
+    export default {
+        name: "Assignment",
+        components: {Videoshow ,Steps, Footer, Nav},
+        props: [
+            'id'
+        ],
+        data () {
+            return {
+                name: '3d打印'
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

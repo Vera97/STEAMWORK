@@ -41,7 +41,7 @@
     import store from '@/store'
     import md5 from 'md5'
     import api from '@/api'
-    import home_store from '@/views/Home/store'
+    import home_store from '@/views/home/store'
 
     export default {
         name: "Nav",
@@ -49,7 +49,7 @@
             login_state () {
                 return store.getters.get_login_state
             },
-            username () {
+            userName () {
                 return store.getters.get_username
             },
             avatar () {
@@ -69,13 +69,13 @@
                 // console.log(key, keyPath);
             },
             login() {
-                let username = this.username;
+                let userName = this.username;
                 let password = md5(this.password);
-                api.requestLogin({username: username, password: password}).then(res => {
+                api.requestLogin({userName: username, password: password}).then(res => {
                     if(res.data.code === 1) {
                         store.commit('LOG_IN', res.data.userdata);
-                        api.getCourses({code: 'like', username: this.username}).then(res => {
-                            home_store.commit('addCourses', res.data)
+                        api.getCourses({code: 'like', userName: this.username}).then(res => {
+                            home_store.commit('ADD_COURSES', res.data)
                         })
                     } else {
                         alert('用户名或密码错误')

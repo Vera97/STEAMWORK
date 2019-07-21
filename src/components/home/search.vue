@@ -43,7 +43,7 @@
 
 <script>
     import api from '@/api'
-    import store from '@/views/Home/store'
+    import store from '@/views/home/store'
 
     export default {
         name: "Search",
@@ -84,7 +84,7 @@
         methods: {
             search () {
                 api.getCourses({code: 'search', course_name_keyword: this.keyword}).then(res => {
-                    store.commit('addCourses', res.data)
+                    store.commit('ADD_COURSES', res.data)
                 })
             },
             filter () {
@@ -96,7 +96,7 @@
                     time: this.selected.time,
                     favorite: this.selected.favorite
                 }).then(res => {
-                    store.commit('addCourses', res.data)
+                    store.commit('ADD_COURSES', res.data)
                 })
             }
         }

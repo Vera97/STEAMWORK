@@ -8,15 +8,15 @@ const listTable = loadcomponents => require.ensure([], () => loadcomponents(requ
 const labinfo = loadcomponents => require.ensure([], () => loadcomponents(require('@/components/experiment/labinfo.vue')), 'experiment');
 */
 
-import notFound from "./views/NotFound/NotFound";
-import Course from "./views/course/Course";
-import Assignment from "./views/Assignment/Assignment";
+import notFound from "./views/notFound/notFound";
+import Course from "./views/course/course";
+import Assignment from "./views/assignment/assignment";
 import PPT from "./views/PPT/PPT";
-import Design from "./views/Design/Design";
+import Design from "./views/design/design";
 import studentsList from "./views/studentsList/studentsList";
 import startClass from "./views/startClass/startClass";
 
-const Home = () => import('./views/Home/Home.vue');
+const Home = () => import('./views/home/home.vue');
 
 ///正确的姿势建议应该是在组件的created钩子中，或者在组件的beforeEach导航钩子中从服务器请求资
 // 源然后提交vuex，组件再同一从vuex中获取数据
@@ -27,7 +27,8 @@ let routes = [
         component: Home
     },
     {
-        path: '/course/:id',
+        name: 'course',
+        path: '/course',
         component: Course,
         props: true
     },

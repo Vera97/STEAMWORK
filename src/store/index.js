@@ -9,7 +9,7 @@ Vue.use(Vuex);
 // 应用挂载后从服务器加载实验室包含实验的总表、用户已选择的总表
 const state = {
     login_state: false,
-    username: '',
+    userName: '',
     avatar: '../assets/avatar.png',
     introduce: ''
 };
@@ -44,7 +44,7 @@ const getters = {
         return state.avatar
     },
     get_username(state) {
-        return state.username
+        return state.userName
     },
     get_introduce(state) {
         return state.introduce

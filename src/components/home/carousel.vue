@@ -1,15 +1,15 @@
 <template>
   <el-carousel :interval="4000" type="card">
-    <el-carousel-item v-for="item in courses" :key="item.id">
+    <el-carousel-item v-for="item in courses" :key="item.courseId">
       <h3>{{item.title}}</h3>
       <p>{{item.introduction}}</p>
-      <el-link :href="'course/' + item.id">查看详情</el-link>
+      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId}}">查看详情</router-link></div>
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script>
-    import store from '@/views/Home/store'
+    import store from '@/views/home/store'
 
     export default {
         name: "Carousel",
@@ -60,5 +60,15 @@
       font-size: 1em;
       height: 20%;
     }
+
+    /*.link {*/
+    /*  color: #000;*/
+    /*  cursor: pointer;*/
+    /*  font-size: .9em;*/
+
+    /*  &:hover {*/
+    /*    text-decoration: underline;*/
+    /*  }*/
+    /*}*/
   }
 </style>

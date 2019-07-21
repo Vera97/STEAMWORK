@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import Courseppt from "../PPT/Courseppt";
+    import Courseppt from "./course-ppt";
     export default {
         name: "PPT",
         components: {Courseppt},

@@ -40,10 +40,10 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Coursedirectory from "../../components/Coursedirectory";
-    import PPTshow from "../../components/PPT/PPTshow";
-    import Footer from "../../components/Footer";
+    import Nav from "../../components/hd-nav";
+    import Coursedirectory from "../../components/course-directory";
+    import PPTshow from "../../components/PPT/PPT-show";
+    import Footer from "../../components/hd-footer";
     export default {
         name: "PPT",
         components: {PPTshow ,Coursedirectory, Nav, Footer},
