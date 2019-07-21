@@ -25,7 +25,8 @@ let routes = [
         component: Home
     },
     {
-        path: '/course/:id',
+        name: 'course',
+        path: '/course',
         component: Course,
         props: true
     },

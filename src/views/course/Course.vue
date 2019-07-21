@@ -97,7 +97,9 @@
                 ]
             }
         },
-        created() {
+        created () {
+            alert(this.courseId);
+
             api.courseDetail({
                 code: 'course_detail',
                 courseId: this.courseId.toString()
