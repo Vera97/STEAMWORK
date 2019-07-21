@@ -4,7 +4,7 @@
       <div class="caption">{{title}}</div>
       <div class="bottom">
         <div class="info">{{introduction}}</div>
-        <div class="link" @click="jump">查看详情</div>
+        <div class="link"><router-link :to="{name: 'course', params: {courseId: 123}}">查看详情</router-link></div>
       </div>
     </div>
   </el-card>
@@ -40,15 +40,15 @@
     text-align: center;
   }
 
-  .link {
-    color: #2aabd2;
-    cursor: pointer;
-    font-size: .9em;
-  }
+  /*.link {*/
+  /*  color: #2aabd2;*/
+  /*  cursor: pointer;*/
+  /*  font-size: .9em;*/
+  /*}*/
 
-  .link:hover {
-    text-decoration: underline;
-  }
+  /*.link:hover {*/
+  /*  text-decoration: underline;*/
+  /*}*/
 
   .caption {
     font-size: 1.2em;

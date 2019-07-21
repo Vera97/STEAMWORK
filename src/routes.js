@@ -8,7 +8,7 @@ const listTable = loadcomponents => require.ensure([], () => loadcomponents(requ
 const labinfo = loadcomponents => require.ensure([], () => loadcomponents(require('@/components/experiment/labinfo.vue')), 'experiment');
 */
 
-import notFound from "./views/NotFound/NotFound";
+import notFound from "./views/notFound/notFound";
 import Course from "./views/course/course";
 import Assignment from "./views/assignment/assignment";
 import PPT from "./views/PPT/PPT";

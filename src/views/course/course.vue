@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
       <el-row :gutter="75">
-        <!-- 相关课程，课程卡片我提取成了独立的组件，在Course-cell.vue中，使用的时候传入标题，介绍，id即可。现在可以给它们随意传入一些信息，真实的标题介绍等内容以后加上 -->
+        <!-- 相关课程，课程卡片我提取成了独立的组件，在course-cell.vue中，使用的时候传入标题，介绍，id即可。现在可以给它们随意传入一些信息，真实的标题介绍等内容以后加上 -->
         <el-col :span="16">
           <Related :related-list="relatedList"></Related>
         </el-col>
@@ -145,6 +145,13 @@
                     userName: store.state.userName,
                     courseId: this.courseId,
                 }).then(() => that.inList = !that.inList);
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            if(!to.params.courseId) {
+                next(false)
+            } else {
+                next()
             }
         }
     }
