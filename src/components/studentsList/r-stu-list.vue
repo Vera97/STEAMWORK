@@ -1,12 +1,6 @@
 <template>
     <div class="content">
     <div class="top">
-        <el-button
-                class="title"
-                plain
-                @click="open2">
-            <h4>学生列表</h4>
-        </el-button>
         <a href="#"><h5 class="export">导出成绩</h5></a>
     </div>
     <div class="center">
@@ -104,7 +98,7 @@
     </div>
     <div class="bottom">
         <h4 class="relative">关联课程：</h4>
-        <el-select  class="select" v-model="value8" filterable placeholder="请选择">
+        <el-select  class="select" multiple v-model="value8" filterable placeholder="请选择">
             <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -112,13 +106,7 @@
                     :value="item.value">
             </el-option>
         </el-select>
-        <el-input
-                class="search"
-                placeholder="搜索"
-                v-model="input10"
-                clearable>
-            <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+        <el-button type="primary" class="save">保存</el-button>
       </div>
     </div>
 </template>
@@ -129,13 +117,6 @@
         methods: {
             deleteRow(index, rows) {
                 rows.splice(index, 1);
-            },
-            open2() {
-                this.$notify({
-                    title: '说明',
-                    message: '说明：“第1课”至“第n课”等列由教师“关联课程”后，按照课程学时自动生成，其“作业/报告”为学生每次课堂活动生成的报告，教师可点击查看并评分。',
-                    duration: 0
-                });
             }
         },
         data() {
@@ -268,10 +249,6 @@
     .bottom{
         margin-top:10px;
     }
-    .title{
-        padding-top:0;
-        padding-bottom:0;
-    }
     .export{
         float:right;
     }
@@ -280,11 +257,11 @@
         float:left;
     }
     .select{
-        width:60%;
+        width:70%;
     }
-    .search{
+    .save{
         float:right;
-        width:20%;
+        width:10%;
     }
     .input{
         float:right;
