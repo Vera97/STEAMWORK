@@ -2,7 +2,20 @@ import axios from 'axios';
 
 let base = '';
 
-export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
+/**
+ * request to login
+ * @param params {Object} fields: username, password
+ * @returns {Promise<AxiosResponse<T> | never>} data fields: code, userdata{head_icon, introduce}
+ */
+export const requestLogin = params => {
+    return axios.post(`${base}/login`, params);
+};
 
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
-
+/**
+ * get courses liked by the teacher
+ * @param params {object} fields: code ...
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export const getCourses = params => {
+    return axios.post(`${base}/courses`, params);
+};
