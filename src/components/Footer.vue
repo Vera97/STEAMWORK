@@ -1,9 +1,8 @@
 <template>
-    <section class="copyright">
-      <div class="container-fluid"> &copy; Copyright 2019 <b>hedouclass.com</b> &nbsp; | &nbsp; All rights reserved.
+    <div class="copyright">
+       &copy; Copyright 2019 <b>hedouclass.com</b> &nbsp; | &nbsp; All rights reserved.
         <a href="#" target="_blank" title="禾斗创课" style="color: #ffffff;">禾斗创课</a>
-      </div>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -19,9 +18,8 @@
       background-color:#409EFF;
       padding:20px;
       bottom: 0px;
-      position: fixed;
       width: 100%;
-      z-index: 99;
+      font-size:14px;
       margin-left: 0px;
   }
 </style>
