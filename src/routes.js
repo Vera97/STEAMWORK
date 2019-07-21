@@ -13,6 +13,8 @@ import Course from "./views/course/Course";
 import Assignment from "./views/Assignment/Assignment";
 import PPT from "./views/PPT/PPT";
 import Design from "./views/Design/Design";
+import studentsList from "./views/studentsList/studentsList";
+import startClass from "./views/startClass/startClass";
 
 const Home = () => import('./views/Home/Home.vue');
 
@@ -44,6 +46,17 @@ let routes = [
         component: Design,
         props: true
     },
+    {
+        path: '/studentsList',
+        component: studentsList,
+        props: true
+    },
+    {
+        path: '/startClass',
+        component: startClass,
+        props: true
+    },
+
     {
         path: '*',
         component: notFound
