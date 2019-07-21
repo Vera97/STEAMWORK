@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header><Nav></Nav></el-header>
-    <el-main>
+    <el-main class="main-box">
       <h3 style="margin-top:5px;">3D打印&nbsp;课时1：&nbsp;#课时1的标题#</h3>
       <el-row :gutter="0">
         <!-- 这里是教学步骤栏，放置一列按钮组展示相应课程的教学步骤 -->
@@ -15,29 +15,35 @@
 </template>
 
 <script>
-  import Nav from "../../components/Nav";
-  import Footer from "../../components/Footer";
-  import Steps from "../../components/Assignment/Steps";
-  import Videoshow from "../../components/Assignment/Videoshow";
+    import Nav from "../../components/Nav";
+    import Footer from "../../components/Footer";
+    import Steps from "../../components/Assignment/Steps";
+    import Videoshow from "../../components/Assignment/Videoshow";
 
-  export default {
-    name: "Assignment",
-    components: {Videoshow ,Steps, Footer, Nav},
-    props: [
-      'id'
-    ],
-    data () {
-      return {
-        name: '3d打印'
-      }
+    export default {
+        name: "Assignment",
+        components: {Videoshow ,Steps, Footer, Nav},
+        props: [
+            'id'
+        ],
+        data () {
+            return {
+                name: '3d打印'
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>
-
+  *{
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+  .main-box{
+    margin-left: 10px;
+  }
   .template{
-    overflow: hidden;
+    overflow-x: hidden;
   }
   .vshow{
     float: right;

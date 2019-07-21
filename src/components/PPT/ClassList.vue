@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import CourseCell from "../course-cell";
+    import CourseCell from "../Course-cell";
     export default {
         name: "ClassList",
         components: {CourseCell},
