@@ -17,10 +17,10 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Footer from "../../components/Footer";
-    import classList  from "../../components/classList";
-    import rStuList from  "../../components/studentsList/rStuList";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import classList  from "../../components/class-list";
+    import rStuList from "../../components/studentsList/r-stu-list";
     export default {
         name: "studentsList",
         components: {Footer, Nav,classList,rStuList},

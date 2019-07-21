@@ -12,10 +12,10 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Footer from "../../components/Footer";
-    import Content from "../../components/Design/Content";
-    import Coursedirectory from "../../components/Coursedirectory";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import Content from "../../components/design/content";
+    import Coursedirectory from "../../components/course-directory";
     export default {
         name: "Design",
         components: {Footer, Content, Coursedirectory, Nav}

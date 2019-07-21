@@ -9,10 +9,10 @@ const labinfo = loadcomponents => require.ensure([], () => loadcomponents(requir
 */
 
 import notFound from "./views/NotFound/NotFound";
-import Course from "./views/course/Course";
-import Assignment from "./views/assignment/Assignment";
+import Course from "./views/course/course";
+import Assignment from "./views/assignment/assignment";
 import PPT from "./views/PPT/PPT";
-import Design from "./views/Design/Design";
+import Design from "./views/design/design";
 import studentsList from "./views/studentsList/studentsList";
 import startClass from "./views/startClass/startClass";
 

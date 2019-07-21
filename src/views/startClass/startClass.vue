@@ -14,13 +14,13 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Footer from "../../components/Footer";
-    import classList from "../../components/classList"
-    import askList from "../../components/startClass/askList";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import classList from "../../components/class-list"
+    import askList from "../../components/startClass/ask-list";
     import monitor from "../../components/startClass/monitor";
     import show from "../../components/startClass/show";
-    import startActivities from "../../components/startClass/startActivities";
+    import startActivities from "../../components/startClass/start-activities";
 
     export default {
         name: "startClass",

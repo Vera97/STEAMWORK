@@ -34,11 +34,11 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Footer from "../../components/Footer";
-    import Periods from "../../components/course/Periods";
-    import Introduction from "../../components/course/Introduction";
-    import Related from "../../components/course/Related";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import Periods from "../../components/course/periods";
+    import Introduction from "../../components/course/introduction";
+    import Related from "../../components/course/related";
     import api from '@/api';
     import store from '@/store';
 

@@ -11,12 +11,11 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
+    import Nav from "../../components/hd-nav";
     import Search from "../../components/home/search";
     import Carousel from "../../components/home/carousel";
-    import ClassList from "../../components/home/classList";
-    import Footer from "../../components/Footer";
-    import api from '@/api';
+    import ClassList from "../../components/home/class-list";
+    import Footer from "../../components/hd-footer";
     import store from '@/views/home/store';
 
     export default {
