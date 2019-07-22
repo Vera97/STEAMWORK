@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-header><Nav></Nav></el-header>
+        <el-header><NavStu></NavStu></el-header>
         <el-main class="main-box">
             <el-row :gutter="24">
                 <el-col :span="5"><classList></classList></el-col>
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
+    import NavStu from "../../components/Nav-stu";
     import Footer from "../../components/Footer";
     import classList from "../../components/classList"
     import diary from "../../components/mySuccess/diary";
 
     export default {
         name: "mySuccess",
-        components: {diary, classList, Footer, Nav}
+        components: {diary, classList, Footer, NavStu}
 
     }
 </script>

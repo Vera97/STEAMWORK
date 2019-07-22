@@ -1,28 +1,27 @@
 <template>
     <el-container>
-        <el-header><Nav></Nav></el-header>
+        <el-header><NavStu></NavStu></el-header>
         <el-main class="main-box">
             <el-row :gutter="24">
                 <el-col :span="5"><growUp></growUp></el-col>
-                <el-col :span="14"><show></show></el-col>
+                <el-col :span="14"><pptCenter></pptCenter></el-col>
                 <el-col :span="5"><task></task></el-col>
             </el-row>
-
         </el-main>
         <el-footer><Footer></Footer></el-footer>
     </el-container>
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
+    import NavStu from "../../components/Nav-stu";
     import Footer from "../../components/Footer";
     import growUp from "../../components/resource/growUp";
     import task from "../../components/resource/task";
-    import show from "../../components/startClass/show";
+    import pptCenter from "../../components/resource/ppt-center";
 
     export default {
         name: "resource",
-        components: {show, task, growUp, Footer, Nav},
+        components: {pptCenter, task, growUp, Footer, NavStu},
 
     }
 </script>
