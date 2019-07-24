@@ -39,118 +39,113 @@
     import Periods from "../../components/course/periods";
     import Introduction from "../../components/course/introduction";
     import Related from "../../components/course/related";
-    import api from '@/api';
+    import {api, fakeData} from '@/api';
     import store from '@/store';
+    import utils from '../../utils';
 
     export default {
         name: "Course",
         components: {Related, Introduction, Periods, Footer, Nav},
-        props: [
-            'courseId'
-        ],
+        props: {
+            courseId: String
+        },
         data () {
             return {
-                title: '3d打印',
-                introduction: '我是一门好课',
-                src: '#',
+                title: '',
+                introduction: '',
+                src: '',
                 relatedId: [],
                 inFav: false,
                 inList: false,
-                periodList: [
-                    {
-                        title: '课时1'
-                    },{
-                        title: '课时2'
-                    },{
-                        title: '课时3'
-                    },{
-                        title: '课时4'
-                    },{
-                        title: '课时5'
-                    },
-                ],
-                relatedList: [
-                    {
-                        title: '课程1',
-                        introduction: '我是一门好课',
-                        courseId: '1',
-                        cover: ''
-                    },
-                    {
-                        title: '课程2',
-                        introduction: '我是一门好课',
-                        courseId: '2',
-                        cover: ''
-                    },
-                    {
-                        title: '课程3',
-                        introduction: '我是一门好课',
-                        courseId: '3',
-                        cover: ''
-                    },
-                    {
-                        title: '课程4',
-                        introduction: '我是一门好课',
-                        courseId: '4',
-                        cover: ''
-                    }
-                ]
+                periodList: [],
+                relatedList: []
             }
         },
         created () {
-            alert(this.courseId);
+            let that = this;
+            alert(store.state.cached_courseId);
 
-            api.courseDetail({
-                code: 'course_detail',
-                courseId: this.courseId.toString()
-            }).then(res => {
-                this.name = res.data.name;
-                this.introduction = res.data.courseIntro;
-                this.src = res.data.courseImgVideo;
-                this.periodList.push(...res.data.courseList);
-                this.relatedId.push(...res.data.relatedCourse)
-            });
-
-            for(let i of this.relatedId) {
-                api.getCourses({
-                    code: 'course_detail',
-                    courseId: i.toString()
-                }).then(res => {
-                    this.relatedList.push({
-                        title: res.data.title,
-                        introduction: res.data.courseIntro,
-                        courseId: i.toString(),
-                        cover: ''                               /* maybe this field will matter in the future. */
-                    })
+            if(store.getters['home/get_fav'] !== null) {
+                this.inFav = store.getters['home/get_fav']
+            } else {
+                store.dispatch('home/get_fav_courses').then(() => {
+                    that.inFav = store.getters['home/get_fav']
                 })
             }
+
+            utils.request({
+                invoke: api.courseDetail,
+                params: {
+                    code: 'course_detail',
+                    courseId: store.state.cached_courseId.toString()
+                },
+                result: fakeData.COURSE_DETAIL
+            })
+                .then(res => {
+                    this.name = res.data.name;
+                    this.introduction = res.data.courseIntro;
+                    this.src = res.data.courseImgVideo;
+                    this.periodList.push(...res.data.courseList);
+                    this.relatedId.push(...res.data.relatedCourse);
+
+                    for(let i of this.relatedId) {
+                        utils.request({
+                            invoke: api.getCourses,
+                            params: {
+                                code: 'course_detail',
+                                courseId: i.toString()
+                            },
+                            result: fakeData.COURSE_DETAIL
+                        })
+                            .then(res => {
+                                this.relatedList.push({
+                                    title: res.data.title,
+                                    introduction: res.data.courseIntro,
+                                    courseId: i.toString(),
+                                    cover: ''                               /* maybe this field will matter in the future. */
+                                })
+                            })
+                    }
+                });
         },
         methods: {
             toggleFav() {
                 let that = this;
                 let code = this.inFav ? 'remove_favorite' : 'add_favorite';
 
-                api.courseDetail({
-                    code: code,
-                    userName: store.state.userName,
-                    courseId: this.courseId,
-                }).then(() => that.inFav = !that.inFav);
+                utils.request({
+                    invoke: api.courseDetail,
+                    params: {
+                        code: code,
+                        userName: store.state.userName,
+                        courseId: store.state.cached_courseId,
+                    },
+                    result: fakeData.SINGLE_CODE
+                })
+                    .then(() => that.inFav = !that.inFav)
             },
             toggleList() {
                 let that = this;
                 let code = this.inList ? 'remove_course_self' : 'add_course_self';
 
-                api.courseDetail({
-                    code: code,
-                    userName: store.state.userName,
-                    courseId: this.courseId,
-                }).then(() => that.inList = !that.inList);
+                utils.request({
+                    invoke: api.courseDetail,
+                    params: {
+                        code: code,
+                        userName: store.state.userName,
+                        courseId: store.state.cached_courseId,
+                    },
+                    result: fakeData.SINGLE_CODE
+                })
+                    .then(() => that.inList = !that.inList)
             }
         },
         beforeRouteEnter(to, from, next) {
-            if(!to.params.courseId) {
+            if(!to.params.courseId && store.state.cached_courseId === '') {
                 next(false)
             } else {
+                if(to.params.courseId)
+                  store.commit('CACHE_ID', to.params.courseId.toString());
                 next()
             }
         }

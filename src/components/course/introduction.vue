@@ -14,10 +14,10 @@
 <script>
     export default {
         name: "Introduction",
-        props: [
-            'introduction',
-            'src'
-        ]
+        props: {
+            introduction: String,
+            src: String
+        }
     }
 </script>
 

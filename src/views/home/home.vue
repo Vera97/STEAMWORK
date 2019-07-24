@@ -16,25 +16,16 @@
     import Carousel from "../../components/home/carousel";
     import ClassList from "../../components/home/class-list";
     import Footer from "../../components/hd-footer";
-    import store from '@/views/home/store';
+
+    import store from '../../store';
 
     export default {
         name: "home",
         components: {Footer, ClassList, Carousel, Search, Nav},
-        created() {
-            // api.getCourses({
-            //     "code": "course_chunk",
-            //     "start": "0",
-            //     "length": "5"
-            // }).then(res => {
-            //     let len = res.data[0].totalCount;
-            //     store.commit('PUSH_COUNT', len);
-            //     store.commit('ADD_ALL', res.data.splice(1))
-            // })
-        },
+        created() {},
         beforeRouteLeave(to, from, next) {
-            store.commit('PUSH_COUNT', 0);
-            store.commit('CLEAR_ALL');
+            store.commit('home/PUSH_COUNT', 0);
+            store.commit('home/CLEAR_ALL');
             next()
         }
     }

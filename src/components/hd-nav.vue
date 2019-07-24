@@ -2,13 +2,13 @@
   <div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" >
       <div class="nav-type">教师端</div>
-      <el-menu-item index="1">教学资源</el-menu-item>
+      <el-menu-item index="1"><router-link class="router" :to="{path: '/home'}">教学资源</router-link></el-menu-item>
       <el-menu-item index="2">在线备课</el-menu-item>
       <el-submenu index="3">
         <template slot="title">我的班级</template>
-        <el-menu-item index="3-1">班级一</el-menu-item>
-        <el-menu-item index="3-2">班级二</el-menu-item>
-        <el-menu-item index="3-3">班级三</el-menu-item>
+        <el-menu-item index="3-1"><router-link class="router" :to="{path: '/studentslist'}">班级一</router-link></el-menu-item>
+        <el-menu-item index="3-2"><router-link class="router" :to="{path: '/studentslist'}">班级二</router-link></el-menu-item>
+        <el-menu-item index="3-3"><router-link class="router" :to="{path: '/studentslist'}">班级三</router-link></el-menu-item>
       </el-submenu>
       <el-menu-item index="4">开始上课</el-menu-item>
       <div class="login">
@@ -16,9 +16,9 @@
         <el-button round size="mini" @click="login" v-else>注册</el-button>
       </div>
       <div class="login">
-        <el-avatar :src="avatar" v-if="login_state"></el-avatar>
+        <el-avatar :src="require('../assets/avatar.png')" v-if="login_state"></el-avatar>
         <el-popover placement="left" trigger="click" v-else>
-          <el-button slot="reference" type="primary" round size="mini" @click="login">登陆</el-button>
+          <el-button slot="reference" type="primary" round size="mini">登陆</el-button>
           <el-form class="login-form-wrapper">
             <el-form-item label="用户名：">
               <el-input placeholder="请输入用户名" v-model="form_username"></el-input>
@@ -40,8 +40,8 @@
 <script>
     import store from '@/store'
     import md5 from 'md5'
-    import api from '@/api'
-    import home_store from '@/views/home/store'
+    import {api, fakeData} from '@/api'
+    import utils from '../utils'
 
     export default {
         name: "Nav",
@@ -64,23 +64,37 @@
             };
         },
         methods: {
-            // eslint-disable-next-line no-unused-vars
-            handleSelect(key, keyPath) {
-                // console.log(key, keyPath);
-            },
+            handleSelect() {},
             login() {
-                let userName = this.username;
-                let password = md5(this.password);
-                api.requestLogin({userName: username, password: password}).then(res => {
-                    if(res.data.code === 1) {
-                        store.commit('LOG_IN', res.data.userdata);
-                        api.getCourses({code: 'like', userName: this.username}).then(res => {
-                            home_store.commit('ADD_COURSES', res.data)
-                        })
-                    } else {
-                        alert('用户名或密码错误')
-                    }
-                });
+                let userName = this.form_username;
+                let password = this.form_password;
+                utils.request({
+                    invoke: api.requestLogin,
+                    params: {
+                        userName: userName,
+                        password: password
+                    },
+                    result: fakeData.LOGIN_RESPONSE
+                })
+                    .then(res => {
+                        if(res.data.code === 1) {
+                            store.commit('LOG_IN', res.data.userdata);
+                            utils.request({
+                                invoke: api.getCourses,
+                                params: {
+                                    code: 'like',
+                                    userName: this.userName
+                                },
+                                result: fakeData.COURSE_LIST
+                            })
+                                .then(res => {
+                                    store.commit('home/ADD_COURSES', res.data);
+                                    store.commit('home/TOGGLE_FAV', true)
+                                });
+                        } else {
+                            alert('用户名或密码错误')
+                        }
+                    });
             },
             logout() {
                 store.commit('LOG_OUT')
@@ -90,6 +104,10 @@
 </script>
 
 <style scoped lang="scss">
+  .router {
+    text-decoration: none;
+  }
+
   .el-menu {
     height: 4em;
 

@@ -1,4 +1,4 @@
-//
-export const push_course_async = (commit, course) => {
-    commit('PUSH_COURSE', course)
-};
+
+const actions = {};
+
+export default actions;

@@ -3,19 +3,19 @@
     <el-carousel-item v-for="item in courses" :key="item.courseId">
       <h3>{{item.title}}</h3>
       <p>{{item.introduction}}</p>
-      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId}}">查看详情</router-link></div>
+      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId.toString()}}">查看详情</router-link></div>
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script>
-    import store from '@/views/home/store'
+    import store from '../../store'
 
     export default {
-        name: "Carousel",
+        name: "carousel",
         computed: {
             courses () {
-                return store.state.courses
+                return store.state.home.courses
             }
         },
         data () {

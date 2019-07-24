@@ -19,8 +19,9 @@
 
 <script>
     import CourseCell from "../course-cell";
-    import store from '@/views/home/store';
-    import api from '@/api';
+    import store from '../../store';
+    import {api, fakeData} from '@/api';
+    import utils from '../../utils';
 
     const PAGE_COUNT = 5;
     const MAX_FOOTER = 5;
@@ -31,14 +32,14 @@
         computed: {
             /* the total number of the pages. */
             length() {
-                return Math.ceil(store.state.totalCount / PAGE_COUNT)
+                return Math.ceil(store.state.home.totalCount / PAGE_COUNT)
             },
             /* the number of pages to display in the footer. */
             display() {
                 return this.length >= MAX_FOOTER ? MAX_FOOTER : this.length
             },
             coursesInDisplay() {
-                return store.state.all.slice((this.base + this.current) * PAGE_COUNT, (this.base + this.current + 1) * PAGE_COUNT)
+                return store.state.home.all.slice((this.base + this.current) * PAGE_COUNT, (this.base + this.current + 1) * PAGE_COUNT)
             },
         },
         data() {
@@ -58,7 +59,7 @@
                 }
             },
             async nextPage() {
-                if (this.current === Math.floor(MAX_FOOTER / 2) && (this.current + this.base + Math.ceil(MAX_FOOTER / 2) + 1) * PAGE_COUNT < store.state.totalCount) {
+                if (this.current === Math.floor(MAX_FOOTER / 2) && (this.current + this.base + Math.ceil(MAX_FOOTER / 2) + 1) * PAGE_COUNT < store.state.home.totalCount) {
                     this.getMore();
                     this.base++
                 } else if (this.current !== this.display - 1) {
@@ -68,16 +69,24 @@
 
             },
             getMore() {
-                api.getCourses({
-                    "code": "course_chunk",
-                    "start": ((this.base + this.current + 1) * PAGE_COUNT).toString(),
-                    "length": PAGE_COUNT.toString()
-                }).then(res => {
-                    let len = res.data[0].totalCount;
-                    store.commit('PUSH_COUNT', len);
-                    store.commit('ADD_ALL', res.data.splice(1))
+                utils.request({
+                    invoke: api.getCourses,
+                    params: {
+                        "code": "course_chunk",
+                        "start": ((this.base + this.current + 1) * PAGE_COUNT).toString(),
+                        "length": PAGE_COUNT.toString()
+                    },
+                    result: fakeData.COURSE_CHUNK
                 })
+                    .then(res => {
+                        let len = res.data[0].totalCount;
+                        store.commit('home/PUSH_COUNT', len);
+                        store.commit('home/ADD_ALL', res.data.slice(1))
+                    })
             }
+        },
+        created() {
+            this.getMore()
         }
     }
 </script>
