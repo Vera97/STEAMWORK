@@ -5,14 +5,14 @@ let base = 'api';
 export const DEVELOPMENT = true;
 
 //csrf验证
-function setCookie(cname, cvalue, exdays) {
+export function setCookie(cname, cvalue, exdays) {
     let d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toGMTString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
-function getCookie(cname) {
+export function getCookie(cname) {
     let name = cname + "=";
     let ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
@@ -75,4 +75,14 @@ export const courseDetail = params => {
 export const requestClasses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classes`, params, {headers:headers});
+};
+
+/**
+ * url: /teacher/sources
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requstCourseSteps = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/sources`, params, {headers:headers});
 };

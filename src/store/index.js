@@ -6,14 +6,14 @@ import actions from './actions'
 
 import home from './modules/home'
 import studentsList from './modules/studentsList'
+import assignment from './modules/assignment'
 
 Vue.use(Vuex);
 
 // 应用初始状态
 const state = {
-    login_state: false,
     userName: '',
-    avatar: '../assets/avatar.png',
+    avatar: '',
     introduce: '',
     cached_courseId: ''             /* cache a courseId for the course page. */
 };
@@ -22,7 +22,8 @@ const state = {
 export default new Vuex.Store({
     modules: {
         home: home,
-        studentsList: studentsList
+        studentsList: studentsList,
+        assignment: assignment
     },
     actions,
     getters,

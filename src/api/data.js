@@ -213,3 +213,29 @@ export const STUDENT_SCORE = {
     five: '0',
     six: '2',
 };
+
+export const PERIOD_STEPS = [
+    {
+        title: '~步骤1',
+        stepId: '1'
+    },{
+        title: '步骤2',
+        stepId: '2'
+    },{
+        title: '步骤3',
+        stepId: '3'
+    },{
+        title: '步骤4',
+        stepId: '4'
+    },{
+        title: '步骤5',
+        stepId: '5'
+    },{
+        title: '步骤6',
+        stepId: '6'
+    },
+];
+
+export const STEP_CONTENT = {
+    html: '<p>i am <i>the</i> <span style="color: red">content</span></p>'
+};

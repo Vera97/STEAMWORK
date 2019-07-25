@@ -14,11 +14,15 @@ const state = {
 
 const mutations = {
     ADD_COURSES(state, course) {
-        state.courses.length = 0;
+        state.courses = [];
         state.courses.push(...course)
     },
+    // do not directly set the length to 0, which cannot be tracked.
+    CLEAR_COURSES(state) {
+        state.courses = []
+    },
     CLEAR_ALL(state) {
-        state.all.length = 0
+        state.all = []
     },
     ADD_ALL(state, course) {
         state.all.push(...course)
