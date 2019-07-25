@@ -12,11 +12,11 @@
       </el-submenu>
       <el-menu-item index="4">开始上课</el-menu-item>
       <div class="login">
-        <el-button type="primary" round size="mini" @click="logout" v-if="login_state">注销</el-button>
+        <el-button type="primary" round size="mini" @click="logout" v-if="userName !== ''">注销</el-button>
         <el-button round size="mini" @click="login" v-else>注册</el-button>
       </div>
       <div class="login">
-        <el-avatar :src="require('../assets/avatar.png')" v-if="login_state"></el-avatar>
+        <el-avatar :src="require('../assets/avatar.png')" v-if="userName !== ''"></el-avatar>
         <el-popover placement="left" trigger="click" v-else>
           <el-button slot="reference" type="primary" round size="mini">登陆</el-button>
           <el-form class="login-form-wrapper">
@@ -42,14 +42,10 @@
     import md5 from 'md5'
     import {api, fakeData} from '../api'
     import utils from '../utils'
-    import axios from 'axios'
 
     export default {
         name: "Nav",
         computed: {
-            login_state () {
-                return store.getters.get_login_state
-            },
             userName () {
                 return store.getters.get_username
             },
@@ -80,19 +76,8 @@
                     .then(res => {
                         if(res.data.code === 1) {
                             alert('服务端返回登录用户数据（头像）：' + res.data.userdata);
-                            store.commit('LOG_IN', res.data.userdata);
-                            utils.request({
-                                invoke: api.getCourses,
-                                params: {
-                                    code: 'like',
-                                    userName: userName
-                                },
-                                result: fakeData.COURSE_LIST
-                            })
-                                .then(res => {
-                                    store.commit('home/ADD_COURSES', res.data);
-                                    store.commit('home/TOGGLE_FAV', true)
-                                });
+                            store.commit('LOG_IN', {...res.data.userdata, userName: userName});
+                            store.dispatch('home/get_fav_courses').then();
                         } else {
                             alert('用户名或密码错误')
                         }
@@ -103,7 +88,8 @@
             }
         },
         created() {
-            axios.get('http://www.baidu.com/html').then();
+            store.commit('PROBE');
+            if(this.userName !== '') store.dispatch('home/get_fav_courses').then()
         }
     }
 </script>

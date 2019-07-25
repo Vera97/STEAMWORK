@@ -39,6 +39,7 @@
     import Periods from "../../components/course/periods";
     import Introduction from "../../components/course/introduction";
     import Related from "../../components/course/related";
+
     import {api, fakeData} from '../../api';
     import store from '../../store';
     import utils from '../../utils';
@@ -141,6 +142,7 @@
             }
         },
         beforeRouteEnter(to, from, next) {
+            store.commit('PROBE_COURSE');
             if(!to.params.courseId && store.state.cached_courseId === '') {
                 next(false)
             } else {

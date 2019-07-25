@@ -35,8 +35,8 @@ const actions = {
     async render_course (context, courseId) {
         context.commit('SUBMIT_ID', courseId);
 
-        context.state.stuList.length = 0;
-        context.state.periodsList.length = 0;
+        context.state.stuList = [];
+        context.state.periodsList = [];
 
         let tmp;
 
