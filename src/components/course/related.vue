@@ -11,9 +11,9 @@
     import CourseCell from "../course-cell";
     export default {
         name: "Related",
-        props: [
-                'relatedList'
-        ],
+        props: {
+            relatedList: String
+        },
         components: {CourseCell},
         data(){
             return {}

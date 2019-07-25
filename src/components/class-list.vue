@@ -1,42 +1,39 @@
 <template>
     <el-card class="box-card">
         <h3>班级列表</h3>
-        <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+        <el-tree :data="listData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
     </el-card>
 </template>
 
 <script>
+    import store from '../store'
+
     export default {
-        name: "lList",
+        name: "class-list",
+        props: {
+            ['list-data']: Array
+        },
         data() {
             return {
-                data: [{
-                    label: 'XX学校XX班（1)',
-                    children: [{
-                        label: '3D打印',
-                    }]
-                }, {
-                    label: 'XX学校XX班（1)',
-                    children: [{
-                        label: '3D打印',
-                    }]
-                },{
-                    label: 'XX学校XX班（2)',
-                    children: [{
-                        label: '航模',
-                    },{
-                        label: '无人机',
-                    }]
-                }],
                 defaultProps: {
-                    children: 'children',
-                    label: 'label'
+                    children: 'courseDetail',
+                    label(data) {
+                        if(data.className) {
+                            return data.className
+                        } else if(data.name) {
+                            return data.name
+                        } else {
+                            throw new DOMException()
+                        }
+                    }
                 }
             };
         },
         methods: {
-            handleNodeClick(data) {
-                console.log(data);
+            handleNodeClick(data, node) {
+                if(node.isLeaf) {
+                    store.dispatch('studentsList/render_course').then()
+                }
             }
         }
     }

@@ -1,3 +1,7 @@
 import * as api from './api'
+import * as fakeData from './data'
 
-export default api
+export {
+    api,
+    fakeData
+}
