@@ -38,10 +38,11 @@
 </template>
 
 <script>
-    import store from '@/store'
+    import store from '../store'
     import md5 from 'md5'
-    import {api, fakeData} from '@/api'
+    import {api, fakeData} from '../api'
     import utils from '../utils'
+    import axios from 'axios'
 
     export default {
         name: "Nav",
@@ -78,12 +79,13 @@
                 })
                     .then(res => {
                         if(res.data.code === 1) {
+                            alert('服务端返回登录用户数据（头像）：' + res.data.userdata);
                             store.commit('LOG_IN', res.data.userdata);
                             utils.request({
                                 invoke: api.getCourses,
                                 params: {
                                     code: 'like',
-                                    userName: this.userName
+                                    userName: userName
                                 },
                                 result: fakeData.COURSE_LIST
                             })
@@ -99,6 +101,9 @@
             logout() {
                 store.commit('LOG_OUT')
             }
+        },
+        created() {
+            axios.get('http://www.baidu.com/html').then();
         }
     }
 </script>

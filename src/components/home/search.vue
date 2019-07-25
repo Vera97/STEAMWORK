@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import {api, fakeData} from '@/api'
+    import {api, fakeData} from '../../api'
     import store from '../../store'
     import utils from '../../utils'
 

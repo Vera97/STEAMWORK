@@ -20,7 +20,7 @@
 <script>
     import CourseCell from "../course-cell";
     import store from '../../store';
-    import {api, fakeData} from '@/api';
+    import {api, fakeData} from '../../api';
     import utils from '../../utils';
 
     const PAGE_COUNT = 5;
