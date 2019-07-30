@@ -25,9 +25,9 @@
     export default {
         name: "startClass",
         components: {askList, monitor, show, startActivities, classList, Footer, Nav},
-        props: [
-            'id'
-        ],
+        props: {
+            id: String
+        },
         data () {
             return {
                 name: 'startClass'
@@ -38,8 +38,8 @@
 
 <style scoped>
     *{
-        margin-left: 0px;
-        padding-left: 0px;
+        margin-left: 0;
+        padding-left: 0;
     }
     .main-box{
         margin-left: 10px;

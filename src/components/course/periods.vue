@@ -9,9 +9,9 @@
     export default {
         name: 'periods',
         props: {
-                    title: String,
-                    periodList: Array
-                }
+            title: String,
+            periodList: Array
+        }
     }
 </script>
 

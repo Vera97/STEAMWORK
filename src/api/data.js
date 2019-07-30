@@ -8,125 +8,132 @@ export const LOGIN_RESPONSE = {
     }
 };
 
+// NOTE: missing title in the newest response
 export const COURSE_LIST = [
     {
         title: '课程1',
         introduction: '我是一门好课',
-        courseId: '1',
+        courseId: 1,
         cover: ''
     },
     {
         title: '课程2',
         introduction: '我是一门好课',
-        courseId: '2',
+        courseId: 2,
         cover: ''
     },
     {
         title: '课程3',
         introduction: '我是一门好课',
-        courseId: '3',
+        courseId: 3,
         cover: ''
     },
     {
         title: '课程4',
         introduction: '我是一门好课',
-        courseId: '123',
+        courseId: 123,
         cover: ''
     }
 ];
 
-export const SEARCH_COURSE = [
-    {
-        title: '课程1',
-        introduction: '关键字！',
-        courseId: '1',
-        cover: ''
-    },
-    {
-        title: '课程2',
-        introduction: '关键字！',
-        courseId: '2',
-        cover: ''
-    },
-    {
-        title: '课程3',
-        introduction: '关键字！',
-        courseId: '3',
-        cover: ''
-    },
-    {
-        title: '课程4',
-        introduction: '关键字！',
-        courseId: '4',
-        cover: ''
-    }
-];
+// NOTE: missing title and incompatible field name in the newest api
+export const SEARCH_COURSE = {
+    chunks: [
+        {
+            title: '课程1',
+            introduction: '关键字！',
+            courseid: '1',
+            cover: ''
+        },
+        {
+            title: '课程2',
+            introduction: '关键字！',
+            courseid: '2',
+            cover: ''
+        },
+        {
+            title: '课程3',
+            introduction: '关键字！',
+            courseid: '3',
+            cover: ''
+        },
+        {
+            title: '课程4',
+            introduction: '关键字！',
+            courseid: '4',
+            cover: ''
+        }
+    ]
+};
 
 export const FILTER_COURSE = [
     {
         title: '课程1',
         introduction: '筛选！',
-        courseId: '1',
+        courseId: 1,
         cover: ''
     },
     {
         title: '课程2',
         introduction: '筛选！',
-        courseId: '2',
+        courseId: 2,
         cover: ''
     },
     {
         title: '课程3',
         introduction: '筛选！',
-        courseId: '3',
+        courseId: 3,
         cover: ''
     },
     {
         title: '课程4',
         introduction: '筛选！',
-        courseId: '4',
+        courseId: 4,
         cover: ''
     }
 ];
 
-export const COURSE_CHUNK = [
-    {
-        totalCount: 120,
-    },
-    {
-        title: '课程1',
-        introduction: '我是一门好课',
-        courseId: '1',
-        cover: ''
-    },
-    {
-        title: '课程2',
-        introduction: '我是一门好课',
-        courseId: '2',
-        cover: ''
-    },
-    {
-        title: '课程3',
-        introduction: '我是一门好课',
-        courseId: '3',
-        cover: ''
-    },
-    {
-        title: '课程4',
-        introduction: '我是一门好课',
-        courseId: '4',
-        cover: ''
-    },
-    {
-        title: '课程5',
-        introduction: '我是一门好课',
-        courseId: '5',
-        cover: ''
-    }
-];
+export const COURSE_COUNT = {
+    totalCount: 120
+};
+
+export const COURSE_CHUNK = {
+    chunks: [
+        {
+            title: '课程1',
+            introduce: '我是一门好课',
+            courseId: 1,
+            cover: ''
+        },
+        {
+            title: '课程2',
+            introduce: '我是一门好课',
+            courseId: 2,
+            cover: ''
+        },
+        {
+            title: '课程3',
+            introduce: '我是一门好课',
+            courseId: 3,
+            cover: ''
+        },
+        {
+            title: '课程4',
+            introduce: '我是一门好课',
+            courseId: 4,
+            cover: ''
+        },
+        {
+            title: '课程5',
+            introduce: '我是一门好课',
+            courseId: 5,
+            cover: ''
+        }
+    ]
+};
 
 export const COURSE_DETAIL = {
-    name: '3d打印',
+    title: '3d打印',
     courseIntro: '我是一门好课',
     courseImgVideo: '/',
     courseList: [
@@ -138,10 +145,10 @@ export const COURSE_DETAIL = {
         '课时6',
     ],
     relatedCourse: [
-        '123',
-        '234',
-        '456',
-        '777'
+        123,
+        234,
+        456,
+        777
     ]
 };
 
@@ -149,16 +156,24 @@ export const SINGLE_CODE = {
     code: '1'
 };
 
+export const SINGLE_NUMBER_CODE = {
+    code: 1
+};
+
+export const SINGLE_RESPONSE_WORD = {
+    code: 'ok'
+};
+
 export const CLASSES = {
     code: 'ok',
     classList: [
         {
-            id: '1234',
+            id: 1234,
             className: 'sdd',
             createDate: '2019-11-08'
         },
         {
-            id: '5678',
+            id: 5678,
             className: '小小班',
             createDate: '2020-01-22'
         }
@@ -169,23 +184,23 @@ export const STUDENT_LIST = {
     code: 'ok',
     stuList: [
         {
-            stuId: '123645',
+            stuId: 123645,
             stuName: '张全蛋'
         },
         {
-            stuId: '123345',
+            stuId: 123345,
             stuName: '李钢蛋'
         },
         {
-            stuId: '333333',
+            stuId: 333333,
             stuName: '赵铁柱'
         },
         {
-            stuId: '555555',
+            stuId: 555555,
             stuName: '王翠花'
         },
         {
-            stuId: '99999',
+            stuId: 99999,
             stuName: '王二狗'
         }
     ]
@@ -195,44 +210,40 @@ export const COURSES_IN_CLASS = {
     code: 'ok',
     courseList: [
         {
-            id: '9999',
+            id: 9999,
             name: '3d打印',
         },
         {
-            id: '0000',
+            id: 1111,
             name: '和稀泥',
         }
     ]
 };
 
 export const STUDENT_SCORE = {
-    one: '90',
-    two: '80',
-    three: '90',
-    four: '20',
-    five: '0',
-    six: '2',
+    code: 'ok',
+    score: 90
 };
 
 export const PERIOD_STEPS = [
     {
-        title: '~步骤1',
-        stepId: '1'
+        title: '步骤1',
+        stepId: 1
     },{
         title: '步骤2',
-        stepId: '2'
+        stepId: 2
     },{
         title: '步骤3',
-        stepId: '3'
+        stepId: 3
     },{
         title: '步骤4',
-        stepId: '4'
+        stepId: 4
     },{
         title: '步骤5',
-        stepId: '5'
+        stepId: 5
     },{
         title: '步骤6',
-        stepId: '6'
+        stepId: 6
     },
 ];
 

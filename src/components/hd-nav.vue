@@ -10,7 +10,7 @@
         <el-menu-item index="3-2"><router-link class="router" :to="{path: '/studentslist'}">班级二</router-link></el-menu-item>
         <el-menu-item index="3-3"><router-link class="router" :to="{path: '/studentslist'}">班级三</router-link></el-menu-item>
       </el-submenu>
-      <el-menu-item index="4">开始上课</el-menu-item>
+      <el-menu-item index="4"><router-link class="router" :to="{path: '/startClass'}">开始上课</router-link></el-menu-item>
       <div class="login">
         <el-button type="primary" round size="mini" @click="logout" v-if="userName !== ''">注销</el-button>
         <el-button round size="mini" @click="login" v-else>注册</el-button>
@@ -66,7 +66,7 @@
                 let userName = this.form_username;
                 let password = this.form_password;
                 utils.request({
-                    invoke: api.requestLogin,
+                    invoke: api.loginTeacher,
                     params: {
                         userName: userName,
                         password: password

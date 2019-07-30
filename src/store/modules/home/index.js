@@ -13,9 +13,23 @@ const state = {
 };
 
 const mutations = {
+    // NOTE: the response format is incompatible
+    // both courseid and courseId is possible.
+    // and courseid or courseId may be string or number
     ADD_COURSES(state, course) {
         state.courses = [];
-        state.courses.push(...course)
+        course.forEach(item => {
+            if(item.courseId) {
+                state.courses.push(item)
+            } else {
+                state.courses.push({
+                    title: item.title,
+                    introduction: item.introduction,
+                    courseId: item.courseid,
+                    cover: item.cover
+                })
+            }
+        })
     },
     // do not directly set the length to 0, which cannot be tracked.
     CLEAR_COURSES(state) {
@@ -37,10 +51,10 @@ const mutations = {
     },
     GET_FAV_COURSES(state) {
         utils.request({
-            invoke: api.getCourses,
+            invoke: api.requestTeacherFavoriteList,
             params: {
                 code: 'like',
-                userName: this.userName
+                userName: parseInt(this.userName)
             },
             result: fakeData.COURSE_LIST
         })
@@ -69,10 +83,10 @@ const getters = {
 const actions = {
     get_fav_courses (context) {
         return utils.request({
-            invoke: api.getCourses,
+            invoke: api.requestTeacherFavoriteList,
             params: {
                 code: 'like',
-                userName: context.rootState.userName
+                userName: parseInt(context.rootState.userName)
             },
             result: fakeData.COURSE_LIST
         })

@@ -75,15 +75,14 @@
             }
 
             utils.request({
-                invoke: api.courseDetail,
+                invoke: api.requestCourseDetail,
                 params: {
-                    code: 'course_detail',
-                    courseId: store.state.cached_courseId.toString()
+                    courseId: parseInt(store.state.cached_courseId)
                 },
                 result: fakeData.COURSE_DETAIL
             })
                 .then(res => {
-                    this.name = res.data.name;
+                    this.title = res.data.title;
                     this.introduction = res.data.courseIntro;
                     this.src = res.data.courseImgVideo;
                     this.periodList.push(...res.data.courseList);
@@ -91,10 +90,9 @@
 
                     for(let i of this.relatedId) {
                         utils.request({
-                            invoke: api.getCourses,
+                            invoke: api.requestCourseDetail,
                             params: {
-                                code: 'course_detail',
-                                courseId: i.toString()
+                                courseId: parseInt(i)
                             },
                             result: fakeData.COURSE_DETAIL
                         })
@@ -114,31 +112,38 @@
                 let that = this;
                 let code = this.inFav ? 'remove_favorite' : 'add_favorite';
 
+                // NOTE: missing the add favorite code in the newest api
                 utils.request({
-                    invoke: api.courseDetail,
+                    invoke: api.requestAlterFavoriteTeacher,
                     params: {
                         code: code,
                         userName: store.state.userName,
-                        courseId: store.state.cached_courseId,
+                        courseId: parseInt(store.state.cached_courseId),
                     },
-                    result: fakeData.SINGLE_CODE
+                    result: fakeData.SINGLE_NUMBER_CODE
                 })
-                    .then(() => that.inFav = !that.inFav)
+                    .then((res) => {
+                        if (res.data.code === 1)
+                            that.inFav = !that.inFav
+                    })
             },
             toggleList() {
                 let that = this;
                 let code = this.inList ? 'remove_course_self' : 'add_course_self';
 
                 utils.request({
-                    invoke: api.courseDetail,
+                    invoke: api.requestAlterFavoriteTeacher,
                     params: {
                         code: code,
                         userName: store.state.userName,
-                        courseId: store.state.cached_courseId,
+                        courseId: parseInt(store.state.cached_courseId),
                     },
-                    result: fakeData.SINGLE_CODE
+                    result: fakeData.SINGLE_NUMBER_CODE
                 })
-                    .then(() => that.inList = !that.inList)
+                    .then((res) => {
+                        if (res.data.code === 1)
+                            that.inList = !that.inList
+                    })
             }
         },
         beforeRouteEnter(to, from, next) {
