@@ -2,8 +2,8 @@
   <el-carousel :interval="4000" type="card">
     <el-carousel-item v-for="item in courses" :key="item.courseId">
       <h3>{{item.title}}</h3>
-      <p>{{item.introduction}}</p>
-      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId.toString()}}">查看详情</router-link></div>
+      <p>{{item.introduce}}</p>
+      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId}}">查看详情</router-link></div>
     </el-carousel-item>
   </el-carousel>
 </template>

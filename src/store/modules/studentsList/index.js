@@ -5,11 +5,13 @@ import utils from '../../../utils'
 const state = {
     stuList: [],
     courseId: '',        /* the id of the course being display. */
+    classId: '',
     periodsList: []
 };
 
 const mutations = {
-    SUBMIT_ID(state, courseId) {
+    SUBMIT_ID(state, {classId, courseId}) {
+        state.classId = classId;
         state.courseId = courseId
     },
     REMOVE_STUDENT(state, stuId) {
@@ -17,6 +19,9 @@ const mutations = {
         state.stuList = state.stuList.filter(item => {
             return item.stuId.toString() !== stuId.toString()
         })
+    },
+    ALTER_TABLE(state, stuList) {
+        state.stuList = stuList
     }
 };
 
@@ -29,62 +34,73 @@ const actions = {
      * further get the cores of each student.
      * note that the periods should be assigned into state at last.
      * @param context
-     * @param courseId the courseId of the course to be rendered
      * @returns {*}
      */
-    async render_course (context, courseId) {
-        context.commit('SUBMIT_ID', courseId);
+    async render_course (context) {
 
-        context.state.stuList = [];
         context.state.periodsList = [];
 
         let tmp;
 
         await utils.request({
-            invoke: api.courseDetail,
+            invoke: api.requestCourseDetail,
             params: {
-                code: 'course_detail',
-                courseId: courseId
+                courseId: parseInt(context.state.courseId)
             },
             result: fakeData.COURSE_DETAIL
         })
             .then(res => {
-                tmp = res.data.courseList;
+                tmp = res.data.courseSection;
             });
 
-        await utils.request({
-            invoke: api.courseDetail,
+        await context.dispatch('getStudentsList');
+
+        for(let k = 0; k < context.state.stuList.length; k++) {
+            let id = context.state.stuList[k].stuId;
+
+            // get the score of each student according to all of the period names
+            for(let i of tmp) {
+                await utils.request({
+                    invoke: api.requestClassStuScore,
+                    params: {
+                        code: 'stu_score',
+                        stuId: parseInt(id),
+                        courseId: parseInt(context.state.courseId),
+                        courseSectionId: i.courseSectionId
+                    },
+                    result: fakeData.STUDENT_SCORE
+                })
+                    .then(res => {
+                        context.state.stuList[k].scoreList[i.courseSectionName] = res.data.score
+                    })
+            }
+
+        }
+
+        context.state.periodsList.push(...tmp)
+    },
+
+    async getStudentsList(context) {
+        context.state.stuList = [];
+
+        return utils.request({
+            invoke: api.requestStudentList,
             params: {
-                code: 'stu_list',
-                classId: context.state.classId
+                classId: parseInt(context.state.classId)
             },
             result: fakeData.STUDENT_LIST
         })
             .then(res => {
                 for(let i of res.data.stuList) {
-                    context.state.stuList.push({...i, scoreList: []})
+                    context.state.stuList.push({...i, scoreList: {}})
                 }
             });
+    },
 
-        for(let k = 0; k < context.state.stuList.length; k++) {
-            let id = context.state.stuList[k].stuId.toString();
-
-            await utils.request({
-                invoke: api.requestClasses,
-                params: {
-                    code: 'stu_score',
-                    stuId: id
-                },
-                result: fakeData.STUDENT_SCORE
-            })
-                .then(res => {
-                    for(let i in res.data) {
-                        context.state.stuList[k].scoreList.push(res.data[i])
-                    }
-                })
-        }
-
-        context.state.periodsList.push(...tmp)
+    // used to render classes which have no related courses
+    async renderClass(context) {
+        context.state.periodsList = [];
+        return context.dispatch('getStudentsList')
     }
 };
 

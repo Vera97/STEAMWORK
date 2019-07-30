@@ -4,7 +4,7 @@
       <div class="caption">{{title}}</div>
       <div class="bottom">
         <div class="info">{{introduction}}</div>
-        <div class="link"><router-link :to="{name: 'course', params: {courseId: '123'}}">查看详情</router-link></div>
+        <div class="link"><router-link :to="{name: 'course', params: {courseId: courseId}}">查看详情</router-link></div>
       </div>
     </div>
   </el-card>
@@ -13,7 +13,7 @@
 <script>
     export default {
         name: "course-cell",
-        props: {title: String, introduction: String, id: String},
+        props: {title: String, introduction: String, courseId: Number},
         methods: {}
     }
 </script>

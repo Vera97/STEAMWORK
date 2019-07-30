@@ -3,7 +3,7 @@
         <el-header><Nav></Nav></el-header>
           <el-main class="w">
              <el-row :gutter="0">
-                 <el-col :span="5"><Coursedirectory></Coursedirectory></el-col>
+                 <el-col :span="5"><course-directory></course-directory></el-col>
                  <el-col :span="18"  style="float:right;">
                      <el-button type="primary" style="margin-bottom:2%;">上传课件（上传ppt/pdf,上传后自动解析成如下幻灯片）</el-button>
                      <el-upload
@@ -41,18 +41,15 @@
 
 <script>
     import Nav from "../../components/hd-nav";
-    import Coursedirectory from "../../components/course-directory";
+    import courseDirectory from "../../components/course-directory";
     import PPTshow from "../../components/PPT/PPT-show";
     import Footer from "../../components/hd-footer";
+
     export default {
         name: "PPT",
-        components: {PPTshow ,Coursedirectory, Nav, Footer},
-        props: [
-            'id'
-        ],
+        components: {PPTshow ,courseDirectory, Nav, Footer},
         data() {
             return {
-                name:'PPT',
                 fileList: []
             };
         },

@@ -6,21 +6,25 @@ const fetch = function (item) {
 };
 
 const mutations = {
-    LOG_IN (state, userdata) {
-        api.setCookie('userName', userdata.userName);
-        api.setCookie('avatar', userdata.head_icon);
-        api.setCookie('introduce', userdata.introduce);
+    LOG_IN (state, userData) {
+        api.setCookie('userName', userData.userName);
+        api.setCookie('avatar', userData.headIcon);
+        api.setCookie('introduce', userData.introduce);
+        api.setCookie('teacherId', userData.teacherId);
 
-        state.userName = userdata.userName;
-        state.avatar = userdata.head_icon;
-        state.introduce = userdata.introduce
+        state.teacherId = userData.teacherId;
+        state.userName = userData.userName;
+        state.avatar = userData.headIcon;
+        state.introduce = userData.introduce
     },
 
     LOG_OUT(state) {
         api.setCookie('userName', '');
         api.setCookie('avatar', '');
         api.setCookie('introduce', '');
+        api.setCookie('teacherId', '');
 
+        state.teacherId = '';
         state.userName = '';
         state.avatar = '';
         state.introduce = '';
@@ -31,7 +35,8 @@ const mutations = {
     PROBE(state) {
         state.userName = api.getCookie('userName');
         state.avatar = api.getCookie('avatar');
-        state.introduce = api.getCookie('introduce')
+        state.introduce = api.getCookie('introduce');
+        state.teacherId = parseInt(api.getCookie('teacherId'))
     },
 
     CACHE_ID(state, courseId) {
@@ -40,7 +45,7 @@ const mutations = {
         state.cached_courseId = courseId
     },
     PROBE_COURSE(state) {
-        state.cached_courseId = fetch('cached_courseId')
+        state.cached_courseId = parseInt(fetch('cached_courseId'))
     }
 };
 

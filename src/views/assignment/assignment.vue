@@ -40,10 +40,10 @@
             let that = this;
 
             utils.request({
-                invoke: api.requstCourseSteps,
+                invoke: api.requestCourseSteps,
                 params: {
                     code: 'course_steps',
-                    courseId: this.id           /* period id */
+                    courseId: parseInt(this.id)           /* period id */
                 },
                 result: fakeData.PERIOD_STEPS
             })
@@ -56,10 +56,9 @@
 
                     store.commit('assignment/ADD_STEP',step);
                     utils.request({
-                        invoke: api.requstCourseSteps,
+                        invoke: api.requestStepsContent,
                         params: {
-                            code: 'step_contents',
-                            stepId: step.stepId
+                            stepId: parseInt(step.stepId)
                         },
                         result: fakeData.STEP_CONTENT
                     })

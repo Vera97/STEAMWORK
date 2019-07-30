@@ -12,9 +12,6 @@
             </div>
 
         </div>
-        <div class="button-box">
-            <el-button type="primary">课程相关资源(点击可下载)</el-button>
-        </div>
     </div>
 
 </template>

@@ -70,23 +70,34 @@
             },
             getMore() {
                 utils.request({
-                    invoke: api.getCourses,
+                    invoke: api.getCourseChunk,
                     params: {
-                        "code": "course_chunk",
-                        "start": ((this.base + this.current + 1) * PAGE_COUNT).toString(),
-                        "length": PAGE_COUNT.toString()
+                        code: "course_chunk",
+                        gotten: ((this.base + this.current + 1) * PAGE_COUNT),
+                        length: PAGE_COUNT
                     },
                     result: fakeData.COURSE_CHUNK
                 })
                     .then(res => {
-                        let len = res.data[0].totalCount;
-                        store.commit('home/PUSH_COUNT', len);
-                        store.commit('home/ADD_ALL', res.data.slice(1))
+                        store.commit('home/ADD_ALL', res.data.chunks)
                     })
             }
         },
         created() {
-            this.getMore()
+            window.vm = this;
+            utils.request({
+                invoke: api.getCourseChunk,
+                params: {
+                    code: 'course_all'
+                },
+                result: fakeData.COURSE_COUNT
+            })
+                .then(res => {
+                    store.commit('home/PUSH_COUNT', res.data.totalCount)
+                });
+            this.base = -1;
+            this.getMore();
+            this.base = 0;
         }
     }
 </script>

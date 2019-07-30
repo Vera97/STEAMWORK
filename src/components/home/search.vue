@@ -85,33 +85,32 @@
         methods: {
             search () {
                 utils.request({
-                    invoke: api.getCourses,
+                    invoke: api.requestSearchCourses,
                     params: {
-                        code: 'search',
                         course_name_keyword: this.keyword
                     },
                     result: fakeData.SEARCH_COURSE
                 })
                     .then(res => {
-                        store.commit('home/ADD_COURSES', res.data);
+                        store.commit('home/ADD_COURSES', res.data.chunks);
                         store.commit('home/TOGGLE_FAV', false)
                     })
             },
             filter () {
+                // NOTE: missing favorite field in the api
                 utils.request({
-                    invoke: api.getCourses,
+                    invoke: api.requestFilterCourses,
                     params: {
-                        code: 'filter',
                         type: this.selected.type,
-                        coursename: this.selected.coursename,
+                        courseName: this.selected.coursename,
                         teacher: this.selected.teacher,
-                        time: this.selected.time,
-                        favorite: this.selected.favorite
+                        time: parseInt(this.selected.time),
+                        // favorite: this.selected.favorite
                     },
                     result: fakeData.FILTER_COURSE
                 })
                     .then(res => {
-                        store.commit('home/ADD_COURSES', res.data);
+                        store.commit('home/ADD_COURSES', res.data.chunks);
                         store.commit('home/TOGGLE_FAV', false)
                     })
             }

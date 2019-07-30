@@ -26,7 +26,7 @@
             getStep(e, step) {
                 store.commit('assignment/ADD_STEP',step);
                 utils.request({
-                    invoke: api.requstCourseSteps,
+                    invoke: api.requestCourseSteps,
                     params: {
                         code: 'step_contents',
                         stepId: step.stepId

@@ -7,11 +7,13 @@ import actions from './actions'
 import home from './modules/home'
 import studentsList from './modules/studentsList'
 import assignment from './modules/assignment'
+// import startClass from './modules/startClass'
 
 Vue.use(Vuex);
 
 // 应用初始状态
 const state = {
+    teacherId: '',
     userName: '',
     avatar: '',
     introduce: '',
@@ -23,7 +25,8 @@ export default new Vuex.Store({
     modules: {
         home: home,
         studentsList: studentsList,
-        assignment: assignment
+        assignment: assignment,
+        // startClass:startClass,
     },
     actions,
     getters,

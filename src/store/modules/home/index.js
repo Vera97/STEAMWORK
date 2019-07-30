@@ -34,26 +34,13 @@ const mutations = {
     /* if search is used, the list is no longer the favorite list. */
     TOGGLE_FAV(state, fav) {
         state.liked = fav
-    },
-    GET_FAV_COURSES(state) {
-        utils.request({
-            invoke: api.getCourses,
-            params: {
-                code: 'like',
-                userName: this.userName
-            },
-            result: fakeData.COURSE_LIST
-        })
-            .then(res => {
-                this.commit('ADD_COURSES', res.data);
-                this.commit('TOGGLE_FAV', true)
-            });
     }
 };
 
 const getters = {
     get_fav(state, getters, rootState) {
-        let id = rootState.cached_courseId;
+        // note that id fetched from localStorage is always string
+        let id = parseInt(rootState.cached_courseId);
         if (state.liked) {
             for (let i of state.courses) {
                 if (i.courseId === id) {
@@ -69,15 +56,14 @@ const getters = {
 const actions = {
     get_fav_courses (context) {
         return utils.request({
-            invoke: api.getCourses,
+            invoke: api.requestTeacherFavoriteList,
             params: {
-                code: 'like',
-                userName: context.rootState.userName
+                teacherId: parseInt(context.rootState.teacherId)
             },
-            result: fakeData.COURSE_LIST
+            result: fakeData.REQUEST_FAVORITE_COURSE
         })
             .then(res => {
-                context.commit('ADD_COURSES', res.data);
+                context.commit('ADD_COURSES', res.data.favorites);
                 context.commit('TOGGLE_FAV', true)
             });
     }
