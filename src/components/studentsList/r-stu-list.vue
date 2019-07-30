@@ -18,15 +18,21 @@
                     width="85px">
             </el-table-column>
             <el-table-column
+                    fixed
+                    prop="stuNumber"
+                    label="学生学号"
+                    width="120px">
+            </el-table-column>
+            <el-table-column
                     v-for="(item, index) in periodsList"
                     :key="index"
-                    :label="item"
+                    :label="item.courseSectionName"
                     width="220px">
                 <template slot-scope="scope">
                     <a href="#">作业/报告</a>
                     <el-input
                             placeholder="请输入成绩"
-                            v-model="scope.row.scoreList[item]"
+                            v-model="scope.row.scoreList[item.courseSectionName]"
                             class="input"
                             clearable>
                     </el-input>
@@ -76,11 +82,24 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    store.commit('studentsList/REMOVE_STUDENT', row.stuId);
-                    this.$message({
-                        type: 'success',
-                        message: '移除成功!'
-                    });
+                    utils.request({
+                        invoke: api.requestAlterStudentList,
+                        params: {
+                            code: 'stu_list_remove',
+                            classId: parseInt(store.state.studentsList.classId),
+                            stuId: parseInt(row.stuId)
+                        },
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    })
+                            .then(res => {
+                                if(res.data.code === 1) {
+                                    store.commit('studentsList/REMOVE_STUDENT', row.stuId);
+                                    this.$message.success('移除成功')
+                                } else {
+                                    this.$message.error('移除失败')
+                                }
+                            })
+
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -99,39 +118,32 @@
                 })
                         .then(res => {
                             that.options = res.data.chunks.map(item => {
-                                return {name: item.title, id: item.courseid}
+                                return {name: item.title, id: item.courseId}
                             })
                         })
             },
             save() {
-                let stuList = store.state.studentsList.stuList.forEach(item => {
-                    return {
-                        stuId: item.stuId,
-                        stuName: item.stuName
-                    }
-                });
-                utils.request({
-                    invoke: api.requestOrAlterStudentList,
-                    params: {
-                        code: 'stu_list_edit',
-                        classId: parseInt(store.state.studentsList.classId),
-                        stuList: stuList
-                    },
-                    result: fakeData.SINGLE_RESPONSE_WORD
-                })
-                        .then();
                 for(let student of this.listData) {
                     for(let period in student.scoreList) {
+
+                        let courseSectionId = undefined;
+                        for(let i of store.state.studentsList.periodsList) {
+                            if(i.courseSectionName === period) {
+                                courseSectionId = i.courseSectionId;
+                                break;
+                            }
+                        }
+
                         utils.request({
                             invoke: api.requestClassStuScore,
                             params: {
                                 code: 'stu_score_edit',
                                 stuId: student.stuId,
                                 courseId: store.state.studentsList.courseId,     /* may be not valid */
-                                courseTimeName: period,
-                                score: student.scoreList[period]
+                                courseSectionId: courseSectionId,
+                                score: parseInt(student.scoreList[period])
                             },
-                            result: fakeData.SINGLE_RESPONSE_WORD
+                            result: fakeData.SINGLE_NUMBER_CODE
                         })
                     }
                 }
@@ -163,7 +175,8 @@
                     return {
                         stuId: item.stuId,
                         stuName: item.stuName,
-                        scoreList: {}
+                        scoreList: {},
+                        stuNumber: item.stuNumber
                     }
                 });
 

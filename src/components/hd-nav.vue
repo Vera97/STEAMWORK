@@ -69,14 +69,14 @@
                     invoke: api.loginTeacher,
                     params: {
                         userName: userName,
-                        password: password
+                        passWord: password
                     },
                     result: fakeData.LOGIN_RESPONSE
                 })
                     .then(res => {
                         if(res.data.code === 1) {
-                            alert('服务端返回登录用户数据（头像）：' + res.data.userdata);
-                            store.commit('LOG_IN', {...res.data.userdata, userName: userName});
+                            alert('服务端返回登录用户数据（头像）：' + res.data.userData);
+                            store.commit('LOG_IN', {...res.data.userData, teacherId: res.data.teacherId, userName: userName});
                             store.dispatch('home/get_fav_courses').then();
                         } else {
                             alert('用户名或密码错误')

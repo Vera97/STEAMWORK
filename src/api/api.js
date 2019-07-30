@@ -4,6 +4,8 @@ let base = 'api';
 
 export const DEVELOPMENT = true;
 
+export const WATCH_ALL = false;
+
 //csrf验证
 export function setCookie(cname, cvalue, exdays) {
     let d = new Date();
@@ -41,9 +43,9 @@ let headers = {'X-CSRFtoken': csrftoken};
 /**
  * url: /login/teacher
  * @param {Object} params
- * @param {String} params.username
- * @param {String} params.password
- * @returns {Promise<any> | {code: number, teacherId: number, userdata: {head_icon: String, introduce: String}}}
+ * @param {String} params.userName
+ * @param {String} params.passWord
+ * @returns {Promise<any> | {code: number, teacherId: number, userData: {headIcon: String, introduce: String}}}
  */
 export const loginTeacher = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -53,9 +55,9 @@ export const loginTeacher = params => {
 /**
  * url: /login/stu
  * @param {Object} params
- * @param {String} params.username
- * @param {String} params.password
- * @returns {Promise<any> | {code: number, stuId: number, userdata: {head_icon: String, introduce: String}}}}
+ * @param {String} params.userName
+ * @param {String} params.passWord
+ * @returns {Promise<any> | {code: number, stuId: number, userdata: {headIcon: String, introduce: String}}}}
  */
 export const loginStudent = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -81,9 +83,7 @@ export const getCourseChunk = params => {
  * url: /courses/detail
  * @param {Object} params
  * @param {number} params.courseId
- * @param {Array<String>} params.courseList
- * @param {String} params.courseIntro
- * @returns {Promise<any> | {title: String, courseList: Array<String>, courseIntro: String, courseImgVideo: String, relatedCourse: Array<number>}}
+ * @returns {Promise<any> | {title: String, courseSection: Array<{courseSectionId: number, courseSectionName: String}>, courseIntro: String, courseImgVideo: String, relatedCourse: Array<number>}}
  */
 export const requestCourseDetail = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -116,7 +116,7 @@ export const requestStepsContent = params => {
  * url: /courses/search
  * @param {Object} params
  * @param {String} params.course_name_keyword
- * @returns {Promise<any> | {chunks: Array<{courseid: String, cover: String, introduce: String}>}}
+ * @returns {Promise<any> | {chunks: Array<{title: String, courseId: number, cover: String, introduce: String}>}}
  */
 export const requestSearchCourses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -127,7 +127,7 @@ export const requestSearchCourses = params => {
  * url: /courses/filter
  * @param {Object} params
  * @param {String} params.type
- * @param {String} params.coursename
+ * @param {String} params.courseName
  * @param {String} params.teacher
  * @param {number} params.time
  * @returns {Promise<any> | {chunks: Array<{courseId: number, title: String, cover: String, introduce: String}>}}
@@ -141,7 +141,7 @@ export const requestFilterCourses = params => {
  * url: /teacher/favorite_list
  * @param {Object} params
  * @param {String} params.code
- * @param {String} params.userName
+ * @param {String} params.teacherId
  * @param {number} params.courseId
  * @returns {Promise<any> | {code: number}}
  */
@@ -154,10 +154,8 @@ export const requestAlterFavoriteTeacher = params => {
 /**
  * url: /teacher/favorite_courses
  * @param {Object} params
- * @param {String} params.code
  * @param {number} params.teacherId
- * @param {number} params.courseId
- * @returns {Promise<any> | Array<{courseid: number, cover: String, introduce: String}>}
+ * @returns {Promise<any> | Array<{title: String, courseId: number, cover: String, introduce: String}>}
  */
 export const requestTeacherFavoriteList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -165,12 +163,21 @@ export const requestTeacherFavoriteList = params => {
 };
 
 /**
+ * url: /teacher/teacher_courses
+ * @param {Object} params
+ * @param {number} params.teacherId
+ * @returns {Promise<any> | {courses: Array<{courseId: number, title: String, cover: String, introduce: String}>}}
+ */
+export const requestTeacherOwnCourses = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/teacher_courses`, params, {headers:headers});
+};
+
+/**
  * url: /teacher/classes
  * @param {Object} params
- * @param {String} params.code
  * @param {number} params.teacherId
- * @param {Array<{id: number, className: String, createDate: String}>} params.classList
- * @returns {Promise<any> | {code: String, classList: Array<{id: number, className: String, createDate: String}>}}
+ * @returns {Promise<any> | {classList: Array<{classId: number, className: String, createDate: String}>}}
  */
 export const requestTeacherClasses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -178,16 +185,41 @@ export const requestTeacherClasses = params => {
 };
 
 /**
- * url: /teacher/stu
+ * url: /teacher/edit_classes
+ * @param {Object} params
+ * @param {String} params.code
+ * @param {number} params.teacherId
+ * @param {number} params.classId
+ * @param {String} params.className
+ * @returns {Promise<any> | {code: number, class: {classId: number, className: String, createDate: String}}}
+ */
+export const requestAlterClassList = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/edit_classes`, params, {headers:headers});
+};
+
+/**
+ * url: /teacher/get_stulist
+ * @param {Object} params
+ * @param {number} params.classId
+ * @returns {Promise<any> | {code: number, stuList: Array<{stuId: number, stuName: String}>}}
+ */
+export const requestStudentList = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/get_stulist`, params, {headers:headers});
+};
+
+/**
+ * url: /teacher/edit_stulist
  * @param {Object} params
  * @param {String} params.code
  * @param {number} params.classId
- * @param {Array<{stuId: number, stuName: String}>} params.stulist
- * @returns {Promise<any> | {code: String, stuList: Array<{stuId: number, stuName: String}>}}
+ * @param {number} params.stuId
+ * @returns {Promise<any> | {code: number}}
  */
-export const requestOrAlterStudentList = params => {
+export const requestAlterStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/stu`, params, {headers:headers});
+    return axios.post(`${base}/teacher/edit_stulist`, params, {headers:headers});
 };
 
 /**
@@ -206,16 +238,26 @@ export const requestClassStuScore = params => {
 };
 
 /**
- * url: /teacher/course_list
+ * url: /teacher/get_courselist
  * @param {Object} params
- * @param {String} params.code
  * @param {number} params.classId
- * @param {Array<{id: number, name: String}>} params.courseList
- * @returns {Promise<any> | {code: String, courseList: Array<{id: number, name: String}>}}
+ * @returns {Promise<any> | {code: number, courseList: Array<{courseId: number, name: String}>}}
  */
 export const requestClassCourseList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/course_list`, params, {headers:headers});
+    return axios.post(`${base}/teacher/get_courselist`, params, {headers:headers});
+};
+
+/**
+ * url: /teacher/edit_courselist
+ * @param {Object} params
+ * @param {number} params.classId
+ * @param {number} params.courseId
+ * @returns {Promise<any> | {code: number}}
+ */
+export const requestAlterClassCourseList = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
 };
 
 /**
@@ -258,12 +300,19 @@ export const requestClearQueueStu = params => {
     return axios.post(`${base}/classroom/stu_question_queue`, params, {headers:headers});
 };
 
-/**
- * url: /courses_prepare/new_course
- * @param params
- * @returns {Promise<AxiosResponse<T>>|Promise<any>}
- */
-export const requestNewCourse = params => {
+export const requestPushProgressStu = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/new_course`, params, {headers:headers});
+    return axios.post(`${base}/classroom/stu_progress`, params, {headers:headers});
+};
+export const requestGetProgressStu = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_progress`, params, {headers:headers});
+};
+export const requestNewCourse = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post('${base)/course_prepare/new_course', params, {headers: headers});
+};
+export const requestNewCourseSection = params => {
+    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
+    return axios.post('${base)/course_prepare/new_course_section',params,{headers:headers});
 };

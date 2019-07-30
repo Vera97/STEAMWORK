@@ -51,21 +51,22 @@
                 }).then(res => {
                     if(res.action === 'confirm') {
                         utils.request({
-                            invoke: api.requestTeacherClasses,
+                            invoke: api.requestAlterClassList,
                             params: {
-                                code: 'class_list_edit',
-                                teacherId: parseInt(store.state.userName)
+                                code: 'class_list_add',
+                                teacherId: parseInt(store.state.teacherId),
+                                className: res.value
                             },
-                            result: fakeData.SINGLE_RESPONSE_WORD
+                            result: fakeData.ALTER_CLASS_RESPONSE
                         })
                             .then(res => {
                                 // successfully added a class, so the class list ought to be updated.
-                                if(res.data.code === 'ok') {
+                                if(res.data.code === 1) {
                                     alert('修改成功！');
                                     that.$refs.classList.addCourse({
-                                        id: 9989,
-                                        className: 'new',
-                                        createDate: '2019-01-01',
+                                        classId: res.data.class.classId,
+                                        className: res.data.class.className,
+                                        createDate: res.data.class.createDate,
                                         courseDetail: []
                                     })
                                 }
@@ -74,8 +75,16 @@
                     }
                 })
             },
-            render() {
-                this.$refs.rStuList.render()
+            render(classId, courseId) {
+                let that = this;
+
+                store.commit('studentsList/SUBMIT_ID', {classId, courseId});
+                let promise = courseId ?
+                    store.dispatch('studentsList/render_course') :
+                    store.dispatch('studentsList/renderClass');
+                promise.then(() => {
+                    that.$refs.rStuList.render()
+                })
             },
             updateClassList(value) {
                 this.$refs.classList.addRelated(value)

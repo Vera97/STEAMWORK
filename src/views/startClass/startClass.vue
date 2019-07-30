@@ -3,16 +3,14 @@
         <el-header><Nav></Nav></el-header>
         <el-main class="main-box">
             <el-row :gutter="24">
-                <el-col :span="5"><classList></classList><askList></askList></el-col>
+                <el-col :span="5"><classList @course-selected="loadMaterial"></classList><askList></askList></el-col>
                 <el-col :span="14"><show></show></el-col>
-                <el-col :span="5"><startActivities></startActivities><monitor></monitor></el-col>
+                <el-col :span="5"><startActivities></startActivities><monitor :prog="prog"></monitor></el-col>
             </el-row>
-
         </el-main>
         <el-footer><Footer></Footer></el-footer>
     </el-container>
 </template>
-
 <script>
     import Nav from "../../components/hd-nav";
     import Footer from "../../components/hd-footer";
@@ -21,57 +19,57 @@
     import monitor from "../../components/startClass/monitor";
     import show from "../../components/startClass/show";
     import startActivities from "../../components/startClass/start-activities";
-
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
     import store from '../../store';
-
     export default {
         name: "startClass",
         components: {askList, monitor, show, startActivities, classList, Footer, Nav},
-        props: {
-            id: String
-        },
+        computed:
+                {
+                    prog(){
+                        return store.state.startClass.prog;
+                    }
+                },
         data () {
             return {
-                name: 'startClass'
+                name: 'startClass',
             }
         },
-        methods: {
-            async getSubCourses() {
+        methods:{
+            updateData() {
                 let that = this;
-                let flag = false;
-
-                for (let k = 0; k < this.listData.length; k++) {
-                    let classId = this.listData[k].id.toString();
-
-                    await utils.request({
-                        invoke: api.courseDetail,
-                        params: {
-                            code: 'course_list',           /* need a method to get the list of courses. */
-                            classId: classId
-                        },
-                        result: fakeData.COURSES_IN_CLASS
-                    })
+                utils.request({
+                    invoke: api.requestPushProgressStu,
+                    params: {
+                        code: 'stu_push_progress',
+                        stuId: that.id,
+                        progress: that.progress
+                    },
+                    result: fakeData.UP_PROGRESS
+                })
                         .then(res => {
-                            that.listData[k].courseDetail.push(...res.data.courseList);
-                        });
-
-                    if (!flag) {
-                        if(that.listData[k].courseDetail.length !== 0) {
-                            flag = true;
-                            let id = that.listData[k].courseDetail[0].id;
-
-                            // use the id to fetch the list of student
-                            // if currently no course has been rendered
-                            if(store.state.studentsList.courseId === '') {
-                                store.dispatch('studentsList/render_course', id).then()
-                            }
-                        }
-                    }
-                }
-            }
+                            store.commit('startClass/UPDATE_PROG', res.data);
+                            alert("chenggong");
+                        })
+            },
+            loadMaterial() {}
         },
+        created(){
+            let that=this;
+            utils.request({
+                invoke: api.requestGetProgressStu,
+                params: {
+                    code: 'stu_get_progress',
+                    stuId: that.id,
+                },
+                result: fakeData.PROGRESS_STU
+            })
+                    .then(res => {
+                        store.commit('startClass/GET_PROG',res.data);
+                        setInterval(that.updateData,1500);//定时请求
+                    })
+        }
     }
 </script>
 
@@ -83,5 +81,7 @@
     .main-box{
         margin-left: 10px;
     }
-
+    .el-footer {
+        padding-right: 0;
+    }
 </style>

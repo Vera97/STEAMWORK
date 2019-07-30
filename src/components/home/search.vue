@@ -92,7 +92,7 @@
                     result: fakeData.SEARCH_COURSE
                 })
                     .then(res => {
-                        store.commit('home/ADD_COURSES', res.data);
+                        store.commit('home/ADD_COURSES', res.data.chunks);
                         store.commit('home/TOGGLE_FAV', false)
                     })
             },
@@ -102,7 +102,7 @@
                     invoke: api.requestFilterCourses,
                     params: {
                         type: this.selected.type,
-                        coursename: this.selected.coursename,
+                        courseName: this.selected.coursename,
                         teacher: this.selected.teacher,
                         time: parseInt(this.selected.time),
                         // favorite: this.selected.favorite
@@ -110,7 +110,7 @@
                     result: fakeData.FILTER_COURSE
                 })
                     .then(res => {
-                        store.commit('home/ADD_COURSES', res.data);
+                        store.commit('home/ADD_COURSES', res.data.chunks);
                         store.commit('home/TOGGLE_FAV', false)
                     })
             }

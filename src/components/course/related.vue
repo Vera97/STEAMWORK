@@ -12,7 +12,7 @@
     export default {
         name: "Related",
         props: {
-            relatedList: String
+            relatedList: Array
         },
         components: {CourseCell},
         data(){

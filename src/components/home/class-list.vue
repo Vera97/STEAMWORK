@@ -73,8 +73,8 @@
                     invoke: api.getCourseChunk,
                     params: {
                         code: "course_chunk",
-                        gotten: ((this.base + this.current + 1) * PAGE_COUNT).toString(),
-                        length: PAGE_COUNT.toString()
+                        gotten: ((this.base + this.current + 1) * PAGE_COUNT),
+                        length: PAGE_COUNT
                     },
                     result: fakeData.COURSE_CHUNK
                 })
@@ -84,6 +84,7 @@
             }
         },
         created() {
+            window.vm = this;
             utils.request({
                 invoke: api.getCourseChunk,
                 params: {
@@ -94,7 +95,9 @@
                 .then(res => {
                     store.commit('home/PUSH_COUNT', res.data.totalCount)
                 });
-            this.getMore()
+            this.base = -1;
+            this.getMore();
+            this.base = 0;
         }
     }
 </script>

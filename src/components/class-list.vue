@@ -1,7 +1,7 @@
 <template>
     <el-card class="box-card">
         <h3>班级列表</h3>
-        <el-tree :data="listData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+        <el-tree :default-expanded-keys="expandKey" auto-expand-parent highlight-current node-key="key" ref="tree" :data="listData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
     </el-card>
 </template>
 
@@ -20,13 +20,15 @@
                     label(data) {
                         if(data.className) {
                             return data.className
-                        } else if(data.name) {
-                            return data.name
+                        } else if(data.courseName) {
+                            return data.courseName
                         } else {
                             throw new DOMException()
                         }
                     }
-                }
+                },
+                key: 0,                 /* a unique key for the node. to select a node after loaded. */
+                expandKey: []
             };
         },
         methods: {
@@ -34,15 +36,9 @@
                 if(node.isLeaf) {
                     if(node.level === 1) {
                         // note id not classId
-                        store.commit('studentsList/SUBMIT_ID', data.id, 0);
-                        store.dispatch('studentsList/renderClass').then(() => {
-                            this.$emit('course-selected')
-                        })
+                        this.$emit('course-selected', data.courseId, null);
                     } else {
-                        store.commit('studentsList/SUBMIT_ID', node.parent.data.id, data.id);
-                        store.dispatch('studentsList/render_course').then(() => {
-                            this.$emit('course-selected')
-                        })
+                        this.$emit('course-selected', node.parent.data.courseId, data.courseId);
                     }
                 }
             },
@@ -52,8 +48,7 @@
                 return utils.request({
                     invoke: api.requestTeacherClasses,
                     params: {
-                        code: 'class_list',
-                        teacherId: parseInt(store.state.userName)
+                        teacherId: parseInt(store.state.teacherId)
                     },
                     result: fakeData.CLASSES
                 })
@@ -65,7 +60,8 @@
                             * via Array.push method, and add every attributes before the mount or use the
                             * method provided by vue. */
                             for(let i of res.data.classList) {
-                                that.listData.push({...i, courseDetail: []})
+                                that.listData.push({...i, courseDetail: [], key: that.key});
+                                that.key++
                             }
                         })
             },
@@ -76,32 +72,39 @@
                 let flag = false;
 
                 for (let k = 0; k < this.listData.length; k++) {
-                    let classId = this.listData[k].id.toString();
+                    let classId = this.listData[k].classId;
 
                     await utils.request({
                         invoke: api.requestClassCourseList,
                         params: {
-                            code: 'course_list',           /* need a method to get the list of courses. */
-                            classId: classId
+                            classId: parseInt(classId)
                         },
                         result: fakeData.COURSES_IN_CLASS
                     })
                             .then(res => {
-                                that.listData[k].courseDetail.push(...res.data.courseList);
+                                let courseList = res.data.courseList.map(item => {
+                                    return {
+                                        courseId: item.courseId,
+                                        courseName: item.courseName,
+                                        key: that.key++
+                                    }
+                                });
+                                that.listData[k].courseDetail.push(...courseList);
                             });
 
                     if (!flag) {
                         if(that.listData[k].courseDetail.length !== 0) {
                             flag = true;
-                            let classId = that.listData[k].id;
-                            let courseId = that.listData[k].courseDetail[0].id;
+                            let classId = that.listData[k].classId;
+                            let courseId = that.listData[k].courseDetail[0].courseId;
+                            let key = that.listData[k].courseDetail[0].key;
+                            that.expandKey = [that.listData[k].key];
 
                             // use the id to fetch the list of student
                             // if currently no course has been rendered
                             if(store.state.studentsList.courseId === '') {
-                                store.dispatch('studentsList/render_course', classId, courseId).then(() => {
-                                    that.$emit('course-selected')
-                                })
+                                that.$emit('course-selected', classId, courseId);
+                                that.$refs.tree.setCurrentKey(key);
                             }
                         }
                     }
@@ -113,7 +116,6 @@
             addRelated(value) {
                 for(let i = 0; i < this.listData.length; i++) {
                     if(this.listData[i].id === store.state.studentsList.classId) {
-                        console.log('hit');
                         this.listData[i].courseDetail.push(...value)
                     }
                 }

@@ -45,10 +45,10 @@
     import utils from '../../utils';
 
     export default {
-        name: "Course",
+        name: "course",
         components: {Related, Introduction, Periods, Footer, Nav},
         props: {
-            courseId: String
+            courseId: Number
         },
         data () {
             return {
@@ -64,8 +64,8 @@
         },
         created () {
             let that = this;
-            alert(store.state.cached_courseId);
 
+            // judge whether the course is favorite
             if(store.getters['home/get_fav'] !== null) {
                 this.inFav = store.getters['home/get_fav']
             } else {
@@ -73,6 +73,23 @@
                     that.inFav = store.getters['home/get_fav']
                 })
             }
+
+            // judge whether the course is own
+            utils.request({
+                invoke: api.requestTeacherOwnCourses,
+                params: {
+                    teacherId: store.state.teacherId
+                },
+                result: fakeData.TEACHER_OWN_COURSE
+            })
+                .then(res => {
+                    for(let i of res.data.courses) {
+                        if(i.courseId === store.state.cached_courseId) {
+                            this.inList = true;
+                            break
+                        }
+                    }
+                });
 
             utils.request({
                 invoke: api.requestCourseDetail,
@@ -85,7 +102,7 @@
                     this.title = res.data.title;
                     this.introduction = res.data.courseIntro;
                     this.src = res.data.courseImgVideo;
-                    this.periodList.push(...res.data.courseList);
+                    this.periodList.push(...res.data.courseSection);
                     this.relatedId.push(...res.data.relatedCourse);
 
                     for(let i of this.relatedId) {
@@ -100,7 +117,7 @@
                                 this.relatedList.push({
                                     title: res.data.title,
                                     introduction: res.data.courseIntro,
-                                    courseId: i.toString(),
+                                    courseId: parseInt(i),
                                     cover: ''                               /* maybe this field will matter in the future. */
                                 })
                             })
@@ -117,7 +134,7 @@
                     invoke: api.requestAlterFavoriteTeacher,
                     params: {
                         code: code,
-                        userName: store.state.userName,
+                        userName: parseInt(store.state.teacherId),
                         courseId: parseInt(store.state.cached_courseId),
                     },
                     result: fakeData.SINGLE_NUMBER_CODE
@@ -152,7 +169,7 @@
                 next(false)
             } else {
                 if(to.params.courseId)
-                  store.commit('CACHE_ID', to.params.courseId.toString());
+                  store.commit('CACHE_ID', to.params.courseId);
                 next()
             }
         }

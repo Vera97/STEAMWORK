@@ -11,7 +11,7 @@ const mutations = {
     GET_PROG(state, prog) {
         state.prog = prog
     },
-    UPDATE_PROG(state, code) {
+    UPDATE_PROG(state, prog) {
         state.code = code
     },
 };

@@ -10,7 +10,7 @@ const state = {
 };
 
 const mutations = {
-    SUBMIT_ID(state, classId, courseId) {
+    SUBMIT_ID(state, {classId, courseId}) {
         state.classId = classId;
         state.courseId = courseId
     },
@@ -34,12 +34,9 @@ const actions = {
      * further get the cores of each student.
      * note that the periods should be assigned into state at last.
      * @param context
-     * @param classId
-     * @param courseId the courseId of the course to be rendered
      * @returns {*}
      */
-    async render_course (context, classId, courseId) {
-        context.commit('SUBMIT_ID', classId, courseId);
+    async render_course (context) {
 
         context.state.periodsList = [];
 
@@ -48,13 +45,12 @@ const actions = {
         await utils.request({
             invoke: api.requestCourseDetail,
             params: {
-                code: 'course_detail',
-                courseId: parseInt(courseId)
+                courseId: parseInt(context.state.courseId)
             },
             result: fakeData.COURSE_DETAIL
         })
             .then(res => {
-                tmp = res.data.courseList;
+                tmp = res.data.courseSection;
             });
 
         await context.dispatch('getStudentsList');
@@ -69,13 +65,13 @@ const actions = {
                     params: {
                         code: 'stu_score',
                         stuId: parseInt(id),
-                        courseId: parseInt(courseId),
-                        courseTimeName: i
+                        courseId: parseInt(context.state.courseId),
+                        courseSectionId: i.courseSectionId
                     },
                     result: fakeData.STUDENT_SCORE
                 })
                     .then(res => {
-                        context.state.stuList[k].scoreList[i] = res.data.score
+                        context.state.stuList[k].scoreList[i.courseSectionName] = res.data.score
                     })
             }
 
@@ -88,9 +84,8 @@ const actions = {
         context.state.stuList = [];
 
         return utils.request({
-            invoke: api.requestOrAlterStudentList,
+            invoke: api.requestStudentList,
             params: {
-                code: 'stu_list',
                 classId: parseInt(context.state.classId)
             },
             result: fakeData.STUDENT_LIST
