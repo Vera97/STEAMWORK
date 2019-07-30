@@ -86,3 +86,53 @@ export const requstCourseSteps = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/sources`, params, {headers:headers});
 };
+
+/**
+ * url: /classroom/confirm_question
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requestSolveQuestion = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/confirm_question`, params, {headers:headers});
+};
+
+/**
+ * url: /classroom/ask_question
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requestPushQuestion = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/ask_question`, params, {headers:headers});
+};
+
+/**
+ * url: /classroom/stu_question_queue
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requestQueueStu = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_question_queue`, params, {headers:headers});
+};
+
+/**
+ * url: /classroom/stu_question_queue
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requestClearQueueStu = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_question_queue`, params, {headers:headers});
+};
+
+/**
+ * url: /courses_prepare/new_course
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>|Promise<any>}
+ */
+export const requestNewCourse = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_course`, params, {headers:headers});
+};
