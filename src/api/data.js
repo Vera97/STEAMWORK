@@ -250,3 +250,28 @@ export const PERIOD_STEPS = [
 export const STEP_CONTENT = {
     html: '<p>i am <i>the</i> <span style="color: red">content</span></p>'
 };
+
+export const STU_QUESTION = {
+    code: '1',
+    questionList: [
+        {stuName: 'sfg', stuId: 1, question: 'sss'},
+        {stuName: 'sfg', stuId: 2, question: 'sss'},
+        {stuName: 'sfg', stuId: 3, question: 'sss'},
+        {stuName: 'sfg', stuId: 4, question: 'sss'},
+        {stuName: 'sfg', stuId: 5, question: 'sss'},
+        {stuName: 'sfg', stuId: 6, question: 'sss'},
+        {stuName: 'sfg', stuId: 7, question: 'sss'},
+        {stuName: 'sfg', stuId: 8, question: 'sss'},
+    ]
+}
+
+export const ADD_COURSE = [
+    {code:1, courseSectionId: 1},
+    {code:1, courseSectionId: 2},
+    {code:1, courseSectionId: 3},
+    {code:1, courseSectionId: 4},
+    {code:1, courseSectionId: 5},
+    {code:1, courseSectionId: 6}
+]
+
+

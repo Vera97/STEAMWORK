@@ -16,9 +16,20 @@
     import Footer from "../../components/hd-footer";
     import Content from "../../components/design/content";
     import Coursedirectory from "../../components/course-directory";
+
+
     export default {
         name: "Design",
-        components: {Footer, Content, Coursedirectory, Nav}
+        components: {Footer, Content, Coursedirectory, Nav},
+        props: {
+            id: String
+        },
+        data (){
+            return {
+                name: '新建课程',
+            }
+        },
+
     }
 </script>
 

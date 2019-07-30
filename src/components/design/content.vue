@@ -3,7 +3,6 @@
         <div>
             <el-row>
                 <el-col :span="24"><div>
-                <p><strong>整体设计</strong></p>
                 <a href="#">导出内容</a>
                 </div></el-col>
             </el-row>
@@ -76,7 +75,7 @@
                 textarea2:'',
                 textarea3:'',
                 textarea4:'',
-                textarea5:''
+                textarea5:'',
             }
         }
     }

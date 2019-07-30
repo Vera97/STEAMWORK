@@ -15,6 +15,10 @@ import PPT from "./views/PPT/PPT";
 import Design from "./views/design/design";
 import studentsList from "./views/studentsList/studentsList";
 import startClass from "./views/startClass/startClass";
+import team from "./views/team/team";
+import resource from "./views/resource/resource"
+import mySuccess from "./views/mySuccess/mySuccess"
+import stuClass from "./views/stuClass/stuClass"
 
 const Home = () => import('./views/home/home.vue');
 
@@ -59,6 +63,26 @@ let routes = [
     {
         path: '/startClass',
         component: startClass,
+        props: true
+    },
+    {
+        path: '/team',
+        component: team,
+        props: true
+    },
+    {
+        path: '/resource',
+        component: resource,
+        props: true
+    },
+    {
+        path: '/mySuccess',
+        component: mySuccess,
+        props: true
+    },
+    {
+        path: '/stuClass',
+        component: stuClass,
         props: true
     },
 

@@ -1,12 +1,18 @@
 <template>
-    <el-card class="box-card">
-        <el-button type="primary">+ 新建课程</el-button>
-        <h3>课程列表</h3>
-        <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-    </el-card>
+    <div>
+        <el-button type="primary" @click="open" style="width: 100%;margin-bottom: 10px">+ 新建课程</el-button>
+        <el-card class="box-card">
+            <h3>课程列表</h3>
+            <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+        </el-card>
+    </div>
 </template>
 
 <script>
+    import store from '../store'
+    import {api, fakeData} from '../api'
+    import utils from '../utils'
+
     export default {
         name: "Coursedirectory",
         data() {
@@ -42,7 +48,37 @@
         methods: {
             handleNodeClick(data) {
                 console.log(data);
-            }
+            },
+            open() {
+                this.$prompt('请输入课程名称：', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    //向后端请求加入数据库
+                        utils.request({
+                            invoke:api.requestNewCourse,
+                            param:{
+                                courseId: this.id,
+                                courseSectionName: value
+                            },
+                            result: fakeData.ADD_COURSE
+                        }).then(res => {
+                            store.commit('ppt/ADD_COURSE', res.data);
+                            console.log(res.data)
+                        })
+                    this.$message({
+                        type: 'success',
+                        message: '你新建的课程名称: ' + value
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+
+
         }
     }
 </script>
