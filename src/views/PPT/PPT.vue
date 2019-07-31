@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-header><Nav></Nav></el-header>
+        <el-header><Nav active-index="2"></Nav></el-header>
           <el-main class="w">
              <el-row :gutter="0">
                  <el-col :span="5"><course-directory></course-directory></el-col>

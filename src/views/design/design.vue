@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            <Nav></Nav>
+            <Nav active-index="2"></Nav>
         </el-header>
         <el-main>
             <el-col :span="4" class="cd"><course-directory></course-directory></el-col>

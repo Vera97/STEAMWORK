@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="4" v-for="(item, index) in coursesInDisplay" :key="item.courseId" :offset="index > 0 ? 1 : 0">
-      <CourseCell :title="item.title" :introduction="item.introduction"
+      <CourseCell :title="item.title" :introduction="item.introduce"
                   :id="item.courseId"></CourseCell>
     </el-col>
     <el-col>
@@ -45,9 +45,7 @@
         data() {
             return {
                 current: 0,
-                base: 0,
-                title: '科目xxxx',
-                introduction: '一句话的简介xxxx'
+                base: 0
             }
         },
         methods: {
