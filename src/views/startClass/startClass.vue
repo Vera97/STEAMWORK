@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-header><Nav></Nav></el-header>
+        <el-header><Nav active-index="4"></Nav></el-header>
         <el-main class="main-box">
             <el-row :gutter="24">
                 <el-col :span="5"><classList @course-selected="loadMaterial"></classList><askList></askList></el-col>

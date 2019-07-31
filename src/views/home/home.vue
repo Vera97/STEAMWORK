@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header><Nav></Nav></el-header>
+    <el-header><Nav active-index="1"></Nav></el-header>
     <el-main>
       <Search></Search>
       <Carousel></Carousel>

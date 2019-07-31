@@ -1,22 +1,28 @@
 <template>
   <div>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" >
+    <el-menu router
+             :default-active="activeIndex"
+             class="el-menu-demo"
+             mode="horizontal"
+             ref="menu">
       <div class="nav-type">教师端</div>
-      <el-menu-item index="1"><router-link class="router" :to="{path: '/home'}">教学资源</router-link></el-menu-item>
-      <el-menu-item index="2">在线备课</el-menu-item>
-      <el-submenu index="3">
-        <template slot="title">我的班级</template>
-        <el-menu-item index="3-1"><router-link class="router" :to="{path: '/studentslist'}">班级一</router-link></el-menu-item>
-        <el-menu-item index="3-2"><router-link class="router" :to="{path: '/studentslist'}">班级二</router-link></el-menu-item>
-        <el-menu-item index="3-3"><router-link class="router" :to="{path: '/studentslist'}">班级三</router-link></el-menu-item>
-      </el-submenu>
-      <el-menu-item index="4"><router-link class="router" :to="{path: '/startClass'}">开始上课</router-link></el-menu-item>
+      <el-menu-item index="1" :route="{path: '/home'}">教学资源</el-menu-item>
+      <el-menu-item index="2" :route="{path: '/ppt'}">在线备课</el-menu-item>
+      <el-menu-item index="3" :route="{path: '/studentsList'}">我的班级</el-menu-item>
+      <el-menu-item index="4" :route="{path: '/startClass'}">开始上课</el-menu-item>
       <div class="login">
         <el-button type="primary" round size="mini" @click="logout" v-if="userName !== ''">注销</el-button>
         <el-button round size="mini" @click="login" v-else>注册</el-button>
       </div>
       <div class="login">
-        <el-avatar :src="require('../assets/avatar.png')" v-if="userName !== ''"></el-avatar>
+        <el-popover
+                :title="userName"
+                :content="introduction"
+                trigger="hover"
+                v-if="userName !== ''">
+          <el-avatar :src="require('../assets/avatar.png')"
+                     slot='reference'></el-avatar>
+        </el-popover>
         <el-popover placement="left" trigger="click" v-else>
           <el-button slot="reference" type="primary" round size="mini">登陆</el-button>
           <el-form class="login-form-wrapper">
@@ -39,7 +45,6 @@
 
 <script>
     import store from '../store'
-    import md5 from 'md5'
     import {api, fakeData} from '../api'
     import utils from '../utils'
 
@@ -51,17 +56,21 @@
             },
             avatar () {
                 return store.getters.get_avatar_url
+            },
+            introduction () {
+                return store.getters.get_introduce
             }
+        },
+        props: {
+            ['active-index']: String
         },
         data() {
             return {
-                activeIndex: '1',
                 form_username: '',    /* these two is for the form input. */
                 form_password: ''
             };
         },
         methods: {
-            handleSelect() {},
             login() {
                 let userName = this.form_username;
                 let password = this.form_password;
@@ -78,18 +87,21 @@
                             alert('服务端返回登录用户数据（头像）：' + res.data.userData);
                             store.commit('LOG_IN', {...res.data.userData, teacherId: res.data.teacherId, userName: userName});
                             store.dispatch('home/get_fav_courses').then();
+
+                            this.$router.go(0)
                         } else {
                             alert('用户名或密码错误')
                         }
                     });
             },
             logout() {
-                store.commit('LOG_OUT')
+                store.commit('LOG_OUT');
+                this.$router.go(0)
             }
         },
         created() {
             store.commit('PROBE');
-            if(this.userName !== '') store.dispatch('home/get_fav_courses').then()
+            if(this.userName !== '') store.dispatch('home/get_fav_courses').then();
         }
     }
 </script>

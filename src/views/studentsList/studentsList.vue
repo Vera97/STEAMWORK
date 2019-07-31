@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <Nav></Nav>
+      <Nav active-index="3"></Nav>
     </el-header>
     <el-main>
       <el-row :gutter="0">
@@ -89,6 +89,10 @@
             updateClassList(value) {
                 this.$refs.classList.addRelated(value)
             }
+        },
+        created() {
+            this.classId = 5678;
+            console.log(this.$route)
         }
     }
 </script>

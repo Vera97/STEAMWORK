@@ -5,7 +5,7 @@ export const LOGIN_RESPONSE = {
     teacherId: 123,
     userData: {
         headIcon: '/',
-        introduce: '...'
+        introduce: 'I AM AN ORDINARY TEACHER.'
     }
 };
 
