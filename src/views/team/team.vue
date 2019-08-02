@@ -9,19 +9,19 @@
                 <el-col :span="16" style="float:right;"><upload></upload></el-col>
             </el-row>
         </el-main>
-        <el-footer><Footer></Footer></el-footer>
+        <el-footer><hdfooter></hdfooter></el-footer>
     </el-container>
 </template>
 
 <script>
-    import NavStu from "../../components/Nav-stu";
+    import NavStu from "../../components/hd-nav";
     import teamList from "../../components/team/team-list";
     import upload from "../../components/team/upload";
-    import Footer from "../../components/Footer";
+    import hdfooter from "../../components/hd-footer";
 
     export default {
         name: "team",
-        components: {teamList,upload,Footer, NavStu},
+        components: {teamList,upload,hdfooter, NavStu},
     }
 
 </script>

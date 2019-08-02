@@ -14,9 +14,20 @@
 </template>
 
 <script>
+
     export default {
         name: "task",
+        props: {
+            id: String,
+        },
+        data() {
+            return{
+
+        }
+        }
     }
+
+
 </script>
 
 <style scoped>

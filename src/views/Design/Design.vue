@@ -4,7 +4,7 @@
             <Nav></Nav>
         </el-header>
         <el-main>
-            <el-col :span="4" class="cd"><Coursedirectory></Coursedirectory></el-col>
+            <el-col :span="4" class="cd"><course-directory></course-directory></el-col>
             <el-col :span="19" class="ct"><Content></Content></el-col>
         </el-main>
         <el-footer><Footer></Footer></el-footer>
@@ -12,13 +12,24 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Footer from "../../components/Footer";
-    import Content from "../../components/Design/Content";
-    import Coursedirectory from "../../components/Coursedirectory";
+    import Nav from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import Content from "../../components/design/content";
+    import courseDirectory from "../../components/course-directory";
+
+
     export default {
         name: "Design",
-        components: {Footer, Content, Coursedirectory, Nav}
+        components: {Footer, Content, courseDirectory, Nav},
+        props: {
+            id: String
+        },
+        data (){
+            return {
+                name: '新建课程',
+            }
+        },
+
     }
 </script>
 

@@ -48,38 +48,20 @@
                                             type="textarea"
                                             autosize
                                             :rows="2"
-                                            placeholder="自定义问题"
+                                            placeholder="请输入问题名称"
                                             v-model="textarea1">
                                     </el-input>
                                     <el-input
                                             class="text"
                                             type="textarea"
-                                            autosize
+                                            :autosize="{ minRows:6, maxRows:12}"
                                             :rows="2"
-                                            placeholder="请输入解答"
+                                            placeholder="请输入问题内容及解答"
                                             v-model="textarea2">
                                     </el-input>
                                 </div>
-                                <div class="ali">
-                                    <el-input
-                                            class="text"
-                                            type="textarea"
-                                            autosize
-                                            :rows="2"
-                                            placeholder="自定义问题"
-                                            v-model="textarea3">
-                                    </el-input>
-                                    <el-input
-                                            class="text"
-                                            type="textarea"
-                                            autosize
-                                            :rows="2"
-                                            placeholder="请输入解答"
-                                            v-model="textarea4">
-                                    </el-input>
-                                </div>
                                 <div class="buttonlist" style="float:right;margin-bottom:5%;">
-                                    <el-button type="primary">保存</el-button>
+                                    <el-button type="primary" @click="save">保存</el-button>
                                     <el-button type="primary">修改</el-button>
                                     <el-button type="primary">删除</el-button>
                                 </div>
@@ -92,20 +74,40 @@
 </template>
 
 <script>
-    import Courseppt from "../PPT/Courseppt";
+    import Courseppt from "./course-ppt";
+    import {api, fakeData} from '../../api';
+    import utils from '../../utils';
+    import store from '../../store';
     export default {
         name: "PPT",
         components: {Courseppt},
         data() {
             return {
                 input: '',
-                textarea1:'',
-                textarea2:'',
-                textarea3:'',
-                textarea4:'',
-                title:'幻灯片',
+                textarea1: '',
+                textarea2: '',
+                title: '幻灯片',
             }
+        },
+        methods:{
+            save()
+            {
+                let that=this;
+                utils.request({
+                    invoke: api.requestNewQuestion,
+                    params: {
+                        pptId:that.pptId,
+                        pptPage: that.pptPage,
+                        name:that.textarea1,
+                        content:that.textarea2
+                    },
+                    result: fakeData.NEW_QUESTION
+                }).then(res => {
+                    store.commit('ppt/ADD_QUESTION',res.data.question);
+                    console.log(res.data);
+            });
         }
+      }
     }
 </script>
 <style scoped>

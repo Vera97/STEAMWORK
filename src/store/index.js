@@ -3,28 +3,33 @@ import Vuex from 'vuex'
 import mutations from './mutations'
 import getters from './getters'
 import actions from './actions'
+
+import home from './modules/home'
+import studentsList from './modules/studentsList'
 import assignment from './modules/assignment'
-import startClass from './modules/startClass'
 import ppt from './modules/ppt'
-//import * as actions from './actions'
-//import * as getters from './getters'
+import startClass from './modules/startClass'
+// import startClass from './modules/startClass'
 
 Vue.use(Vuex);
 
 // 应用初始状态
-// 应用挂载后从服务器加载实验室包含实验的总表、用户已选择的总表
 const state = {
-    login_state: false,
-    username: '',
-    avatar: '../assets/avatar.png',
-    introduce: ''
+    teacherId: '',
+    userName: '',
+    avatar: '',
+    introduce: '',
+    cached_courseId: ''             /* cache a courseId for the course page. */
 };
+
 // 创建 store 实例
 export default new Vuex.Store({
     modules: {
+        home: home,
+        studentsList: studentsList,
         assignment: assignment,
-        startClass: startClass,
-        ppt:ppt
+        ppt:ppt,
+        startClass:startClass,
     },
     actions,
     getters,

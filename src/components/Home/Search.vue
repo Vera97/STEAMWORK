@@ -42,11 +42,12 @@
 </template>
 
 <script>
-    import api from '@/api'
-    import store from '@/views/Home/store'
+    import {api, fakeData} from '../../api'
+    import store from '../../store'
+    import utils from '../../utils'
 
     export default {
-        name: "Search",
+        name: "search",
         data () {
             return {
                 keyword: '',
@@ -83,21 +84,35 @@
         },
         methods: {
             search () {
-                api.getCourses({code: 'search', course_name_keyword: this.keyword}).then(res => {
-                    store.commit('addCourses', res.data)
+                utils.request({
+                    invoke: api.requestSearchCourses,
+                    params: {
+                        course_name_keyword: this.keyword
+                    },
+                    result: fakeData.SEARCH_COURSE
                 })
+                    .then(res => {
+                        store.commit('home/ADD_COURSES', res.data.chunks);
+                        store.commit('home/TOGGLE_FAV', false)
+                    })
             },
             filter () {
-                api.getCourses({
-                    code: 'filter',
-                    type: this.selected.type,
-                    coursename: this.selected.coursename,
-                    teacher: this.selected.teacher,
-                    time: this.selected.time,
-                    favorite: this.selected.favorite
-                }).then(res => {
-                    store.commit('addCourses', res.data)
+                // NOTE: missing favorite field in the api
+                utils.request({
+                    invoke: api.requestFilterCourses,
+                    params: {
+                        type: this.selected.type,
+                        courseName: this.selected.coursename,
+                        teacher: this.selected.teacher,
+                        time: parseInt(this.selected.time),
+                        // favorite: this.selected.favorite
+                    },
+                    result: fakeData.FILTER_COURSE
                 })
+                    .then(res => {
+                        store.commit('home/ADD_COURSES', res.data.chunks);
+                        store.commit('home/TOGGLE_FAV', false)
+                    })
             }
         }
     }

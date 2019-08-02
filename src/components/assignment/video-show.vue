@@ -7,6 +7,7 @@
 
 <script>
     import store from '../../store'
+
     export default {
         name: "videoshow",
         computed: {

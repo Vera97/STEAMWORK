@@ -1,8 +1,3 @@
-//test
-export const getCount = state => {
-    return state.course
-};
-
 
 const getters = {
     get_avatar_url(state) {

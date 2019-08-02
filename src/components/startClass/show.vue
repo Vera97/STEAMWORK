@@ -12,9 +12,6 @@
             </div>
 
         </div>
-<!--        <div class="button-box">-->
-<!--            <el-button type="primary">课程相关资源(点击可下载)</el-button>-->
-<!--        </div>-->
     </div>
 
 </template>
@@ -25,13 +22,13 @@
 
 <style scoped>
     .ppt-box{
-        padding-top: 22%;
+        padding-top: 180px;
         /*padding-bottom: 180px;*/
         text-align: center;
         background-color: #5bc0de;
     }
     .col-box{
-        margin-top: 22%;
+        margin-top: 180px;
     }
     .button-box{
         text-align: center;

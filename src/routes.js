@@ -8,28 +8,34 @@ const listTable = loadcomponents => require.ensure([], () => loadcomponents(requ
 const labinfo = loadcomponents => require.ensure([], () => loadcomponents(require('@/components/experiment/labinfo.vue')), 'experiment');
 */
 
-import notFound from "./views/NotFound/NotFound";
-import Course from "./views/course/Course";
-import Assignment from "./views/Assignment/Assignment";
+import notFound from "./views/notFound/notFound";
+import Course from "./views/course/course";
+import Assignment from "./views/assignment/assignment";
 import PPT from "./views/PPT/PPT";
-import Design from "./views/Design/Design";
+import Design from "./views/design/design";
 import studentsList from "./views/studentsList/studentsList";
 import startClass from "./views/startClass/startClass";
-import stuClass from "./views/stuClass/stuClass";
 import team from "./views/team/team";
-import mySuccess from "./views/mySuccess/mySuccess";
-import resource from "./views/resource/resource";
-const Home = () => import('./views/Home/Home.vue');
+import resource from "./views/resource/resource"
+import mySuccess from "./views/mySuccess/mySuccess"
+import stuClass from "./views/stuClass/stuClass"
+
+const Home = () => import('./views/home/home.vue');
 
 ///正确的姿势建议应该是在组件的created钩子中，或者在组件的beforeEach导航钩子中从服务器请求资
 // 源然后提交vuex，组件再同一从vuex中获取数据
 
 let routes = [
     {
+        path: '/',
+        redirect: '/home'
+    },
+    {
         path: '/home',
         component: Home
     },
     {
+        name: 'course',
         path: '/course',
         component: Course,
         props: true
@@ -60,18 +66,8 @@ let routes = [
         props: true
     },
     {
-        path: '/stuClass',
-        component: stuClass,
-        props: true
-    },
-    {
         path: '/team',
         component: team,
-        props: true
-    },
-    {
-        path: '/mysuccess',
-        component: mySuccess,
         props: true
     },
     {
@@ -79,6 +75,17 @@ let routes = [
         component: resource,
         props: true
     },
+    {
+        path: '/mySuccess',
+        component: mySuccess,
+        props: true
+    },
+    {
+        path: '/stuClass',
+        component: stuClass,
+        props: true
+    },
+
     {
         path: '*',
         component: notFound

@@ -13,8 +13,8 @@
 </template>
 
 <script>
-    import NavStu from "../../components/Nav-stu";
-    import Footer from "../../components/Footer";
+    import NavStu from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
     import growUp from "../../components/resource/growUp";
     import task from "../../components/resource/task";
     import pptCenter from "../../components/resource/ppt-center";
@@ -22,6 +22,7 @@
     export default {
         name: "resource",
         components: {pptCenter, task, growUp, Footer, NavStu},
+
 
     }
 </script>

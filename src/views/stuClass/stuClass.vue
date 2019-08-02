@@ -13,8 +13,8 @@
 </template>
 
 <script>
-    import Navstu from "../../components/Nav-stu";
-    import Footer from "../../components/Footer";
+    import Navstu from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
     import question from "../../components/stuClass/question"
     import help from "../../components/stuClass/help";
     import task from "../../components/stuClass/task";

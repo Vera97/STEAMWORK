@@ -1,22 +1,22 @@
 <template>
     <el-row class="el-row">
         <h3>相关课程</h3>
-        <el-col :span="4" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 1 : 0">
-            <CourseCell :title="title+o" :introduction="introduction+o" :id="123"></CourseCell>
+        <el-col :span="4" v-for="(item, index) in relatedList" :key="index" :offset="index > 0 ? 1 : 0">
+            <CourseCell :title="item.title" :introduction="item.introduction" :id="item.courseId"></CourseCell>
         </el-col>
     </el-row>
 </template>
 
 <script>
-    import CourseCell from "../Course-cell";
+    import CourseCell from "../course-cell";
     export default {
         name: "Related",
+        props: {
+            relatedList: Array
+        },
         components: {CourseCell},
         data(){
-            return {
-                title:'其他课程',
-                introduction:'一句话的简介xxxx',
-            }
+            return {}
         }
     }
 </script>
@@ -25,6 +25,4 @@
     .el-row{
         width: 100%;
     }
-
 </style>
->

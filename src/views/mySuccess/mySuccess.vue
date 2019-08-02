@@ -12,9 +12,9 @@
 </template>
 
 <script>
-    import NavStu from "../../components/Nav-stu";
-    import Footer from "../../components/Footer";
-    import classList from "../../components/classList"
+    import NavStu from "../../components/hd-nav";
+    import Footer from "../../components/hd-footer";
+    import classList from "../../components/class-list"
     import diary from "../../components/mySuccess/diary";
 
     export default {

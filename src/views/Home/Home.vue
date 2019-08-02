@@ -11,24 +11,32 @@
 </template>
 
 <script>
-    import Nav from "../../components/Nav";
-    import Search from "../../components/Home/Search";
-    import Carousel from "../../components/Home/Carousel";
-    import ClassList from "../../components/classList";
-    import Footer from "../../components/Footer";
+    import Nav from "../../components/hd-nav";
+    import Search from "../../components/home/search";
+    import Carousel from "../../components/home/carousel";
+    import ClassList from "../../components/home/class-list";
+    import Footer from "../../components/hd-footer";
+
+    import store from '../../store';
+
     export default {
         name: "home",
-        components: {Footer,ClassList, Carousel, Search, Nav},
-        // beforeRouteEnter(to, from, next) {
-        //     get();
-        //     next(vm => {
-        //         set(vm);
-        //     })
-        // }
+        components: {Footer, ClassList, Carousel, Search, Nav},
+        created() {},
+        beforeRouteLeave(to, from, next) {
+            store.commit('home/PUSH_COUNT', 0);
+            store.commit('home/CLEAR_ALL');
+            next()
+        }
     }
 
 </script>
 
 <style scoped>
+  .el-header{
+    padding:0;
+  }
+  .el-footer{
+    padding:0;
+  }
 </style>
-
