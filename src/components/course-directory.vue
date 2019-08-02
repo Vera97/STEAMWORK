@@ -84,6 +84,36 @@
                     },
                     ['添加课时']
                 );
+                let editCourse = h(
+                    'el-button',
+                    {
+                        props: {
+                            size: 'mini',
+                            type: 'text',
+                        },
+                        on: {
+                            click() {
+                                that.editCourse(data.courseId)
+                            }
+                        }
+                    },
+                    ['修改']
+                );
+                let delCourse = h(
+                    'el-button',
+                    {
+                        props: {
+                            size: 'mini',
+                            type: 'text',
+                        },
+                        on: {
+                            click() {
+                                that.delCourse(data.courseId)
+                            }
+                        }
+                    },
+                    ['删除']
+                );
                 let removeSection = h(
                     'el-button',
                     {
@@ -132,10 +162,106 @@
                 )
             },
             addCourseSection(node, courseId) {
-                alert(`add for ${courseId}`)
+                this.$prompt('请输入课时名称', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    utils.request({
+                        invoke: api.requestNewCourseSection,
+                        params: {
+                            courseId: courseId,
+                            courseName: value
+                        },
+                        result: fakeData.COURSE_SECTION
+                    }).then(res => {
+                        node.data.courseSection.push({
+                            courseSectionId: res.data.courseSectionId,
+                            courseSectionName:value
+                        });
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    })
+                });
             },
             removeCourseSection(node, courseId, sectionId) {
-                alert(`remove for ${courseId} and ${sectionId}`)
+                this.$confirm('此操作将永久删除本课时, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    utils.request({
+                        invoke: api.requestDeleteCourseSection,
+                        params: {
+                            courseSectionId: sectionId,
+                        },
+                        result: fakeData.COURSE_SECTION
+                    }).then(()=> {
+                        const child=node.parent.data.courseSection;
+                        const index = child.findIndex(d => d.courseSectionId ===sectionId);
+                        child.splice(index, 1);
+                    })
+                });
+            },
+            editCourse(courseId){
+                this.$prompt('修改课程名称：', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    let that=this;
+                    utils.request({
+                        invoke: api.requestEditCourseName,
+                        params: {
+                            courseId: courseId,
+                            courseName: value,
+                        },
+                        result: fakeData.EDIT_COURSE
+                    }).then(()=> {//编辑
+                        const index = that.listData.findIndex(d => d.courseId=== courseId);
+                        const temp=that.listData[index];
+                        that.$set(temp,'title',value);
+                        that.$set(that.listData,index,tag);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: '您更改后的课程名称是: ' + value
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            delCourse(courseId){
+                this.$confirm('此操作将永久删除整个课程, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let that=this;
+                    utils.request({
+                        invoke: api.requestDeleteCourse,
+                        params: {
+                            courseId: courseId,
+                        },
+                        result: fakeData.DELETE_COURSE
+                    }).then(() => {//删除课程主要代码
+                        const index = that.listData.findIndex(d => d.courseId=== courseId);
+                        that.listData.splice(index, 1);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         async created() {

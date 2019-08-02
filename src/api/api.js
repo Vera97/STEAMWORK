@@ -313,6 +313,50 @@ export const requestNewCourse = params => {
     return axios.post('${base)/course_prepare/new_course', params, {headers: headers});
 };
 export const requestNewCourseSection = params => {
-    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post('${base)/course_prepare/new_course_section',params,{headers:headers});
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/course_prepare/new_coursesection`, params, {headers: headers});
+};
+export const requestDeleteCourseSection = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post('${base)/courses_prepare/delete_coursesection', params, {headers: headers});
+};
+export const requestDeleteCourse = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post('${base)/courses_prepare/delete_course', params, {headers: headers});
+};
+export const requestEditCourseName = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post('${base)/courses_prepare/edit_course_name', params, {headers: headers});
+};
+
+/**
+ * url: /courses_prepare/new_exercise
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @param {String} params.content
+ * @returns {Promise<any> | {code: number, exerciseId: number}}
+ */
+export const requestNewExercise = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise`, params, {headers: headers});
+};
+
+/**
+ * url: /courses_prepare/delete_exercise
+ * @param {Object} params
+ * @param {number} params.exerciseId
+ * @returns {Promise<any> | {code: number}}
+ */
+export const requestDeleteExercise = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/delete_exercise`, params, {headers: headers});
+};
+
+let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
+export const uploadFile = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/api/courses_prepare/new_ppt`, params, {headers: upload_headers});
+
 };

@@ -1,5 +1,6 @@
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'font-awesome/css/font-awesome.min.css'
 import Vue from 'vue'
 import App from './App.vue'
 //Vuex
@@ -18,17 +19,23 @@ const router = new VueRouter({
     routes: routes
 });
 
-// router.beforeEach((to, from, next) => {
-//     if (to.path === '/home') {
-//         sessionStorage.removeItem('user');
-//     }
-//     let user = JSON.parse(sessionStorage.getItem('user'));
-//     if (user === null && to.path !== '/home') {
-//         next({path: '/home'});
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    if(to.path !== '/home') {
+        if(!store.state.userName || store.state.userName === '') {
+            store.commit('PROBE');
+            if(!store.state.userName || store.state.userName === '') {
+                next({path: '/home'});
+                alert('请先登陆')
+            }
+            else next();
+        } else {
+            next();
+        }
+    }
+    else {
+        next()
+    }
+});
 
 new Vue({
     render: h => h(App),
