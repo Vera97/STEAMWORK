@@ -3,9 +3,13 @@ const state = {
         courseSectionId: '',
         code: ''
     },
-    course:{
+    course: {
         courseId: '',
         code: ''
+    },
+    question: {
+        code: '',
+        quesList: []
     }
 };
 
@@ -19,6 +23,9 @@ const mutations = {
     },
     ADD_COURSE(state, course) {
         state.course= course
+    },
+    ADD_QUESTION(state,question) {
+        state.question = question
     }
 };
 

@@ -331,7 +331,7 @@ export const ADD_COURSE = [
 ];
 
 export const UP_PROGRESS = {
-    code:'1'
+    code: 1
 };
 export const PROGRESS_STU = [
     {
@@ -392,4 +392,24 @@ export const UPLOAD_RESPONSE = {
     code: 1,
     url: '/media/ppt/example.ppt',
     pptImagesList: ['/media/ppt/images/page1.png', '/media/ppt/images/page2.png']
+};
+
+export const NEW_QUESTION = {
+    code: 1,
+    quesList: [
+        {
+            questionId: 1234
+        },
+        {
+            questionId: 5678
+        }
+    ]
+};
+
+export const DELETE_COURSE = {
+    code: 1
+};
+
+export const EDIT_COURSE = {
+    code: 1
 };
