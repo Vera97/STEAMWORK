@@ -101,11 +101,12 @@
 </script>
 
 <style scoped>
-  .el-col{
-    padding-bottom:20px;
+  .el-col {
+    padding-bottom: 20px;
     text-align: center;
   }
-  .bottom{
-    padding-top:10px;
+
+  .bottom {
+    padding-top: 10px;
   }
 </style>

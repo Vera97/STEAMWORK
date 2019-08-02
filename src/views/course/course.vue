@@ -177,43 +177,53 @@
 </script>
 
 <style scoped lang="scss">
-  .el-header{
-    padding:0;
+  .el-header {
+    padding: 0;
   }
-  .el-footer{
-    padding:0;
+
+  .el-footer {
+    padding: 0;
   }
+
   .el-row {
     margin-bottom: 0;
     width: 100%;
-  &:last-child {
-     margin-bottom: 0;
-   }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
+
   .el-col {
     border-radius: 4px;
   }
+
   .bg-purple-dark {
     background: #99a9bf;
   }
+
   .bg-purple {
     background: #d3dce6;
   }
+
   .bg-purple-light {
     background: #e5e9f2;
   }
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
   }
+
   .el-button {
-    width:70%;
-    margin-top:15px;
-    margin-left:15%;
-    margin-right:15%;
+    width: 70%;
+    margin-top: 15px;
+    margin-left: 15%;
+    margin-right: 15%;
   }
 </style>

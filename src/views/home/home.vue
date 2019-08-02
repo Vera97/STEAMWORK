@@ -1,12 +1,16 @@
 <template>
   <el-container>
-    <el-header><Nav active-index="1"></Nav></el-header>
+    <el-header>
+      <Nav active-index="1"></Nav>
+    </el-header>
     <el-main>
       <Search></Search>
       <Carousel></Carousel>
       <ClassList></ClassList>
     </el-main>
-    <el-footer><Footer></Footer></el-footer>
+    <el-footer>
+      <Footer></Footer>
+    </el-footer>
   </el-container>
 </template>
 
@@ -33,10 +37,11 @@
 </script>
 
 <style scoped>
-  .el-header{
-    padding:0;
+  .el-header {
+    padding: 0;
   }
-  .el-footer{
-    padding:0;
+
+  .el-footer {
+    padding: 0;
   }
 </style>

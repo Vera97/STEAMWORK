@@ -1,15 +1,27 @@
 <template>
-    <el-container>
-        <el-header><Nav active-index="4"></Nav></el-header>
-        <el-main class="main-box">
-            <el-row :gutter="24">
-                <el-col :span="5"><classList @course-selected="loadMaterial"></classList><askList></askList></el-col>
-                <el-col :span="14"><show></show></el-col>
-                <el-col :span="5"><startActivities></startActivities><monitor :prog="prog"></monitor></el-col>
-            </el-row>
-        </el-main>
-        <el-footer><Footer></Footer></el-footer>
-    </el-container>
+  <el-container>
+    <el-header>
+      <Nav active-index="4"></Nav>
+    </el-header>
+    <el-main class="main-box">
+      <el-row :gutter="24">
+        <el-col :span="5">
+          <classList @course-selected="loadMaterial"></classList>
+          <askList></askList>
+        </el-col>
+        <el-col :span="14">
+          <show></show>
+        </el-col>
+        <el-col :span="5">
+          <startActivities></startActivities>
+          <monitor :prog="prog"></monitor>
+        </el-col>
+      </el-row>
+    </el-main>
+    <el-footer>
+      <Footer></Footer>
+    </el-footer>
+  </el-container>
 </template>
 <script>
     import Nav from "../../components/hd-nav";
@@ -67,21 +79,23 @@
             })
                     .then(res => {
                         store.commit('startClass/GET_PROG',res.data);
-                        setInterval(that.updateData,1500);//定时请求
+                        // setInterval(that.updateData,1500);
                     })
         }
     }
 </script>
 
 <style scoped>
-    *{
-        margin-left: 0;
-        padding-left: 0;
-    }
-    .main-box{
-        margin-left: 10px;
-    }
-    .el-footer {
-        padding-right: 0;
-    }
+  * {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .main-box {
+    margin-left: 10px;
+  }
+
+  .el-footer {
+    padding-right: 0;
+  }
 </style>

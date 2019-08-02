@@ -1,8 +1,9 @@
 <template>
-    <el-card class="box-card">
-        <h3>班级列表</h3>
-        <el-tree :default-expanded-keys="expandKey" auto-expand-parent highlight-current node-key="key" ref="tree" :data="listData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-    </el-card>
+  <el-card class="box-card">
+    <h3>班级列表</h3>
+    <el-tree :default-expanded-keys="expandKey" auto-expand-parent highlight-current node-key="key" ref="tree"
+             :data="listData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+  </el-card>
 </template>
 
 <script>

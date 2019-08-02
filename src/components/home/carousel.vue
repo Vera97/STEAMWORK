@@ -3,7 +3,9 @@
     <el-carousel-item v-for="item in courses" :key="item.courseId">
       <h3>{{item.title}}</h3>
       <p>{{item.introduce}}</p>
-      <div class="link"><router-link :to="{name: 'course', params: {courseId: item.courseId}}">查看详情</router-link></div>
+      <div class="link">
+        <router-link :to="{name: 'course', params: {courseId: item.courseId}}">查看详情</router-link>
+      </div>
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -60,15 +62,5 @@
       font-size: 1em;
       height: 20%;
     }
-
-    /*.link {*/
-    /*  color: #000;*/
-    /*  cursor: pointer;*/
-    /*  font-size: .9em;*/
-
-    /*  &:hover {*/
-    /*    text-decoration: underline;*/
-    /*  }*/
-    /*}*/
   }
 </style>

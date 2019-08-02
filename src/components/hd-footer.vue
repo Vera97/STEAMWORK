@@ -1,8 +1,8 @@
 <template>
-    <div class="copyright">
-       &copy; Copyright 2019 <b>hedouclass.com</b> &nbsp; | &nbsp; All rights reserved.
-        <a href="#" target="_blank" title="禾斗创课">禾斗创课</a>
-    </div>
+  <div class="copyright">
+    &copy; Copyright 2019 <b>hedouclass.com</b> &nbsp; | &nbsp; All rights reserved.
+    <a href="#" target="_blank" title="禾斗创课">禾斗创课</a>
+  </div>
 </template>
 
 <script>

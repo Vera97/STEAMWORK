@@ -98,19 +98,21 @@
 </script>
 
 <style scoped>
-    * {
-        margin-left: 0;
-        padding-left: 0;
-    }
-    .classlist{
-        margin-left:20px;
-    }
-     .button{
-        margin-bottom:10px;
-         width:100%;
-     }
+  * {
+    margin-left: 0;
+    padding-left: 0;
+  }
 
-    .el-footer {
-        padding: 0;
-    }
+  .classlist {
+    margin-left: 20px;
+  }
+
+  .button {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .el-footer {
+    padding: 0;
+  }
 </style>

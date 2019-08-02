@@ -234,26 +234,29 @@
     }
 </script>
 <style scoped>
-    .box-card{
-        width:100%;
-        height:100%;
-        margin-bottom:2%
-    }
-    .box-card3{
-        margin-bottom:5%;
-    }
-    .ali{
-        margin-top: 20px;
-    }
-    .text{
-        display: inline-block;
-        vertical-align: top;
-        width: 100%;
-        padding: 0px;
-        margin-bottom:5px;
-    }
+  .box-card {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 2%
+  }
 
-    .activities-tree {
-        width: 30%;
-    }
+  .box-card3 {
+    margin-bottom: 5%;
+  }
+
+  .ali {
+    margin-top: 20px;
+  }
+
+  .text {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    padding: 0px;
+    margin-bottom: 5px;
+  }
+
+  .activities-tree {
+    width: 30%;
+  }
 </style>

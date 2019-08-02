@@ -1,15 +1,27 @@
 <template>
-    <el-container>
-        <el-header><Navstu></Navstu></el-header>
-        <el-main class="main-box">
-            <el-row :gutter="24">
-                <el-col :span="5"><question></question><help></help></el-col>
-                <el-col :span="14"><pptView></pptView></el-col>
-                <el-col :span="5"><problem></problem><task></task></el-col>
-            </el-row>
-        </el-main>
-        <el-footer><Footer></Footer></el-footer>
-    </el-container>
+  <el-container>
+    <el-header>
+      <Navstu></Navstu>
+    </el-header>
+    <el-main class="main-box">
+      <el-row :gutter="24">
+        <el-col :span="5">
+          <question></question>
+          <help></help>
+        </el-col>
+        <el-col :span="14">
+          <pptView></pptView>
+        </el-col>
+        <el-col :span="5">
+          <problem></problem>
+          <task></task>
+        </el-col>
+      </el-row>
+    </el-main>
+    <el-footer>
+      <Footer></Footer>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
@@ -36,12 +48,12 @@
 </script>
 
 <style scoped>
-    *{
-        margin-left: 0px;
-        padding-left: 0px;
-    }
-    .main-box{
-        margin-left: 10px;
-    }
+  * {
+    margin-left: 0px;
+    padding-left: 0px;
+  }
 
+  .main-box {
+    margin-left: 10px;
+  }
 </style>
