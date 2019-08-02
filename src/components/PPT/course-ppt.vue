@@ -14,8 +14,8 @@
 </script>
 
 <style scoped>
-  .info{
-    color:#CCCCCC;
+  .info {
+    color: #CCCCCC;
   }
 </style>
 

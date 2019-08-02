@@ -4,7 +4,9 @@
       <div class="caption">{{title}}</div>
       <div class="bottom">
         <div class="info">{{introduction}}</div>
-        <div class="link"><router-link :to="{name: 'course', params: {courseId: courseId}}">查看详情</router-link></div>
+        <div class="link">
+          <router-link :to="{name: 'course', params: {courseId: courseId}}">查看详情</router-link>
+        </div>
       </div>
     </div>
   </el-card>
@@ -19,8 +21,8 @@
 </script>
 
 <style scoped lang="scss">
-  .info{
-    color:#CCCCCC;
+  .info {
+    color: #CCCCCC;
     font-size: .9em;
     margin: 1em 0;
   }

@@ -38,19 +38,21 @@
 </script>
 
 <style scoped>
-    .button-box{
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    .student-id-box{
-        padding: 0px;
-        width: 24px;
-        float: left;
-        margin: 2px;
-        text-align: center;
-        border-radius: 2px;
-    }
-    p{
-        margin-top: 130px;
-    }
+  .button-box {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .student-id-box {
+    padding: 0px;
+    width: 24px;
+    float: left;
+    margin: 2px;
+    text-align: center;
+    border-radius: 2px;
+  }
+
+  p {
+    margin-top: 130px;
+  }
 </style>

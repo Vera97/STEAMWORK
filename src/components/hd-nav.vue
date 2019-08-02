@@ -37,7 +37,6 @@
             </el-form-item>
           </el-form>
         </el-popover>
-
       </div>
     </el-menu>
   </div>
@@ -114,10 +113,10 @@
   .el-menu {
     height: 4em;
 
-    .nav-type{
-      float:left;
-      margin:20px;
-      padding-right:100px;
+    .nav-type {
+      float: left;
+      margin: 20px;
+      padding-right: 100px;
     }
 
     .el-menu-item, .el-submenu {
@@ -127,9 +126,9 @@
   }
 
 
-  .login{
-    float:right;
-    color:#ffffff;
+  .login {
+    float: right;
+    color: #ffffff;
     margin: 0 15px;
     position: relative;
     top: 50%;

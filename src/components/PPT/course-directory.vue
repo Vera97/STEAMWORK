@@ -1,9 +1,9 @@
 <template>
-    <el-card class="box-card">
-        <el-button type="primary">+ 新建课程</el-button>
-        <h3>课程列表</h3>
-        <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-    </el-card>
+  <el-card class="box-card">
+    <el-button type="primary">+ 新建课程</el-button>
+    <h3>课程列表</h3>
+    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+  </el-card>
 </template>
 
 <script>

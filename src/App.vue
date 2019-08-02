@@ -1,8 +1,8 @@
 <template>
-    <div id="app">
-        <!--路由渲染出口-->
-        <router-view></router-view>
-    </div>
+  <div id="app">
+    <!--路由渲染出口-->
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -22,12 +22,12 @@
 </script>
 
 <style>
-    /* do not delete these */
-    body {
-        margin: 0;
-    }
+  /* do not delete these */
+  body {
+    margin: 0;
+  }
 
-    * {
-        box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 </style>

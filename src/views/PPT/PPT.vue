@@ -28,7 +28,8 @@
             <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
           </el-upload>
           <PPTshow></PPTshow>
-          <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;</el-button>
+          <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;
+          </el-button>
           <a href="#" class="ll">导出内容</a>
           <el-upload
                   class="upload-demo"
@@ -48,7 +49,6 @@
       <Footer></Footer>
     </el-footer>
   </el-container>
-
 </template>
 
 <script>

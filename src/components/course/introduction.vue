@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-card :body-style="{ padding: '14px' }" class="card-position">
-                <span>&nbsp;课程介绍：<br> &emsp;&emsp;{{ introduction }}</span>
+      <span>&nbsp;课程介绍：<br> &emsp;&emsp;{{ introduction }}</span>
       <video width="100%" height="100%" controls>
         <source :src="src" type="video/mp4">
         <source :src="src" type="video/ogg">
@@ -22,13 +22,14 @@
 </script>
 
 <style scoped>
-    .card-position{
-        width:100%;
-    }
-    .box-card{
-        font-size:110px;
-        text-align:center;
-        width:100%;
-        height:100%;
-    }
+  .card-position {
+    width: 100%;
+  }
+
+  .box-card {
+    font-size: 110px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
 </style>

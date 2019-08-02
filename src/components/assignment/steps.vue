@@ -1,11 +1,17 @@
 <template>
-    <div id="periods">
-        <!--        <p>3D打印 课时1 #写下你的标题#</p>-->
-        <div v-for="item in steps" :key="item.stepId"><el-button type="primary" plain class="periods-length" @click="getStep($event, item)">{{ item.title }}</el-button></div>
-        <div><el-button type="primary" plain class="periods-length">……</el-button></div>
-        <div><el-button type="primary" class="periods-length">资源下载</el-button></div>
+  <div id="periods">
+    <!--        <p>3D打印 课时1 #写下你的标题#</p>-->
+    <div v-for="item in steps" :key="item.stepId">
+      <el-button type="primary" plain class="periods-length" @click="getStep($event, item)">{{ item.title }}
+      </el-button>
     </div>
-
+    <div>
+      <el-button type="primary" plain class="periods-length">……</el-button>
+    </div>
+    <div>
+      <el-button type="primary" class="periods-length">资源下载</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -42,9 +48,9 @@
 </script>
 
 <style scoped>
-    .periods-length {
-        width: 90%;
-        text-align: center;
-        margin: 0.9%;
-    }
+  .periods-length {
+    width: 90%;
+    text-align: center;
+    margin: 0.9%;
+  }
 </style>

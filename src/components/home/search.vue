@@ -8,34 +8,36 @@
         <el-button type="primary" @click="search">搜索</el-button>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.type" placeholder="<请选择类别>">
-        <el-option :label="'<请选择类别>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.type" :key="item.type" :label="item.type" :value="item.type"></el-option>
-      </el-select>
+        <el-select v-model="selected.type" placeholder="<请选择类别>">
+          <el-option :label="'<请选择类别>'" :value="''"></el-option>
+          <el-option v-for="item in conditions.type" :key="item.type" :label="item.type" :value="item.type"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.coursename" placeholder="<请选择课程名称>">
-        <el-option :label="'<请选择课程名称>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.coursename" :key="item.type" :label="item.type" :value="item.type"></el-option>
-      </el-select>
+        <el-select v-model="selected.coursename" placeholder="<请选择课程名称>">
+          <el-option :label="'<请选择课程名称>'" :value="''"></el-option>
+          <el-option v-for="item in conditions.coursename" :key="item.type" :label="item.type"
+                     :value="item.type"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.teacher" placeholder="<请选择老师>">
-        <el-option :label="'<请选择老师>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.teacher" :key="item.type" :label="item.type" :value="item.type"></el-option>
-      </el-select>
+        <el-select v-model="selected.teacher" placeholder="<请选择老师>">
+          <el-option :label="'<请选择老师>'" :value="''"></el-option>
+          <el-option v-for="item in conditions.teacher" :key="item.type" :label="item.type"
+                     :value="item.type"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item class="filter">
-      <el-select v-model="selected.time" placeholder="<请选择时长>">
-        <el-option :label="'<请选择时长>'" :value="''"></el-option>
-        <el-option v-for="item in conditions.time" :key="item.type" :label="item.type" :value="item.type"></el-option>
-      </el-select>
+        <el-select v-model="selected.time" placeholder="<请选择时长>">
+          <el-option :label="'<请选择时长>'" :value="''"></el-option>
+          <el-option v-for="item in conditions.time" :key="item.type" :label="item.type" :value="item.type"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item class="filter">
         <el-checkbox v-model="selected.favorite">已收藏</el-checkbox>
       </el-form-item>
       <el-form-item>
-      <el-button type="primary" class="filter-button" @click="filter">筛选</el-button>
+        <el-button type="primary" class="filter-button" @click="filter">筛选</el-button>
       </el-form-item>
     </el-form>
   </div>
