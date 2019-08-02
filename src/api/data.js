@@ -387,3 +387,9 @@ export const COURSE_SECTION =[
         courseSectionId:1
     }
 ];
+
+export const UPLOAD_RESPONSE = {
+    code: 1,
+    url: '/media/ppt/example.ppt',
+    pptImagesList: ['/media/ppt/images/page1.png', '/media/ppt/images/page2.png']
+};

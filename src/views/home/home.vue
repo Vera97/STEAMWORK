@@ -23,7 +23,7 @@
         name: "home",
         components: {Footer, ClassList, Carousel, Search, Nav},
         created() {},
-        beforeRouteLeave(to, from, next) {
+        beforeRouteEnter(to, from, next) {
             store.commit('home/PUSH_COUNT', 0);
             store.commit('home/CLEAR_ALL');
             next()
