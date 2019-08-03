@@ -17,16 +17,12 @@
             return {
                 listData: [],
                 defaultProps: {
-                    children: 'courseDetail',
-                    label(data) {
-                        if(data.className) {
-                            return data.className
-                        } else if(data.courseName) {
-                            return data.courseName
-                        } else {
-                            throw new DOMException()
-                        }
-                    }
+                  children: 'child',
+                  label: function (data, node) {
+                    if (node.level === 1) return data.className;
+                    else if (node.level === 2) {return data.courseName;}
+                    else return data.courseSectionName;
+                  }
                 },
                 key: 0,                 /* a unique key for the node. to select a node after loaded. */
                 expandKey: []
@@ -61,7 +57,7 @@
                             * via Array.push method, and add every attributes before the mount or use the
                             * method provided by vue. */
                             for(let i of res.data.classList) {
-                                that.listData.push({...i, courseDetail: [], key: that.key});
+                                that.listData.push({...i, child: [], key: that.key});
                                 that.key++
                             }
                         })
@@ -74,7 +70,6 @@
 
                 for (let k = 0; k < this.listData.length; k++) {
                     let classId = this.listData[k].classId;
-
                     await utils.request({
                         invoke: api.requestClassCourseList,
                         params: {
@@ -87,18 +82,19 @@
                                     return {
                                         courseId: item.courseId,
                                         courseName: item.courseName,
+
                                         key: that.key++
                                     }
                                 });
-                                that.listData[k].courseDetail.push(...courseList);
+                                that.listData[k].child.push(...courseList);
                             });
 
                     if (!flag) {
-                        if(that.listData[k].courseDetail.length !== 0) {
+                        if(that.listData[k].child.length !== 0) {
                             flag = true;
                             let classId = that.listData[k].classId;
-                            let courseId = that.listData[k].courseDetail[0].courseId;
-                            let key = that.listData[k].courseDetail[0].key;
+                            let courseId = that.listData[k].child[0].courseId;
+                            let key = that.listData[k].child[0].key;
                             that.expandKey = [that.listData[k].key];
 
                             // use the id to fetch the list of student
@@ -109,9 +105,22 @@
                             }
                         }
                     }
+                  for(let i = 0; i < this.listData[k].child.length; i++) {
+                    utils.request({
+                      invoke: api.requestCourseDetail,
+                      params: {
+                        courseId: this.listData[k].child[i].courseId
+                      },
+                      result: fakeData.COURSE_DETAIL
+                    })
+                            .then(res => {
+                              this.$set(this.listData[k].child[i], 'child', []);
+                              this.listData[k].child[i].child.push(...res.data.courseSection);
+                            })
+                  }
                 }
             },
-            addCourse(course) {
+          addCourse(course) {
                 this.listData.push(course)
             },
             addRelated(value) {
@@ -124,7 +133,8 @@
         },
         async created() {
             await this.getClass();
-            this.getSubCourses()
+            this.getSubCourses();
+            console.log(this.listData);
         }
     }
 </script>
