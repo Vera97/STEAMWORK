@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import NavStu from "../../components/hd-nav";
+    import NavStu from "../../components/stu-nav";
     import teamList from "../../components/team/team-list";
     import upload from "../../components/team/upload";
     import hdfooter from "../../components/hd-footer";

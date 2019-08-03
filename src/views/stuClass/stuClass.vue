@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import Navstu from "../../components/hd-nav";
+    import Navstu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
     import question from "../../components/stuClass/question"
     import help from "../../components/stuClass/help";

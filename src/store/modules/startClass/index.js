@@ -1,7 +1,12 @@
 const state = {
     prog: [ ],
     code:'',
-    exerciseList: []
+    exerciseList: [],
+    exerciseMedia:{
+        code:'',
+        fileType:'',
+        mediaUrl:''
+    },
 };
 
 const getters = {};
@@ -18,6 +23,10 @@ const mutations = {
     ADD_EXERCISE(state,exerciseList)
     {
         state.exerciseList=exerciseList;
+    },
+    PLAY_RESOURCE(state,exerciseMedia)
+    {
+        state.exerciseMedia=exerciseMedia;
     }
 };
 
