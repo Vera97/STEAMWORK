@@ -357,6 +357,10 @@ export const requestExercise= params => {
     if(DEVELOPMENT) return new Promise(  resolve=> resolve());
     return axios.post('${base)/classroom/ppt_exercise',params,{headers:headers});
 };
+export const requestExerciseMedia= params => {
+    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
+    return axios.post('${base)/classroom/exercise/media',params,{headers:headers});
+};
 let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
 export const uploadFile = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());

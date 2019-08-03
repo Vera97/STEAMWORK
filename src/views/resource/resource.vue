@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import NavStu from "../../components/hd-nav";
+    import NavStu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
     import growUp from "../../components/resource/growUp";
     import task from "../../components/resource/task";

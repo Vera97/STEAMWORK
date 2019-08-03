@@ -10,7 +10,7 @@
           <askList></askList>
         </el-col>
         <el-col :span="14">
-          <show v-if="current"></show><newComp :exerciseId="exerciseId" v-else @onEmmitCurrent="onEmmitCurrent"></newComp>
+          <show v-if="current"></show><newComp :exercise="exercise" v-else @onEmmitCurrent="onEmmitCurrent"></newComp>
         </el-col>
         <el-col :span="5">
           <startActivities @onEmitIndex="onEmitIndex"></startActivities>
@@ -42,20 +42,13 @@
                 {
                     prog(){
                         return store.state.startClass.prog;
-                    },
-                    exerciseId(){
-                        return this.exerciseId;
-                    },
-                    current(){
-                        return this.current;
                     }
-
                 },
         data () {
             return {
                 name: 'startClass',
-                current:true,
-                exerciseId: -1
+                current: true,
+                exercise: '',
             }
         },
         methods:{
@@ -78,7 +71,7 @@
             loadMaterial() {},
             onEmitIndex(index){
                this.current=false;
-               this.exerciseId=index;
+               this.exercise=index;
             },
             onEmmitCurrent(current){
                this.current=current;

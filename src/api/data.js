@@ -419,19 +419,33 @@ export const EXERCISE_LIST={
     exerciseList:[
         {
             exerciseId:1,
-            title:'e1'
+            title:'文本播放',
+            type:'文本播放'
         },
         {
             exerciseId:2,
-            title:'e2'
+            title:'资源播放',
+            type:'资源播放'
         },
         {
             exerciseId:3,
-            title:'e3'
+            title:'互动问答',
+            type:'互动问答'
         },
         {
             exerciseId:4,
-            title:'e4'
+            title:'人员统计',
+            type:'人员统计'
+        },
+        {
+            exerciseId:4,
+            title:'小组分组',
+            type:'小组分组'
         }
     ]
+};
+export const EXERCISE_RESOURCE={
+    code:1,
+    fileType:'wav',
+    mediaUrl:'/media/example/media/oo.wav'
 };

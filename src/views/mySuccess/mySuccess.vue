@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import NavStu from "../../components/hd-nav";
+    import NavStu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
     import classList from "../../components/class-list"
     import diary from "../../components/mySuccess/diary";
