@@ -364,10 +364,17 @@ export const requestDeleteExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/delete_exercise`, params, {headers: headers});
 };
-
+export const requestExercise= params => {
+    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
+    return axios.post('${base)/classroom/ppt_exercise',params,{headers:headers});
+};
 let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
 export const uploadFile = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/api/courses_prepare/new_ppt`, params, {headers: upload_headers});
 
 };
+
+
+
+

@@ -436,3 +436,25 @@ export const DELETE_COURSE = {
 export const EDIT_COURSE = {
     code: 1
 };
+
+export const EXERCISE_LIST={
+    code:1,
+    exerciseList:[
+        {
+            exerciseId:1,
+            title:'e1'
+        },
+        {
+            exerciseId:2,
+            title:'e2'
+        },
+        {
+            exerciseId:3,
+            title:'e3'
+        },
+        {
+            exerciseId:4,
+            title:'e4'
+        }
+    ]
+};

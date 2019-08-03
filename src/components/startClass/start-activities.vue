@@ -1,18 +1,49 @@
 <template>
-  <div>
-    <div v-for="o in 4" :key="o" class="button-box">
-      <el-button type="primary" plain style="width: 100%">{{'启动活动' + o + ': xxxxxx'}}</el-button>
+  <div class="main">
+    <div v-for="(item,index) in exercise" :key="item.exerciseId" class="button-box">
+      <el-button type="primary" plain style="width: 100%;margin-bottom:10px" @click="emitIndex(item.exerciseId)">{{'启动活动'+index+':'+item.title}}</el-button>
     </div>
     <el-button type="primary" plain style="width: 100%">……</el-button>
   </div>
 </template>
-
 <script>
-
+  import store from '../../store'
+  import {api, fakeData} from '../../api'
+  import utils from '../../utils'
+  export default {
+    name: "start-activities",
+    computed:
+            {
+              exercise(){
+                return store.state.startClass.exerciseList;
+              }
+            },
+    methods:{
+      emitIndex(index) {
+        this.$emit('onEmitIndex', index)
+      }
+    },
+    created(){
+      utils.request({
+        invoke: api.requestExercise,
+        params: {
+          pptId:this.pptId,
+          page:this.page
+        },
+        result: fakeData.EXERCISE_LIST
+      }).then(res => {
+        store.commit('startClass/ADD_EXERCISE',res.data.exerciseList)
+      });
+    },
+  }
 </script>
 
 <style scoped>
-  .button-box {
+  .main{
+    height:200px;
+    overflow:auto;
+  }
+  .button-box{
     margin: 2px;
     text-align: center;
   }
