@@ -261,6 +261,17 @@ export const requestAlterClassCourseList = params => {
 };
 
 /**
+ * url: /classroom/ppt
+ * @param {Object} params
+ * @param {number} params.courseSectionId
+ * @returns {Promise<any> | {code: number, pptImagesList: Array<String>}}
+ */
+export const requestSlides = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
+};
+
+/**
  * url: /classroom/confirm_question
  * @param params
  * @returns {Promise<AxiosResponse<T>>|Promise<any>}

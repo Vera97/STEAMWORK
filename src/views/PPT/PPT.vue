@@ -14,7 +14,7 @@
                   ref="upload"
                   action="#"
                   class="upload-demo"
-                  :http-request="http"
+                  :http-request="pptUpload"
                   :auto-upload="false"
                   :limit="1"
                   :on-exceed="handleExceed"
@@ -27,7 +27,7 @@
             <el-button class="upload-button" size="medium" type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button>
             <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
           </el-upload>
-          <PPTshow></PPTshow>
+          <PPTshow :ppt-data="pptData"></PPTshow>
           <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;
           </el-button>
           <a href="#" class="ll">导出内容</a>
@@ -66,14 +66,18 @@
         data() {
             return {
                 fileList: [],    /* it's not used. */
-                uploaded: false
+                uploaded: false,
+                pptData: {
+                    url: '',
+                    pptImagesList: []
+                }
             };
         },
         methods: {
             uploadPPT() {
                 this.$refs.upload.submit()
             },
-            http(e) {
+            pptUpload(e) {
                 let that = this;
 
                 this.$confirm('确认上传此文件？', '提示', {
@@ -92,7 +96,9 @@
                             .then(res => {
                                 if(res.data.code === 1) {
                                     this.$message.success('成功上传');
-                                    that.uploaded = true
+                                    that.uploaded = true;
+                                    that.pptData.url = res.data.url;
+                                    that.pptData.pptImagesList.push(...res.data.pptImagesList)
                                 } else {
                                     this.$message.error('上传失败')
                                 }

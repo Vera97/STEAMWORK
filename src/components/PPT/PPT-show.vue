@@ -1,9 +1,9 @@
 <template>
   <el-card class="box-card">
     <el-row :gutter="0">
-      <el-col :span="6">
-        <div class="box-card" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 1 : 0">
-          <course-ppt :title="title+o"></course-ppt>
+      <el-col :span="6" class="ppt-wrapper">
+        <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
+          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide($event, index)" :class="{highlight: index === select}"></course-ppt>
         </div>
       </el-col>
       <el-col :span="17" style="float:right;">
@@ -90,6 +90,9 @@
     export default {
         name: "PPT",
         components: {coursePpt},
+        props: {
+            pptData: Object
+        },
         data() {
             return {
                 input: '',
@@ -98,6 +101,7 @@
                 textarea3:'',
                 textarea4:'',
                 title:'幻灯片',
+                select: 0,
                 listData: [
                     {
                         activities: [
@@ -218,7 +222,6 @@
                                     for(let i = 0; i < that.listData[0].activities.length; i++) {
                                         if(that.listData[0].activities[i].exerciseId === data.exerciseId) {
                                             that.listData[0].activities.splice(i, 1);
-                                            console.log('hit');
                                             break
                                         }
                                     }
@@ -229,15 +232,24 @@
                 }).catch(() => {
                     this.$message.info('已取消删除')
                 })
+            },
+            selectSlide (event, index) {
+                this.select = index
             }
         }
     }
 </script>
 <style scoped>
+  .ppt-wrapper {
+    padding: .5em;
+    max-height: 30em;
+    overflow-y: scroll;
+  }
+
   .box-card {
     width: 100%;
     height: 100%;
-    margin-bottom: 2%
+    margin-bottom: 2%;
   }
 
   .box-card3 {
@@ -258,5 +270,19 @@
 
   .activities-tree {
     width: 30%;
+  }
+
+  .highlight {
+    border: #6495ED solid .1em;
+    border-radius: .5em;
+  }
+
+  .slide-cell {
+    cursor: pointer;
+  }
+
+  .slide-cell:hover {
+    border: #6495ED90 solid .1em;
+    border-radius: .5em;
   }
 </style>
