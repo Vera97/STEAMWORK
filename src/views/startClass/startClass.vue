@@ -10,10 +10,10 @@
           <askList></askList>
         </el-col>
         <el-col :span="14">
-          <show></show>
+          <show v-if="current"></show><newComp :exerciseId="exerciseId" v-else @onEmmitCurrent="onEmmitCurrent"></newComp>
         </el-col>
         <el-col :span="5">
-          <startActivities></startActivities>
+          <startActivities @onEmitIndex="onEmitIndex"></startActivities>
           <monitor :prog="prog"></monitor>
         </el-col>
       </el-row>
@@ -30,22 +30,32 @@
     import askList from "../../components/startClass/ask-list";
     import monitor from "../../components/startClass/monitor";
     import show from "../../components/startClass/show";
+    import newComp from "../../components/startClass/new-comp";
     import startActivities from "../../components/startClass/start-activities";
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
     import store from '../../store';
     export default {
         name: "startClass",
-        components: {askList, monitor, show, startActivities, classList, Footer, Nav},
+        components: {askList, monitor, show,newComp, startActivities, classList, Footer, Nav},
         computed:
                 {
                     prog(){
                         return store.state.startClass.prog;
+                    },
+                    exerciseId(){
+                        return this.exerciseId;
+                    },
+                    current(){
+                        return this.current;
                     }
+
                 },
         data () {
             return {
                 name: 'startClass',
+                current:true,
+                exerciseId: -1
             }
         },
         methods:{
@@ -65,9 +75,16 @@
                             alert("chenggong");
                         })
             },
-            loadMaterial() {}
+            loadMaterial() {},
+            onEmitIndex(index){
+               this.current=false;
+               this.exerciseId=index;
+            },
+            onEmmitCurrent(current){
+               this.current=current;
+            }
         },
-        created(){
+            created(){
             let that=this;
             utils.request({
                 invoke: api.requestGetProgressStu,
