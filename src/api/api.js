@@ -202,7 +202,7 @@ export const requestAlterClassList = params => {
  * url: /teacher/get_stulist
  * @param {Object} params
  * @param {number} params.classId
- * @returns {Promise<any> | {code: number, stuList: Array<{stuId: number, stuName: String}>}}
+ * @returns {Promise<{code: number, stuList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
  */
 export const requestStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
