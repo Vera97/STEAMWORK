@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="ppt-box">
-      <i class="el-icon-close" @click="open(current)"></i>
+      <i class="close el-icon-close" @click="open(current)"></i>
       <component v-bind:is="currentTabComponent" :exerciseId="exercise.exerciseId"></component>
     </el-card>
   </div>
@@ -14,18 +14,23 @@
     export default {
         name: 'new-comp',
         components: {resourceShow, grouping, attendance},
-        props: ['exercise'],
         data() {
             return {
                 current: true,
-                currentTabComponent: ''
+                currentTabComponent: '',
+                exercise: {
+                    exerciseId: 1,
+                    title: '文本播放',
+                    type: '文本播放'
+                }
             }
         },
         methods: {
             open(current) {
                 this.$emit('onEmmitCurrent', current)
             },
-            getCurrentComponent() {
+            getCurrentComponent(exercise) {
+                this.exercise = exercise;
                 if (this.exercise.type === '资源播放') {
                     this.currentTabComponent = 'resource-show';
                     console.log(this.currentTabComponent);
@@ -35,9 +40,6 @@
                     this.currentTabComponent = 'attendance'
                 }
             }
-        },
-        created() {
-            this.getCurrentComponent();
         }
     }
 </script>
@@ -50,5 +52,9 @@
 
   .el-icon-close {
     float: right;
+  }
+
+  .close:hover {
+    cursor: pointer;
   }
 </style>

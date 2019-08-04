@@ -8,7 +8,7 @@
         <!--,对应图片左侧classList为左侧班级列表 -->
         <el-col :span="4" class="classlist">
           <el-button type="primary" class="button" @click="open"> + 创建班级</el-button>
-          <classList @course-selected="render" ref="classList"></classList>
+          <class-list :show-section="false" @course-selected="render" ref="classList"></class-list>
         </el-col>
         <!-- 对应图片右侧，rstulist为右侧学生列表 -->
         <el-col :span="19" style="float:right;">
