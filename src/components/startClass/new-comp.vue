@@ -38,7 +38,6 @@
         },
         created() {
             this.getCurrentComponent();
-
         }
     }
 </script>
@@ -52,8 +51,4 @@
   .el-icon-close {
     float: right;
   }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> upstream/master
