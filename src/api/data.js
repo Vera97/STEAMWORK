@@ -391,7 +391,30 @@ export const COURSE_SECTION =[
 export const UPLOAD_RESPONSE = {
     code: 1,
     url: '/media/ppt/example.ppt',
-    pptImagesList: ['/media/ppt/images/page1.png', '/media/ppt/images/page2.png']
+    pptImagesList: [
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+    ]
+};
+
+export const GET_SLIDES_RESPONSE = {
+    code: 1,
+    pptImagesList: [
+        'https://images.unsplash.com/photo-1485199692108-c3b5069de6a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1429277005502-eed8e872fe52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1482498081626-c0d36d9c5ab9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+        'https://images.unsplash.com/photo-1463736932348-4915535cf6f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+        'https://images.unsplash.com/photo-1505483531331-fc3cf89fd382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=755&q=80',
+        'https://images.unsplash.com/photo-1480866179948-2caa74d9082a?ixlib=rb-1.2.1&auto=format&fit=crop&w=890&q=80',
+        'https://images.unsplash.com/photo-1534957753291-64d667ce2927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+    ]
 };
 
 export const NEW_QUESTION = {

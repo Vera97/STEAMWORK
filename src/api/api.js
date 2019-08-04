@@ -202,7 +202,7 @@ export const requestAlterClassList = params => {
  * url: /teacher/get_stulist
  * @param {Object} params
  * @param {number} params.classId
- * @returns {Promise<any> | {code: number, stuList: Array<{stuId: number, stuName: String}>}}
+ * @returns {Promise<{code: number, stuList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
  */
 export const requestStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -256,6 +256,17 @@ export const requestClassCourseList = params => {
  * @returns {Promise<any> | {code: number}}
  */
 export const requestAlterClassCourseList = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
+};
+
+/**
+ * url: /classroom/ppt
+ * @param {Object} params
+ * @param {number} params.courseSectionId
+ * @returns {Promise<any> | {code: number, pptImagesList: Array<String>}}
+ */
+export const requestSlides = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
 };

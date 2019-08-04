@@ -32,18 +32,20 @@
     import show from "../../components/startClass/show";
     import newComp from "../../components/startClass/new-comp";
     import startActivities from "../../components/startClass/start-activities";
+
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
     import store from '../../store';
+
     export default {
         name: "startClass",
         components: {askList, monitor, show,newComp, startActivities, classList, Footer, Nav},
         computed:
-                {
-                    prog(){
-                        return store.state.startClass.prog;
-                    }
-                },
+            {
+                prog() {
+                    return store.state.startClass.prog;
+                }
+            },
         data () {
             return {
                 name: 'startClass',
@@ -63,22 +65,24 @@
                     },
                     result: fakeData.UP_PROGRESS
                 })
-                        .then(res => {
-                            store.commit('startClass/UPDATE_PROG', res.data);
-                            alert("chenggong");
-                        })
+                    .then(res => {
+                        store.commit('startClass/UPDATE_PROG', res.data);
+                        alert("chenggong");
+                    })
             },
-            loadMaterial() {},
-            onEmitIndex(index){
-               this.current=false;
-               this.exercise=index;
+            loadMaterial() {
             },
-            onEmmitCurrent(current){
-               this.current=current;
+            onEmitIndex(index) {
+                this.current = false;
+                this.exercise = index;
+                console.log(index)
+            },
+            onEmmitCurrent(current) {
+                this.current = current;
             }
         },
-            created(){
-            let that=this;
+        created() {
+            let that = this;
             utils.request({
                 invoke: api.requestGetProgressStu,
                 params: {
@@ -87,10 +91,10 @@
                 },
                 result: fakeData.PROGRESS_STU
             })
-                    .then(res => {
-                        store.commit('startClass/GET_PROG',res.data);
-                        // setInterval(that.updateData,1500);
-                    })
+                .then(res => {
+                    store.commit('startClass/GET_PROG', res.data);
+                    // setInterval(that.updateData,1500);
+                })
         }
     }
 </script>

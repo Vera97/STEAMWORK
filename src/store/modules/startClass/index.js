@@ -1,3 +1,6 @@
+import {api, fakeData} from '../../../api'
+import utils from '../../../utils'
+
 const state = {
     prog: [ ],
     code:'',
@@ -7,11 +10,34 @@ const state = {
         fileType:'',
         mediaUrl:''
     },
+    stuList: [],
+    classId: ''
 };
 
 const getters = {};
 
-const actions = {};
+const actions = {
+    getStuList(context) {
+        utils.request({
+            invoke: api.requestStudentList,
+            params: {
+                classId: parseInt(context.state.classId)
+            },
+            result: fakeData.STUDENT_LIST
+        })
+            .then(res => {
+                context.state.stuList = [];
+                context.state.stuList = res.data.stuList.map(item => {
+                    return {
+                        stuId: item.stuId,
+                        stuName: item.stuName,
+                        stuNumber: item.stuNumber,
+                        selected: false
+                    }
+                })
+            })
+    }
+};
 
 const mutations = {
     GET_PROG(state, prog) {
@@ -27,6 +53,9 @@ const mutations = {
     PLAY_RESOURCE(state,exerciseMedia)
     {
         state.exerciseMedia=exerciseMedia;
+    },
+    SELECT_CLASS(state, classId) {
+        state.classId = classId
     }
 };
 
