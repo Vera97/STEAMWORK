@@ -1,9 +1,16 @@
 <template>
   <el-card class="box-card">
     <h3>班级列表</h3>
-    <el-tree :default-expanded-keys="expandKey" auto-expand-parent highlight-current node-key="key" ref="tree"
-             :data="listData" :props="defaultProps" @node-click="handleNodeClick"
-             :render-after-expand="false"></el-tree>
+    <el-tree :default-expanded-keys="expandKey"
+             auto-expand-parent
+             highlight-current
+             node-key="key"
+             ref="tree"
+             :data="listData"
+             :props="defaultProps"
+             @node-click="handleNodeClick"
+             :render-after-expand="false"
+    ></el-tree>
   </el-card>
 </template>
 
@@ -14,6 +21,9 @@
 
     export default {
         name: "class-list",
+        props: {
+            showSection: Boolean
+        },
         data() {
             return {
                 listData: [],
@@ -36,8 +46,10 @@
                     if (node.level === 1) {
                         // note id not classId
                         this.$emit('course-selected', data.courseId, null);
-                    } else {
+                    } else if (node.level === 2) {
                         this.$emit('course-selected', node.parent.data.courseId, data.courseId);
+                    } else {
+                        this.$emit('section-selected', data.courseSectionId)
                     }
                 }
             },
@@ -91,7 +103,7 @@
                             that.listData[k].child.push(...courseList);
                         });
 
-                    if (!flag) {
+                    if (!flag && !this.showSection) {
                         if (that.listData[k].child.length !== 0) {
                             flag = true;
                             let classId = that.listData[k].classId;
@@ -107,25 +119,28 @@
                             }
                         }
                     }
-                    for (let i = 0; i < this.listData[k].child.length; i++) {
-                        utils.request({
-                            invoke: api.requestCourseDetail,
-                            params: {
-                                courseId: this.listData[k].child[i].courseId
-                            },
-                            result: fakeData.COURSE_DETAIL
-                        })
-                            .then(res => {
-                                this.$set(this.listData[k].child[i], 'child', []);
-                                let courseSectionList = res.data.courseSection.map(item => {
-                                    return {
-                                        courseSectionId: item.courseSectionId,
-                                        courseSectionName: item.courseSectionName,
-                                        key: that.key++
-                                    }
-                                });
-                                this.listData[k].child[i].child.push(...courseSectionList);
+
+                    if(this.showSection) {
+                        for (let i = 0; i < this.listData[k].child.length; i++) {
+                            utils.request({
+                                invoke: api.requestCourseDetail,
+                                params: {
+                                    courseId: this.listData[k].child[i].courseId
+                                },
+                                result: fakeData.COURSE_DETAIL
                             })
+                                .then(res => {
+                                    this.$set(this.listData[k].child[i], 'child', []);
+                                    let courseSectionList = res.data.courseSection.map(item => {
+                                        return {
+                                            courseSectionId: item.courseSectionId,
+                                            courseSectionName: item.courseSectionName,
+                                            key: that.key++
+                                        }
+                                    });
+                                    this.listData[k].child[i].child.push(...courseSectionList);
+                                })
+                        }
                     }
                 }
             },
@@ -143,7 +158,6 @@
         async created() {
             await this.getClass();
             this.getSubCourses();
-            console.log(this.listData);
         }
     }
 </script>

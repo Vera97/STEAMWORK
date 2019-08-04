@@ -33,6 +33,7 @@
         },
         methods: {
             getSlides(courseSectionId) {
+                this.display = 0;
                 let that = this;
 
                 utils.request({
@@ -56,9 +57,6 @@
             previous() {
                 this.display = this.display === 0 ? 0 : this.display - 1
             }
-        },
-        created() {
-            this.getSlides(0)
         }
     }
 </script>

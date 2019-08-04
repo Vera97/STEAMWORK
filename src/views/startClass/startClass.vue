@@ -6,11 +6,17 @@
     <el-main class="main-box">
       <el-row :gutter="24">
         <el-col :span="5">
-          <classList @course-selected="loadMaterial"></classList>
+          <class-list :show-section="true" @section-selected="loadMaterial"></class-list>
           <askList></askList>
         </el-col>
         <el-col :span="14">
-          <show v-if="current"></show><newComp :exercise="exercise" v-else @onEmmitCurrent="onEmmitCurrent"></newComp>
+          <div class="banner" v-if="!selectedSectionId">请选择上课的课时</div>
+          <show ref="show" v-show="current"></show>
+          <newComp
+                  v-show="!current"
+                  @onEmmitCurrent="onEmmitCurrent"
+                  ref="newComp"
+          ></newComp>
         </el-col>
         <el-col :span="5">
           <startActivities @onEmitIndex="onEmitIndex"></startActivities>
@@ -51,6 +57,7 @@
                 name: 'startClass',
                 current: true,
                 exercise: '',
+                selectedSectionId: null
             }
         },
         methods:{
@@ -70,12 +77,18 @@
                         alert("chenggong");
                     })
             },
-            loadMaterial() {
+            loadMaterial(courseSectionId) {
+                this.selectedSectionId = parseInt(courseSectionId);
+                this.$refs.show.getSlides(parseInt(courseSectionId))
             },
             onEmitIndex(index) {
-                this.current = false;
-                this.exercise = index;
-                console.log(index)
+                if(!this.selectedSectionId) {
+                    this.$message.warning('请先选择课时')
+                } else {
+                    this.current = false;
+                    this.$refs.newComp.getCurrentComponent(index);
+                    console.log(index)
+                }
             },
             onEmmitCurrent(current) {
                 this.current = current;
@@ -111,5 +124,9 @@
 
   .el-footer {
     padding-right: 0;
+  }
+
+  .banner {
+    text-align: center;
   }
 </style>

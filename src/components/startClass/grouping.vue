@@ -6,7 +6,7 @@
               v-for="(_, index) in formData.groupNumber"
               :key="index"
       >
-        <el-col :span="6">
+        <el-col :span="8">
           <el-select
                   v-model="formData.groups[index].leader.stuId"
                   @change="select"
@@ -25,7 +25,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="14">
           <el-select
                   v-model="formData.groups[index].groupMembers"
                   @change="select"
