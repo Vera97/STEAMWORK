@@ -9,10 +9,11 @@
 <script>
     import resourceShow from "../../components/startClass/resource-show";
     import grouping from "../../components/startClass/grouping";
+    import attendance from "../../components/startClass/attendance";
 
     export default {
       name:'new-comp',
-      components: {resourceShow, grouping},
+      components: {resourceShow, grouping, attendance},
       props:['exercise'],
       data() {
         return {
@@ -30,6 +31,8 @@
                 console.log(this.currentTabComponent);
             } else if(this.exercise.type === '小组分组') {
                 this.currentTabComponent = 'grouping'
+            } else if(this.exercise.type === '人员统计') {
+                this.currentTabComponent = 'attendance'
             }
         }
     },

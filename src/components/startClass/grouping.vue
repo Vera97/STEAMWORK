@@ -6,12 +6,12 @@
               v-for="(_, index) in formData.groupNumber"
               :key="index"
       >
-        <el-col :span="11">
+        <el-col :span="6">
           <el-select
                   v-model="formData.groups[index].leader.stuId"
                   @change="select"
                   multiple
-                  multiple-limit="1"
+                  :multiple-limit="1"
                   filterable
                   placeholder="请选择组长"
                   @remove-tag="remove"
@@ -25,7 +25,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="11">
+        <el-col :span="16">
           <el-select
                   v-model="formData.groups[index].groupMembers"
                   @change="select"
@@ -56,14 +56,12 @@
       </el-form-item>
     </el-form>
     <el-button
-            class="add"
-            type="primary"
+            type="plain"
             size="medium"
             icon="el-icon-circle-plus-outline"
-            round
             @click="addGroup"
-    ></el-button>
-    <el-button class="add" type="plain" size="medium" @click="save">保存</el-button>
+    >新增分组</el-button>
+    <el-button type="primary" size="medium" @click="save">保存</el-button>
   </div>
 </template>
 
@@ -161,11 +159,7 @@
     overflow-y: scroll;
   }
 
-  .add {
-    display: block;
-    position: relative;
-    width: 5em;
-    margin: 1em auto;
-    text-align: center;
+  .el-select {
+    width: 100%;
   }
 </style>
