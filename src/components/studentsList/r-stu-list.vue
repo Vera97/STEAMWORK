@@ -92,14 +92,14 @@
                         },
                         result: fakeData.SINGLE_NUMBER_CODE
                     })
-                            .then(res => {
-                                if(res.data.code === 1) {
-                                    store.commit('studentsList/REMOVE_STUDENT', row.stuId);
-                                    this.$message.success('移除成功')
-                                } else {
-                                    this.$message.error('移除失败')
-                                }
-                            })
+                        .then(res => {
+                            if(res.data.code === 1) {
+                                store.commit('studentsList/REMOVE_STUDENT', row.stuId);
+                                this.$message.success('移除成功')
+                            } else {
+                                this.$message.error('移除失败')
+                            }
+                        })
 
                 }).catch(() => {
                     this.$message({
@@ -117,11 +117,11 @@
                     },
                     result: fakeData.SEARCH_COURSE
                 })
-                        .then(res => {
-                            that.options = res.data.chunks.map(item => {
-                                return {name: item.title, id: item.courseId}
-                            })
+                    .then(res => {
+                        that.options = res.data.chunks.map(item => {
+                            return {name: item.title, id: item.courseId}
                         })
+                    })
             },
             save() {
                 for(let student of this.listData) {
@@ -160,7 +160,7 @@
                     },
                     result: fakeData.SINGLE_RESPONSE_WORD
                 })
-                        .then();
+                    .then();
 
                 this.value = []
             },
@@ -190,21 +190,21 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 })
-                        .then(res => {
-                            if(res.action === 'confirm') {
-                                let scoreList = {};
-                                if(this.listData.length > 0 && this.listData[0].scoreList !== {}) {
-                                    for(let i in this.listData[0].scoreList) {
-                                        scoreList[i] = 0
-                                    }
+                    .then(res => {
+                        if(res.action === 'confirm') {
+                            let scoreList = {};
+                            if(this.listData.length > 0 && this.listData[0].scoreList !== {}) {
+                                for(let i in this.listData[0].scoreList) {
+                                    scoreList[i] = 0
                                 }
-                                this.listData.push({
-                                    stuId: '123',
-                                    stuName: res.value,
-                                    scoreList: scoreList
-                                })
                             }
-                        })
+                            this.listData.push({
+                                stuId: '123',
+                                stuName: res.value,
+                                scoreList: scoreList
+                            })
+                        }
+                    })
             }
         },
         computed: {

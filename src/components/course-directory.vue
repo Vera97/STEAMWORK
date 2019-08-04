@@ -6,9 +6,10 @@
       <el-tree
               :data="listData"
               :props="defaultProps"
-              default-expand-all
-              :expand-on-click-node="false"
+              default-expanded-keys=""
+              :expand-on-click-node="true"
               :render-content="renderContent"
+              accordion
               @node-click="handleNodeClick">
       </el-tree>
     </el-card>
@@ -19,7 +20,6 @@
     import store from '../store'
     import {api, fakeData} from '../api'
     import utils from '../utils'
-
     export default {
         name: "course-directory",
         data() {
@@ -39,22 +39,26 @@
                 console.log(data);
             },
             open() {
+                let that = this;
                 this.$prompt('请输入课程名称：', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
                     //向后端请求加入数据库
-                        utils.request({
-                            invoke:api.requestNewCourse,
-                            param:{
-                                courseId: this.id,
-                                courseSectionName: value
-                            },
-                            result: fakeData.ADD_COURSE
-                        }).then(res => {
-                            store.commit('ppt/ADD_COURSE', res.data);
-                            console.log(res.data)
+                    utils.request({
+                        invoke: api.requestNewCourse,
+                        params: {
+                            teacherId: store.state.teacherId,
+                            courseName: value
+                        },
+                        result: fakeData.ADD_COURSE
+                    }).then(res => {
+                        that.listData.push({
+                            courseId:res.data.courseId,
+                            title:value,
+                            courseSection: []
                         });
+                    })
                     this.$message({
                         type: 'success',
                         message: '你新建的课程名称: ' + value
@@ -66,71 +70,87 @@
                     });
                 });
             },
-            renderContent(h, { node, data, store }) {
+            renderContent(h, {node, data}) {
                 let that = this;
-
                 let addSection = h(
-                    'el-button',
+                    'i',
                     {
+                        'class': 'el-icon-plus',
                         props: {
                             size: 'mini',
-                            type: 'text'
+                            type: 'button'
                         },
                         on: {
                             click() {
                                 that.addCourseSection(node, data.courseId)
                             }
-                        }
+                        },
+                        style: {
+                            'margin-right': '20%'
+                        },
                     },
-                    ['添加课时']
+                    [' ']
                 );
                 let editCourse = h(
-                    'el-button',
+                    'i',
                     {
+                        'class': 'el-icon-edit',
                         props: {
                             size: 'mini',
-                            type: 'text',
+                            type: 'button',
                         },
                         on: {
                             click() {
                                 that.editCourse(data.courseId)
                             }
-                        }
+                        },
+                        style: {
+                            'margin-right': '20%'
+                        },
                     },
-                    ['修改']
+                    ['']
                 );
                 let delCourse = h(
-                    'el-button',
+                    'i',
                     {
+                        'class':'el-icon-delete',
                         props: {
                             size: 'mini',
-                            type: 'text',
+                            type: 'button',
+
                         },
                         on: {
                             click() {
                                 that.delCourse(data.courseId)
                             }
-                        }
+                        },
+                        style: {
+                            'margin-right': '20px'
+                        },
                     },
-                    ['删除']
+                    [' ']
                 );
                 let removeSection = h(
-                    'el-button',
+                    'i',
                     {
+                        'class':'el-icon-delete',
                         props: {
                             size: 'mini',
-                            type: 'text'
+                            type: 'button'
                         },
                         on: {
                             click() {
                                 that.removeCourseSection(node, node.parent.data.courseId, data.courseSectionId)
                             }
-                        }
+                        },
+                        style: {
+                            'float':'right'
+                        },
                     },
-                    ['移除课时']
+                    [' ']
                 );
                 let button;
-                button = node.level === 1 ? addSection : removeSection;
+                button = node.level === 1 ? [addSection,editCourse,delCourse] : removeSection;
                 let panel = h(
                     'span',
                     {},
@@ -138,7 +158,6 @@
                         button
                     ]
                 );
-
                 return h(
                     'span',
                     {
@@ -148,9 +167,11 @@
                             'align-items': 'center',
                             'justify-content': 'space-between',
                             'font-size': '14px',
-                            'padding-right': '8px'
-                        }
+                            'padding-right': '8px',
+                            // 'margin-left': '10%',
+                        },
                     },
+
                     [
                         h(
                             'span',
@@ -162,7 +183,7 @@
                 )
             },
             addCourseSection(node, courseId) {
-                this.$prompt('请输入课时名称', '提示', {
+                this.$prompt('新建的课时名称:', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
@@ -178,7 +199,12 @@
                             courseSectionId: res.data.courseSectionId,
                             courseSectionName:value
                         });
+                        //console.log(node.data.courseSection);
                     })
+                    this.$message({
+                        type: 'success',
+                        message: '你新建的课时名称: ' + value
+                    });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -187,30 +213,30 @@
                 });
             },
             removeCourseSection(node, courseId, sectionId) {
-                this.$confirm('此操作将永久删除本课时, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
+                utils.request({
+                    invoke: api.requestDeleteCourseSection,
+                    params: {
+                        courseSectionId: sectionId,
+                    },
+                    result: fakeData.COURSE_SECTION
                 }).then(() => {
-                    utils.request({
-                        invoke: api.requestDeleteCourseSection,
-                        params: {
-                            courseSectionId: sectionId,
-                        },
-                        result: fakeData.COURSE_SECTION
-                    }).then(()=> {
-                        const child=node.parent.data.courseSection;
-                        const index = child.findIndex(d => d.courseSectionId ===sectionId);
-                        child.splice(index, 1);
-                    })
-                });
+                    const child=node.parent.data.courseSection;
+                    const index = child.findIndex(d => d.courseSectionId ===sectionId);
+                    child.splice(index, 1);
+                    //console.log(node.parent);
+                })
+            },
+
+            addCourse(teacherId){
+                alert(`add for ${teacherId}`);
             },
             editCourse(courseId){
+                let that = this;
+                // alert(`del for ${courseId}`);
                 this.$prompt('修改课程名称：', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
-                    let that=this;
                     utils.request({
                         invoke: api.requestEditCourseName,
                         params: {
@@ -218,12 +244,12 @@
                             courseName: value,
                         },
                         result: fakeData.EDIT_COURSE
-                    }).then(()=> {//编辑
+                    }).then(() => {//编辑
                         const index = that.listData.findIndex(d => d.courseId=== courseId);
-                        const temp=that.listData[index];
-                        that.$set(temp,'title',value);
-                        that.$set(that.listData,index,tag);
-                    });
+                        const temp = that.listData[index];
+                        that.$set(temp, 'title', value);
+                        that.$set(that.listData,index,temp);
+                    })
                     this.$message({
                         type: 'success',
                         message: '您更改后的课程名称是: ' + value
@@ -236,12 +262,12 @@
                 });
             },
             delCourse(courseId){
+                let that = this;
                 this.$confirm('此操作将永久删除整个课程, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    let that=this;
                     utils.request({
                         invoke: api.requestDeleteCourse,
                         params: {
@@ -271,17 +297,15 @@
                     teacherId: store.state.teacherId
                 },
                 result: fakeData.TEACHER_OWN_COURSE
-            })
-                    .then(res => {
-                        this.listData = res.data.courses.map(item => {
-                            return {
-                                courseId: item.courseId,
-                                title: item.title,
-                                courseSection: []
-                            }
-                        });
-                    });
-
+            }).then(res => {
+                this.listData = res.data.courses.map(item => {
+                    return {
+                        courseId: item.courseId,
+                        title: item.title,
+                        courseSection: []
+                    }
+                });
+            });
             for(let i = 0; i < this.listData.length; i++) {
                 utils.request({
                     invoke: api.requestCourseDetail,
