@@ -202,7 +202,7 @@ export const requestAlterClassList = params => {
  * url: /teacher/get_stulist
  * @param {Object} params
  * @param {number} params.classId
- * @returns {Promise<any> | {code: number, stuList: Array<{stuId: number, stuName: String}>}}
+ * @returns {Promise<{code: number, stuList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
  */
 export const requestStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -256,6 +256,17 @@ export const requestClassCourseList = params => {
  * @returns {Promise<any> | {code: number}}
  */
 export const requestAlterClassCourseList = params => {
+    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
+};
+
+/**
+ * url: /classroom/ppt
+ * @param {Object} params
+ * @param {number} params.courseSectionId
+ * @returns {Promise<any> | {code: number, pptImagesList: Array<String>}}
+ */
+export const requestSlides = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
 };
@@ -367,7 +378,30 @@ export const uploadFile = params => {
     return axios.post(`${base}/api/courses_prepare/new_ppt`, params, {headers: upload_headers});
 
 };
+export const requestNewExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/question`, params, {headers: headers});
+};
+export const requestEditExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_exercise/question`, params, {headers: headers});
+};
+export const requestNewExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/text`, params, {headers: headers});
+};
+export const requestEditExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, {headers: headers});
+};
 
-
+export const requestExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exercise/text`, params, {headers: upload_headers});
+};
+export const requestExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exercise/question`, params, {headers: upload_headers});
+};
 
 

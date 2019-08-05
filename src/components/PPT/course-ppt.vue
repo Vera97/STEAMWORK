@@ -1,21 +1,33 @@
 <template>
-  <el-card>
+  <el-card class="card">
     <div class="text-center" style="padding: 15px;">
-      <span><h3>{{title}}</h3></span>
+      <img class="image" :src="src" alt="you didn't see me">
     </div>
   </el-card>
 </template>
 
 <script>
   export default {
-    name: "Courseppt",
-    props: ['title']
+    name: "course-ppt",
+    props: {
+        src: String
+    }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .info {
     color: #CCCCCC;
+  }
+
+  .card {
+    height: 30%;
+    width: 100%;
+
+    .image {
+      width: 100%;
+      height: 100%;
+    }
   }
 </style>
 
