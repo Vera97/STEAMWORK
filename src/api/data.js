@@ -472,3 +472,51 @@ export const EXERCISE_RESOURCE={
     fileType:'wav',
     mediaUrl:'/media/example/media/oo.wav'
 };
+
+export const REQUEST_ATTENDANCE_RESPONSE = {
+    code: 1,
+    stuList: [
+        {
+            stuId: 123645,
+            stuName: '张全蛋',
+            stuNumber: 8888888
+        },
+        {
+            stuId: 123345,
+            stuName: '李钢蛋',
+            stuNumber: 8888899
+        },
+        {
+            stuId: 333333,
+            stuName: '赵铁柱',
+            stuNumber: 8884342
+        },
+        {
+            stuId: 555555,
+            stuName: '王翠花',
+            stuNumber: 84355677
+        },
+        {
+            stuId: 99999,
+            stuName: '王二狗',
+            stuNumber: 89999393
+        }
+    ],
+    stuReadyList: [
+        {
+            stuId: 333333,
+            stuName: '赵铁柱',
+            stuNumber: 8884342
+        },
+        {
+            stuId: 555555,
+            stuName: '王翠花',
+            stuNumber: 84355677
+        },
+        {
+            stuId: 99999,
+            stuName: '王二狗',
+            stuNumber: 89999393
+        }
+    ]
+};

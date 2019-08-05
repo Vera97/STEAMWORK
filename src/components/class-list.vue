@@ -96,7 +96,6 @@
                                 return {
                                     courseId: item.courseId,
                                     courseName: item.courseName,
-
                                     key: that.key++
                                 }
                             });

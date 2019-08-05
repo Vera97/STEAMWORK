@@ -379,6 +379,15 @@ export const uploadFile = params => {
 
 };
 
-
+/**
+ * url: /classroom/stu_statics
+ * @param {Object} params
+ * @param {Object} params.classroomId
+ * @returns {Promise<{code: number, stuList: Array<{stuId: number, stuName: String, stuNumber: number}>, stuReadyList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
+ */
+export const requestAttendance = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_statics`, params, {headers: upload_headers});
+};
 
 
