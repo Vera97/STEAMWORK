@@ -11,7 +11,22 @@ const state = {
         mediaUrl:''
     },
     stuList: [],
-    classId: ''
+    classId: '',
+    exerciseText:{
+        code: '',
+        content: '',
+    },
+    exerciseQuestion:{
+        code: '',
+        contentQuestion: '',
+        contentAnswerList: [
+            {choice: '', choiceContent: ''},
+            {choice: '', choiceContent: ''},
+            {choice: '', choiceContent: ''},
+            {choice: '', choiceContent: ''},
+        ],
+        answer: ['A', 'B',]
+    }
 };
 
 const getters = {};
@@ -56,7 +71,15 @@ const mutations = {
     },
     SELECT_CLASS(state, classId) {
         state.classId = classId
-    }
+    },
+    TEXT_RESOURCE(state,exerciseText)
+    {
+        state.exerciseText=exerciseText;
+    },
+    QUESTION_RESOURCE(state,exerciseQuestion)
+    {
+        state.exerciseQuestion=exerciseQuestion;
+    },
 };
 
 export default {

@@ -10,10 +10,12 @@
     import resourceShow from "../../components/startClass/resource-show";
     import grouping from "../../components/startClass/grouping";
     import attendance from "../../components/startClass/attendance";
+    import questionAnswer from "../../components/startClass/question-answer";
+    import textPlay from "../../components/startClass/text-play";
 
     export default {
         name: 'new-comp',
-        components: {resourceShow, grouping, attendance},
+        components: {resourceShow, grouping, attendance, questionAnswer, textPlay},
         data() {
             return {
                 current: true,
@@ -38,6 +40,11 @@
                     this.currentTabComponent = 'grouping'
                 } else if (this.exercise.type === '人员统计') {
                     this.currentTabComponent = 'attendance'
+                } else if(this.exercise.type ==='文本播放') {
+                    this.currentTabComponent='text-play';
+                }
+                else if(this.exercise.type ==='互动问答') {
+                    this.currentTabComponent='question-answer';
                 }
             }
         }

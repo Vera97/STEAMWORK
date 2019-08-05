@@ -378,6 +378,22 @@ export const uploadFile = params => {
     return axios.post(`${base}/api/courses_prepare/new_ppt`, params, {headers: upload_headers});
 
 };
+export const requestNewExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/question`, params, {headers: headers});
+};
+export const requestEditExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_exercise/question`, params, {headers: headers});
+};
+export const requestNewExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/text`, params, {headers: headers});
+};
+export const requestEditExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, {headers: headers});
+};
 
 /**
  * url: /classroom/stu_statics
@@ -388,6 +404,14 @@ export const uploadFile = params => {
 export const requestAttendance = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_statics`, params, {headers: upload_headers});
+};
+export const requestExerciseText = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exercise/text`, params, {headers: upload_headers});
+};
+export const requestExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exercise/question`, params, {headers: upload_headers});
 };
 
 

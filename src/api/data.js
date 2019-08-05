@@ -520,3 +520,33 @@ export const REQUEST_ATTENDANCE_RESPONSE = {
         }
     ]
 };
+export const EXERCISE_TEXT = {
+    code: 1,
+    content: '我是开始上课页面的播放文本中的一段文本'
+};
+export const EXERCISE_QUESTION = {
+    code: 1,
+    contentQuestion: '我是开始上课页面的播放文本中的一个问题',
+    contentAnswerList: [
+        {choice: 'A', choiceContent: 'sssa'},
+        {choice: 'B', choiceContent: 'sssb'},
+        {choice: 'C', choiceContent: 'sssc'},
+        {choice: 'D', choiceContent: 'sssd'},
+    ],
+    answer: ['A', 'B',]
+};
+
+export const NEW_TEXT = {
+    code: 1,
+    exerciseId: 1234,
+};
+export const EDIT_TEXT = {
+    code: 1,
+};
+export const NEW_QUESTIONS = {
+    code: 1,
+    exerciseId: 123456789,
+};
+export const EDIT_QUESTIONS = {
+    code: 1,
+};
