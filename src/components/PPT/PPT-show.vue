@@ -3,7 +3,7 @@
     <el-row :gutter="0">
       <el-col :span="6" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
-          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide($event, index)" :class="{highlight: index === select}"></course-ppt>
+          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)" :class="{highlight: index === select}"></course-ppt>
         </div>
       </el-col>
       <el-col :span="17" style="float:right;">
@@ -127,7 +127,8 @@
         name: "PPT",
         components: {coursePpt},
         props: {
-            pptData: Object
+            pptData: Object,
+            courseSectionId: Number
         },
         data() {
             return {
@@ -377,6 +378,10 @@
             },
             selectSlide (event, index) {
                 this.select = index
+            },
+            // this method is used to select the first slide and get its content
+            init() {
+                this.selectSlide(0)
             }
         }
     }

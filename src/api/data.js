@@ -550,3 +550,48 @@ export const NEW_QUESTIONS = {
 export const EDIT_QUESTIONS = {
     code: 1,
 };
+
+export const START_CLASS_RESPONSE = {
+    code: 1,
+    classroomId: 123
+};
+
+export const GET_GROUPS_RESPONSE = {
+    code: 1,
+    groupList: [
+        {
+            groupId: 1,
+            leaderStuId: 99999,
+            groupName: '二狗队',
+            members: [
+                {
+                    stuId: 333333,
+                    stuName: '赵铁柱',
+                    stuNumber: 8884342
+                },
+                {
+                    stuId: 555555,
+                    stuName: '王翠花',
+                    stuNumber: 84355677
+                }
+            ]
+        },
+        {
+            groupId: 2,
+            leaderStuId: 123645,
+            groupName: '双蛋队',
+            members: [
+                {
+                    stuId: 123345,
+                    stuName: '李钢蛋',
+                    stuNumber: 8888899
+                }
+            ]
+        }
+    ]
+};
+
+export const NEW_GROUP_RESPONSE = {
+    code: 1,
+    groupId: 122
+};

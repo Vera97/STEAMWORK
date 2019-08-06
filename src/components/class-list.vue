@@ -49,7 +49,7 @@
                     } else if (node.level === 2) {
                         this.$emit('course-selected', node.parent.data.courseId, data.courseId);
                     } else {
-                        this.$emit('section-selected', data.courseSectionId)
+                        this.$emit('section-selected', data.courseSectionId, node.parent.parent.data.classId)
                     }
                 }
             },

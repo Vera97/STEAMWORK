@@ -2,7 +2,13 @@
   <div>
     <el-card class="ppt-box">
       <i class="close el-icon-close" @click="open(current)"></i>
-      <component v-bind:is="currentTabComponent" :exerciseId="exercise.exerciseId"></component>
+      <component
+              v-bind:is="currentTabComponent"
+              :exerciseId="exercise.exerciseId"
+              :classroom-id="classroomId"
+              :ppt-index="pptIndex"
+              :class-id="classId"
+      ></component>
     </el-card>
   </div>
 </template>
@@ -16,6 +22,11 @@
     export default {
         name: 'new-comp',
         components: {resourceShow, grouping, attendance, questionAnswer, textPlay},
+        props: {
+            classroomId: Number,
+            pptIndex: Number,
+            classId: Number
+        },
         data() {
             return {
                 current: true,
@@ -32,6 +43,10 @@
                 this.$emit('onEmmitCurrent', current)
             },
             getCurrentComponent(exercise) {
+                if(!this.classroomId) {
+                    this.$message.error('请先选择上课的课时');
+                    return
+                }
                 this.exercise = exercise;
                 if (this.exercise.type === '资源播放') {
                     this.currentTabComponent = 'resource-show';

@@ -19,6 +19,9 @@
 
     export default {
         name: "attendance",
+        props: {
+            classroomId: Number
+        },
         data() {
             return {
                 arrivedNumber: 0,
@@ -30,11 +33,11 @@
                 utils.request({
                     invoke: api.requestAttendance,
                     params: {
-                        classroomId: 123
+                        classroomId: this.classroomId
                     },
                     result: fakeData.REQUEST_ATTENDANCE_RESPONSE
                 })
-                    .then(res => {
+                    .then((function(res) {
                         this.arrivedNumber = res.data.stuReadyList.length;
                         this.absentList = res.data.stuList.filter(item => {
                             for(let i of res.data.stuReadyList) {
@@ -42,7 +45,7 @@
                             }
                             return true
                         })
-                    })
+                    }).bind(this))
             }
         },
         created() {

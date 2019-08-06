@@ -6,7 +6,6 @@
       <el-tree
               :data="listData"
               :props="defaultProps"
-              default-expanded-keys=""
               :expand-on-click-node="true"
               :render-content="renderContent"
               accordion
@@ -35,8 +34,10 @@
             };
         },
         methods: {
-            handleNodeClick(data) {
-                console.log(data);
+            handleNodeClick(data, node) {
+                if(node.isLeaf) {
+                    this.$emit('section-selected', data.courseSectionId)
+                }
             },
             open() {
                 let that = this;
@@ -58,7 +59,7 @@
                             title:value,
                             courseSection: []
                         });
-                    })
+                    });
                     this.$message({
                         type: 'success',
                         message: '你新建的课程名称: ' + value
@@ -199,8 +200,7 @@
                             courseSectionId: res.data.courseSectionId,
                             courseSectionName:value
                         });
-                        //console.log(node.data.courseSection);
-                    })
+                    });
                     this.$message({
                         type: 'success',
                         message: '你新建的课时名称: ' + value
@@ -223,7 +223,6 @@
                     const child=node.parent.data.courseSection;
                     const index = child.findIndex(d => d.courseSectionId ===sectionId);
                     child.splice(index, 1);
-                    //console.log(node.parent);
                 })
             },
 
@@ -249,7 +248,7 @@
                         const temp = that.listData[index];
                         that.$set(temp, 'title', value);
                         that.$set(that.listData,index,temp);
-                    })
+                    });
                     this.$message({
                         type: 'success',
                         message: '您更改后的课程名称是: ' + value

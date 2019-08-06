@@ -33,7 +33,7 @@ const getters = {};
 
 const actions = {
     getStuList(context) {
-        utils.request({
+        return utils.request({
             invoke: api.requestStudentList,
             params: {
                 classId: parseInt(context.state.classId)
