@@ -11,8 +11,11 @@
         </el-col>
         <el-col :span="14">
           <div class="banner" v-if="!selectedSectionId">请选择上课的课时</div>
-          <show ref="show" v-show="current"></show>
+          <show ref="show" v-show="current" @page-turning="pageTurning"></show>
           <newComp
+                  :class-id="classId"
+                  :ppt-index="pptIndex"
+                  :classroom-id="classroomId"
                   v-show="!current"
                   @onEmmitCurrent="onEmmitCurrent"
                   ref="newComp"
@@ -54,10 +57,12 @@
             },
         data () {
             return {
-                name: 'startClass',
                 current: true,
                 exercise: '',
-                selectedSectionId: null
+                selectedSectionId: null,
+                classId: null,
+                classroomId: null,
+                pptIndex: null
             }
         },
         methods:{
@@ -77,9 +82,21 @@
                         alert("chenggong");
                     })
             },
-            loadMaterial(courseSectionId) {
-                this.selectedSectionId = parseInt(courseSectionId);
-                this.$refs.show.getSlides(parseInt(courseSectionId))
+            loadMaterial(courseSectionId, classId) {
+                this.classId = classId;
+                utils.request({
+                    invoke: api.requestStartClass,
+                    params: {
+                        teacherId: store.state.teacherId,
+                        classId: classId
+                    },
+                    result: fakeData.START_CLASS_RESPONSE
+                })
+                    .then((function(res) {
+                        this.classroomId = res.data.classroomId;
+                        this.selectedSectionId = parseInt(courseSectionId);
+                        this.$refs.show.getSlides(parseInt(courseSectionId))
+                    }).bind(this))
             },
             onEmitIndex(index) {
                 if(!this.selectedSectionId) {
@@ -92,6 +109,9 @@
             },
             onEmmitCurrent(current) {
                 this.current = current;
+            },
+            pageTurning(index) {
+                this.pptIndex = index
             }
         },
         created() {

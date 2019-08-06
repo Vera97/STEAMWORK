@@ -90,9 +90,9 @@
                 this.$refs.classList.addRelated(value)
             }
         },
-        created() {
-            this.classId = 5678;
-            console.log(this.$route)
+        beforeRouteLeave(to, from, next) {
+            store.commit('studentsList/SUBMIT_ID', {classId: '', courseId: ''});
+            next()
         }
     }
 </script>

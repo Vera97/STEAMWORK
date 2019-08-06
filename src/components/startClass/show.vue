@@ -51,11 +51,12 @@
                     })
             },
             next() {
-                console.log(`next with current ${this.display}`);
-                this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1
+                this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1;
+                this.$emit('page-turning', this.display)
             },
             previous() {
-                this.display = this.display === 0 ? 0 : this.display - 1
+                this.display = this.display === 0 ? 0 : this.display - 1;
+                this.$emit('page-turning', this.display)
             }
         }
     }

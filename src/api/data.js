@@ -472,3 +472,126 @@ export const EXERCISE_RESOURCE={
     fileType:'wav',
     mediaUrl:'/media/example/media/oo.wav'
 };
+
+export const REQUEST_ATTENDANCE_RESPONSE = {
+    code: 1,
+    stuList: [
+        {
+            stuId: 123645,
+            stuName: '张全蛋',
+            stuNumber: 8888888
+        },
+        {
+            stuId: 123345,
+            stuName: '李钢蛋',
+            stuNumber: 8888899
+        },
+        {
+            stuId: 333333,
+            stuName: '赵铁柱',
+            stuNumber: 8884342
+        },
+        {
+            stuId: 555555,
+            stuName: '王翠花',
+            stuNumber: 84355677
+        },
+        {
+            stuId: 99999,
+            stuName: '王二狗',
+            stuNumber: 89999393
+        }
+    ],
+    stuReadyList: [
+        {
+            stuId: 333333,
+            stuName: '赵铁柱',
+            stuNumber: 8884342
+        },
+        {
+            stuId: 555555,
+            stuName: '王翠花',
+            stuNumber: 84355677
+        },
+        {
+            stuId: 99999,
+            stuName: '王二狗',
+            stuNumber: 89999393
+        }
+    ]
+};
+export const EXERCISE_TEXT = {
+    code: 1,
+    content: '我是开始上课页面的播放文本中的一段文本'
+};
+export const EXERCISE_QUESTION = {
+    code: 1,
+    contentQuestion: '我是开始上课页面的播放文本中的一个问题',
+    contentAnswerList: [
+        {choice: 'A', choiceContent: 'sssa'},
+        {choice: 'B', choiceContent: 'sssb'},
+        {choice: 'C', choiceContent: 'sssc'},
+        {choice: 'D', choiceContent: 'sssd'},
+    ],
+    answer: ['A', 'B',]
+};
+
+export const NEW_TEXT = {
+    code: 1,
+    exerciseId: 1234,
+};
+export const EDIT_TEXT = {
+    code: 1,
+};
+export const NEW_QUESTIONS = {
+    code: 1,
+    exerciseId: 123456789,
+};
+export const EDIT_QUESTIONS = {
+    code: 1,
+};
+
+export const START_CLASS_RESPONSE = {
+    code: 1,
+    classroomId: 123
+};
+
+export const GET_GROUPS_RESPONSE = {
+    code: 1,
+    groupList: [
+        {
+            groupId: 1,
+            leaderStuId: 99999,
+            groupName: '二狗队',
+            members: [
+                {
+                    stuId: 333333,
+                    stuName: '赵铁柱',
+                    stuNumber: 8884342
+                },
+                {
+                    stuId: 555555,
+                    stuName: '王翠花',
+                    stuNumber: 84355677
+                }
+            ]
+        },
+        {
+            groupId: 2,
+            leaderStuId: 123645,
+            groupName: '双蛋队',
+            members: [
+                {
+                    stuId: 123345,
+                    stuName: '李钢蛋',
+                    stuNumber: 8888899
+                }
+            ]
+        }
+    ]
+};
+
+export const NEW_GROUP_RESPONSE = {
+    code: 1,
+    groupId: 122
+};
