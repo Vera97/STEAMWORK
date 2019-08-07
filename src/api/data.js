@@ -595,3 +595,13 @@ export const NEW_GROUP_RESPONSE = {
     code: 1,
     groupId: 122
 };
+
+export const LOGIN_STU_RESPONSE = {
+    code: 1,
+    stuId: 123,
+    userData: {
+        headIcon: '/',
+        introduce: 'I am an ordinary student'
+    }
+};
+

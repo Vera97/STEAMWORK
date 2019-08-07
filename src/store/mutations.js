@@ -6,7 +6,7 @@ const fetch = function (item) {
 };
 
 const mutations = {
-    LOG_IN (state, userData) {
+    LOG_IN_TEACHER (state, userData) {
         api.setCookie('userName', userData.userName);
         api.setCookie('avatar', userData.headIcon);
         api.setCookie('introduce', userData.introduce);
@@ -18,11 +18,24 @@ const mutations = {
         state.introduce = userData.introduce
     },
 
+    LOG_IN_STUDENT(state, userData) {
+        api.setCookie('userName', userData.userName);
+        api.setCookie('avatar', userData.headIcon);
+        api.setCookie('introduce', userData.introduce);
+        api.setCookie('stuId', userData.stuId);
+
+        state.stuId = userData.stuId;
+        state.userName = userData.userName;
+        state.avatar = userData.headIcon;
+        state.introduce = userData.introduce
+    },
+
     LOG_OUT(state) {
         api.setCookie('userName', '');
         api.setCookie('avatar', '');
         api.setCookie('introduce', '');
         api.setCookie('teacherId', '');
+        api.setCookie('stuId', '');
 
         state.teacherId = '';
         state.userName = '';
@@ -36,7 +49,10 @@ const mutations = {
         state.userName = api.getCookie('userName');
         state.avatar = api.getCookie('avatar');
         state.introduce = api.getCookie('introduce');
-        state.teacherId = parseInt(api.getCookie('teacherId'))
+        let tmp = api.getCookie('teacherId');
+        state.teacherId = tmp === '' ? '' : parseInt(tmp);
+        tmp = api.getCookie('stuId');
+        state.stuId = tmp === '' ? '' : parseInt(tmp)
     },
 
     CACHE_ID(state, courseId) {
@@ -45,7 +61,8 @@ const mutations = {
         state.cached_courseId = courseId
     },
     PROBE_COURSE(state) {
-        state.cached_courseId = parseInt(fetch('cached_courseId'))
+        let tmp = fetch('cached_courseId');
+        state.cached_courseId = tmp === '' ? '' : parseInt(tmp)
     }
 };
 

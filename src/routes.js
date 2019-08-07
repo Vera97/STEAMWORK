@@ -19,6 +19,7 @@ import team from "./views/team/team";
 import resource from "./views/resource/resource"
 import mySuccess from "./views/mySuccess/mySuccess"
 import stuClass from "./views/stuClass/stuClass"
+import index from "./views/index"
 
 const Home = () => import('./views/home/home.vue');
 
@@ -28,7 +29,7 @@ const Home = () => import('./views/home/home.vue');
 let routes = [
     {
         path: '/',
-        redirect: '/home'
+        component: index
     },
     {
         path: '/home',
