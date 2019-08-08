@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="left-box">
-      <el-tag class="wealth" @addWealth="addWealth">财富:{{wealth}}</el-tag>
+      <el-tag class="wealth" @addWealth="addWealth">财富:{{wealthAll}}</el-tag>
       <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
         <el-menu-item index="1">
           <i class="el-icon-phone-outline" @click="answer"></i>
@@ -16,7 +16,7 @@
           <span slot="title">返回上一页ppt</span>
         </el-menu-item>
         <el-menu-item v-for="item in exerciseList" :key="item.exerciseId">
-          <i class="el-icon-star-off" @click="openAct(item)" v-if="isChange"></i>
+          <i class="el-icon-star-off" @click="openAct(item)" v-if="item.state"></i>
           <i class="el-icon-star-on" @click="completeAct" v-else></i>
           <span slot="title">{{item.title}}</span>
         </el-menu-item>
@@ -55,9 +55,7 @@
                 isCollapse: true,
                 display: 0,
                 cur: true,
-                exercise: '',
                 wealth: 0,
-                isChange: true
             }
         },
         computed: {
@@ -69,6 +67,12 @@
             },
             exerciseList() {
                 return store.state.stuClass.exerciseList;
+            },
+            exercise(){
+                return store.state.stuClass.exercise;
+            },
+            wealthAll(){
+                return store.state.stuClass.wealthAll;
             }
         },
         methods: {
@@ -134,7 +138,7 @@
                     .then(res => {
                         if (res.data.code === 1) {
                             this.cur = false;//打开活动组件
-                            this.exercise = item;//传递当前点击的活动内容
+                            store.commit('stuClass/ADD_CURRENT_EXERCISE',item);//传递当前点击的活动内容
                         } else {
                             this.$alert('该活动尚未开启', '提示', {
                                 confirmButtonText: '确定',
@@ -152,15 +156,27 @@
                         pptId: store.state.stuClass.pptId,
                         progress: this.display
                     },
-                    result: fakeData.EXERCISE_LIST
+                    result: fakeData.STU_EXERCISE_LIST
                 })
                     .then(res => {
                         store.commit('stuClass/ADD_EXERCISE', res.data.exerciseList);
                     })
             },
-            addWealth() {
-                this.isChange = false;//转换成已完成按钮
-                this.wealth = this.wealth + 10;
+            addWealth() {//修改财富值
+                utils.request({
+                    invoke: api.requestEditCourseWealth ,
+                    params: {
+                        stuId: this.stuId,
+                        courseSectionId: this.courseSectionId,
+                        wealthNum:10
+                    },
+                    result: fakeData.EDIT_WEALTH
+                })
+                    .then(res => {
+                        if(res.data.code===1){
+                            store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
+                        }
+                    })
             },
             completeAct() {
                 this.$alert('该活动已完成', '提示', {
@@ -194,10 +210,26 @@
                     });
                 })
             },
+            getWealth(){//获取财富值
+                utils.request({
+                    invoke: api.requestGetCourseWealth ,
+                    params: {
+                        stuId: this.stuId,
+                        courseSectionId: this.courseSectionId
+                    },
+                    result: fakeData.GET_WEALTH
+                })
+                    .then(res => {
+                        if(res.data.code===1){
+                            store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
+                        }
+                    })
+            }
         },
         mounted() {
             this.getSlides(0);//获取并显示ppt
             this.getAct();//向后端请求活动列表
+            this.getWealth();//获取财富值
             setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
@@ -221,18 +253,19 @@
   }
 
   .right-box {
-    width: 80%;
+    width: 71%;
     float: right;
+    margin-right: 13%;
   }
 
   .display {
-    width: 77%;
+    width: 100%;
   }
 
   .list {
     float: right;
-    width: 62%;
-    margin-right: 18%;
+    width: 71%;
+    margin-right: 13%;
   }
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {

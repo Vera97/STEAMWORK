@@ -11,16 +11,15 @@
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
+    import store from '../../store'
 
-    import resourceShow from "../../components/startClass/resource-show";
-    import grouping from "../../components/startClass/grouping";
-    import attendance from "../../components/startClass/attendance";
-    import questionAnswer from "../../components/startClass/question-answer";
-    import textPlay from "../../components/startClass/text-play";
+    import stuResourceShow from "../../components/stuClass/stu-resource-show";
+    import stuDesign from "../../components/stuClass/stu-design";
+    import stuTextPlay from "../../components/stuClass/stu-text-play";
 
     export default {
         name: "act-list",
-        components: {resourceShow, grouping, attendance, questionAnswer, textPlay},
+        components: {stuResourceShow, stuDesign, stuTextPlay},
         props: ['exercise'],
         data() {
             return {
@@ -34,16 +33,12 @@
             },
             getCurrentComponent() {
                 if (this.exercise.type === '资源播放') {
-                    this.currentTabComponent = 'resource-show';
+                    this.currentTabComponent = 'stu-resource-show';
                     console.log(this.currentTabComponent);
-                } else if (this.exercise.type === '小组分组') {
-                    this.currentTabComponent = 'grouping'
-                } else if (this.exercise.type === '人员统计') {
-                    this.currentTabComponent = 'attendance'
-                } else if (this.exercise.type === '文本播放') {
-                    this.currentTabComponent = 'text-play';
-                } else if (this.exercise.type === '互动问答') {
-                    this.currentTabComponent = 'question-answer';
+                }  else if (this.exercise.type === '文本播放') {
+                    this.currentTabComponent = 'stu-text-play';
+                } else if (this.exercise.type === '方案设计') {
+                    this.currentTabComponent = 'stu-design';
                 }
             },
             complete() {
@@ -52,7 +47,7 @@
                     params: {
                         exerciseId: this.exercise.exerciseId,
                     },
-                    result: fakeData.IS_OVER
+                    result: fakeData.IS_OVER,
                 })
                     .then(res => {
                         if (res.data.code === 1)//教师端未关闭此活动
@@ -66,6 +61,13 @@
                             });
                         }
                     });
+                //向后端请求更改活动状态，
+                for(let i = 0;i < store.state.stuClass.exerciseList.length; i++){
+                    if(store.state.stuClass.exerciseList[i].exerciseId === this.exercise.exerciseId){
+                        store.state.stuClass.exerciseList[i].state=false;
+                        console.log(store.state.stuClass.exerciseList[i].state);
+                    }
+                }
             }
         },
         mounted() {
@@ -80,10 +82,13 @@
   }
 
   .ppt-box {
-    height: 530px;
+    width:100%;
+    height:90%;
+    min-height: 600px;
   }
 
   .button {
     float: right;
+    margin-top:10px;
   }
 </style>
