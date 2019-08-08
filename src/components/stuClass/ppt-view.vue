@@ -4,7 +4,7 @@
       <el-tag class="wealth" @addWealth="addWealth">财富:{{wealth}}</el-tag>
       <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
         <el-menu-item index="1">
-          <i class="el-icon-phone-outline"></i>
+          <i class="el-icon-phone-outline" @click="answer"></i>
           <span slot="title">常见问题及解答</span>
         </el-menu-item>
         <el-menu-item index="2">
@@ -17,8 +17,8 @@
         </el-menu-item>
         <el-menu-item v-for="item in exerciseList" :key="item.exerciseId">
           <i class="el-icon-star-off" @click="openAct(item)" v-if="isChange"></i>
-          <i class="el-icon-star-on"  @click="completeAct" v-else></i>
-          <span slot="title">活动</span>
+          <i class="el-icon-star-on" @click="completeAct" v-else></i>
+          <span slot="title">{{item.title}}</span>
         </el-menu-item>
       </el-menu>
     </div>
@@ -56,8 +56,8 @@
                 display: 0,
                 cur: true,
                 exercise: '',
-                wealth:0,
-                isChange:true
+                wealth: 0,
+                isChange: true
             }
         },
         computed: {
@@ -158,15 +158,42 @@
                         store.commit('stuClass/ADD_EXERCISE', res.data.exerciseList);
                     })
             },
-            addWealth(){
-                this.isChange=false;//转换成已完成按钮
-                this.wealth=this.wealth+10;
+            addWealth() {
+                this.isChange = false;//转换成已完成按钮
+                this.wealth = this.wealth + 10;
             },
-            completeAct(){
+            completeAct() {
                 this.$alert('该活动已完成', '提示', {
                     confirmButtonText: '确定',
                 });
-            }
+            },
+            answer() {
+                utils.request({
+                    invoke: api.requestClassStuQuestion,
+                    params: {
+                        stuId: this.stuId,
+                        courseId: this.courseId,
+                        courseSectionId: '',
+                    },
+                    result: fakeData.STU_QUESTIONS,
+                }).then(res => {
+                    let template = '';
+                    for (let i of res.data.question) {
+                        let tmp = `<div>问题：${i.question}<br>解答：${i.answer}<br></div>`
+                        template += tmp;
+                    }
+                    this.$alert(template, '常见问题及解答', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: '关闭',
+                        callback: action => {
+                            this.$message({
+                                type: 'info',
+                                message: `action: ${action}`
+                            });
+                        }
+                    });
+                })
+            },
         },
         mounted() {
             this.getSlides(0);//获取并显示ppt

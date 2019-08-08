@@ -9,7 +9,7 @@
             :auto-upload="false"
             :limit="1"
             :on-exceed="handleExceed"
-            :on-remove="handleRemove"
+            :on-remove="beforeRemove"
             :file-list="fileList"
     >
       <el-button slot="trigger" size="medium" type="">&emsp;选择&emsp;</el-button>
