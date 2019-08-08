@@ -366,16 +366,16 @@ export const requestDeleteExercise = params => {
 };
 export const requestExercise= params => {
     if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post('${base)/classroom/ppt_exercise',params,{headers:headers});
+    return axios.post(`${base}/classroom/ppt_exercise`,params,{headers:headers});
 };
 export const requestExerciseMedia= params => {
     if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post('${base)/classroom/exercise/media',params,{headers:headers});
+    return axios.post(`${base}/classroom/exercise/media`,params,{headers:headers});
 };
 let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
 export const uploadFile = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/api/courses_prepare/new_ppt`, params, {headers: upload_headers});
+    return axios.post(`${base}/files/courses_prepare/new_ppt`, params, {headers: upload_headers});
 
 };
 export const requestNewExerciseQuestion = params => {
@@ -414,13 +414,82 @@ export const requestIsOver= params => {//!!!!缺少api
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
 };
+export const requestClassStuQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/class`, params, {headers: headers});
+};
+export const requestAttendance = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_statics`, params, {headers: headers});
+};
 export const requestExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/exercise/text`, params, {headers: upload_headers});
+    return axios.post(`${base}/classroom/exercise/text`, params, {headers: headers});
 };
 export const requestExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/exercise/question`, params, {headers: upload_headers});
+    return axios.post(`${base}/classroom/exercise/question`, params, {headers: headers});
+};
+export const requestNewQuestion = params => {
+    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
+    return axios.post('${base)/courses_prepare/new_question',params,{headers:headers});
+};
+/**
+ * url: /classroom/add
+ * @param {Object} params
+ * @param {number} params.teacherId
+ * @param {number} params.classId
+ * @returns {Promise<{code: number, classroomId: number}>}
+ */
+export const requestStartClass = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/add`, params, {headers: headers});
 };
 
+/**
+ * url: /classroom/stu_group/get
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number, groupList: Array<{groupId: number, leaderStuId: number, groupName: String, members: Array<{stuId: number, stuName: String, stuNumber: Number}>}>}>}
+ */
+export const requestStuGroup = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_group/get`, params, {headers: headers});
+};
 
+/**
+ * url: /classroom/stu_group/edit
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @param {number} params.leaderStuId
+ * @param {String} params.groupName
+ * @param {Array<{stuId: number, stuName: String, stuNumber: number}>} params.members
+ * @returns {Promise<{code: number}>}
+ */
+export const requestAlterGroup = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_group/edit`, params, {headers: headers});
+};
+/**
+ * url: /classroom/stu_group/add
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @param {number} params.leaderStuId
+ * @param {String} params.groupName
+ * @returns {Promise<{code: number, groupId: number}>}
+ */
+export const requestNewStuGroup = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_group/add`, params, {headers: headers});
+};
+
+/**
+ * url: /classroom/stu_group/delete
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestDeleteGroup = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/stu_group/delete`, params, {headers: headers});
+};

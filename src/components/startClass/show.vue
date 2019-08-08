@@ -33,6 +33,7 @@
         },
         methods: {
             getSlides(courseSectionId) {
+                this.display = 0;
                 let that = this;
 
                 utils.request({
@@ -73,7 +74,7 @@
         },
         mounted() {
             this.getSlides(0);
-        },
+        }
     }
 </script>
 

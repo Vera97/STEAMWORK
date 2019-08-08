@@ -6,11 +6,20 @@
     <el-main class="main-box">
       <el-row :gutter="24">
         <el-col :span="5">
-          <classList @course-selected="loadMaterial"></classList>
+          <class-list :show-section="true" @section-selected="loadMaterial"></class-list>
           <askList></askList>
         </el-col>
         <el-col :span="14">
-          <show v-if="current"></show><newComp :exercise="exercise" v-else @onEmmitCurrent="onEmmitCurrent"></newComp>
+          <div class="banner" v-if="!selectedSectionId">请选择上课的课时</div>
+          <show ref="show" v-show="current" @page-turning="pageTurning"></show>
+          <newComp
+                  :class-id="classId"
+                  :ppt-index="pptIndex"
+                  :classroom-id="classroomId"
+                  v-show="!current"
+                  @onEmmitCurrent="onEmmitCurrent"
+                  ref="newComp"
+          ></newComp>
         </el-col>
         <el-col :span="5">
           <startActivities @onEmitIndex="onEmitIndex"></startActivities>
@@ -48,9 +57,12 @@
             },
         data() {
             return {
-                name: 'startClass',
                 current: true,
                 exercise: '',
+                selectedSectionId: null,
+                classId: null,
+                classroomId: null,
+                pptIndex: null
             }
         },
         methods: {
@@ -70,15 +82,36 @@
                         alert("chenggong");
                     })
             },
-            loadMaterial() {
+            loadMaterial(courseSectionId, classId) {
+                this.classId = classId;
+                utils.request({
+                    invoke: api.requestStartClass,
+                    params: {
+                        teacherId: store.state.teacherId,
+                        classId: classId
+                    },
+                    result: fakeData.START_CLASS_RESPONSE
+                })
+                    .then((function(res) {
+                        this.classroomId = res.data.classroomId;
+                        this.selectedSectionId = parseInt(courseSectionId);
+                        this.$refs.show.getSlides(parseInt(courseSectionId))
+                    }).bind(this))
             },
             onEmitIndex(index) {
-                this.current = false;
-                this.exercise = index;
-                console.log(index)
+                if(!this.selectedSectionId) {
+                    this.$message.warning('请先选择课时')
+                } else {
+                    this.current = false;
+                    this.$refs.newComp.getCurrentComponent(index);
+                    console.log(index)
+                }
             },
             onEmmitCurrent(current) {
                 this.current = current;
+            },
+            pageTurning(index) {
+                this.pptIndex = index
             }
         },
         mounted() {
@@ -114,5 +147,9 @@
 
   .el-footer {
     padding-right: 0;
+  }
+
+  .banner {
+    text-align: center;
   }
 </style>
