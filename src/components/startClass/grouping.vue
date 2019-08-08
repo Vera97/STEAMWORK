@@ -1,14 +1,21 @@
 <template>
   <div class="wrapper">
-    <el-form ref="form" label-width="5em" :model="formData">
+    <el-form ref="form" :model="{groups}">
       <el-form-item
-              :label="`小组${index + 1}`"
-              v-for="(_, index) in formData.groupNumber"
+              v-for="(group, index) in groups"
               :key="index"
+              label-width="0"
       >
+        <el-col :span="3">
+          <el-input
+                  v-model="group.groupName"
+                  placeholder="组名"
+          ></el-input>
+        </el-col>
         <el-col :span="6">
           <el-select
-                  v-model="formData.groups[index].leader.stuId"
+                  value-key="stuId"
+                  v-model="group.leader"
                   @change="select"
                   multiple
                   :multiple-limit="1"
@@ -20,14 +27,15 @@
                     v-for="(item, index) in stuList"
                     :key="index"
                     :label="`${item.stuName}(${item.stuNumber})`"
-                    :value="item.stuId"
+                    :value="item"
                     :disabled="item.selected"
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="13">
           <el-select
-                  v-model="formData.groups[index].groupMembers"
+                  v-model="group.members"
+                  value-key="stuId"
                   @change="select"
                   multiple
                   filterable
@@ -35,15 +43,24 @@
                   @remove-tag="remove"
           >
             <el-option
-                    v-for="item in stuList"
-                    :key="item.stuId"
+                    v-for="(item, index) in stuList"
+                    :key="index"
                     :label="`${item.stuName}(${item.stuNumber})`"
-                    :value="item.stuId"
+                    :value="item"
                     :disabled="item.selected"
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="1">
+          <el-button
+                  size="mini"
+                  type="primary"
+                  icon="el-icon-circle-check"
+                  circle
+                  @click="saveGroup($event, index)"
+          ></el-button>
+        </el-col>
+        <el-col :span="1">
           <el-button
                   class="delete"
                   size="mini"
@@ -61,11 +78,12 @@
             icon="el-icon-circle-plus-outline"
             @click="addGroup"
     >新增分组</el-button>
-    <el-button type="primary" size="medium" @click="save">保存</el-button>
   </div>
 </template>
 
 <script>
+    import utils from '../../utils'
+    import {api, fakeData} from '../../api'
     import store from '../../store'
     import { mapState } from 'vuex'
 
@@ -74,42 +92,59 @@
         computed: mapState({
             stuList: state => state.startClass.stuList
         }),
+        props: {
+            classroomId: Number,
+            classId: Number
+        },
         data () {
             return {
-                formData: {
-                    groupNumber: 3,
-                    groups: []
-                }
+                groups: []
             }
         },
-        created () {
-            store.commit('startClass/SELECT_CLASS', 123);
-            store.dispatch('startClass/getStuList');
+        async created () {
+            store.commit('startClass/SELECT_CLASS', this.classId);
+            await store.dispatch('startClass/getStuList');
 
-            for(let i = 0; i < this.formData.groupNumber; i++) {
-                this.formData.groups.push({
-                    leader: {
-                        stuId: 0,
-                        stuName: '',
-                        stuNumber: 0
-                    },
-                    groupMembers: []
-                })
-            }
+            utils.request({
+                invoke: api.requestStuGroup,
+                params: {
+                    classroomId: this.classroomId
+                },
+                result: fakeData.GET_GROUPS_RESPONSE
+            })
+                .then((function(res) {
+                    for(let i of res.data.groupList) {
+                        // set the select status of each student.
+                        this.setDisable(i.leaderStuId, true);
+                        for(let j of i.members) this.setDisable(j.stuId, true);
+
+                        let leader;
+                        for(let j of store.state.startClass.stuList) {
+                            if(j.stuId === i.leaderStuId) {
+                                leader = {
+                                    stuId: j.stuId,
+                                    stuNumber: j.stuNumber,
+                                    stuName: j.stuName
+                                };
+                                break
+                            }
+                        }
+                        this.groups.push({
+                            groupName: i.groupName,
+                            groupId: i.groupId,
+                            leader: [leader],
+                            members: i.members
+                        })
+                    }
+                }).bind(this))
         },
         methods: {
-            save() {
-                console.log(this.formData)
-            },
             addGroup() {
-                this.formData.groupNumber++;
-                this.formData.groups.push({
-                    leader: {
-                        stuId: 0,
-                        stuName: '',
-                        stuNumber: 0
-                    },
-                    groupMembers: []
+                this.groups.push({
+                    groupName: '新建分组',
+                    groupId: null,
+                    leader: [],
+                    members: []
                 })
             },
             removeGroup(e, index) {
@@ -119,27 +154,33 @@
                     type: '提示'
                 })
                     .then((function () {
-                        this.formData.groupNumber--;
-                        for(let i of this.formData.groups[index].groupMembers) {
-                            this.setDisable(parseInt(i), false)
+                        utils.request({
+                            invoke: api.requestDeleteGroup,
+                            params: {
+                                groupId: this.groups[index].groupId
+                            },
+                            result: null
+                        })
+                        for(let i of this.groups[index].members) {
+                            this.setDisable(parseInt(i.stuId), false);
                         }
-                        this.setDisable(parseInt(this.formData.groups[index].leader.stuId), false);
-                        this.formData.groups.splice(index, 1)
+                        this.setDisable(parseInt(this.groups[index].leader.stuId), false);
+                        this.groups.splice(index, 1)
                     }).bind(this))
                     .catch()
             },
             select(e) {
                 if(e instanceof Array) {
                     for(let i of e) {
-                        this.setDisable(parseInt(i), true)
+                        this.setDisable(parseInt(i.stuId), true)
                     }
                 }
                 else {
-                    this.setDisable(parseInt(e), true)
+                    this.setDisable(parseInt(e.stuId), true)
                 }
             },
             remove(e) {
-                this.setDisable(parseInt(e), false)
+                this.setDisable(parseInt(e.stuId), false)
             },
             setDisable(stuId, selected) {
                 for(let i = 0; i < this.stuList.length; i++) {
@@ -147,6 +188,36 @@
                         this.stuList[i].selected = selected;
                         break
                     }
+                }
+            },
+            saveGroup(e, index) {
+                let callback = function (res) {
+                    if(res.data.code === 1) this.$message.success('保存成功')
+                };
+                if(this.groups[index].groupId) {
+                    utils.request({
+                        invoke: api.requestAlterGroup,
+                        params: {
+                            groupId: this.groups[index].groupId,
+                            leaderStuId: this.groups[index].leader.stuId,
+                            groupName: this.groups[index].groupName,
+                            members: this.groups[index].members
+                        },
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    })
+                        .then(callback.bind(this))
+                } else {
+                    utils.request({
+                        invoke: api.requestNewStuGroup,
+                        params: {
+                            leaderStuId: this.groups[index].leader.stuId,
+                            groupName: this.groups[index].groupName,
+                            members: this.groups[index].members,
+                            classroomId: this.classroomId
+                        },
+                        result: fakeData.NEW_GROUP_RESPONSE
+                    })
+                        .then(callback.bind(this))
                 }
             }
         }
@@ -161,5 +232,10 @@
 
   .el-select {
     width: 100%;
+  }
+
+  .el-form {
+    width: 60em;
+    padding-right: 2em;
   }
 </style>
