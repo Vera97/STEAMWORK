@@ -4,19 +4,7 @@
       <Navstu></Navstu>
     </el-header>
     <el-main class="main-box">
-      <el-row :gutter="24">
-        <el-col :span="5">
-          <question></question>
-          <help></help>
-        </el-col>
-        <el-col :span="14">
-          <pptView></pptView>
-        </el-col>
-        <el-col :span="5">
-          <problem></problem>
-          <task></task>
-        </el-col>
-      </el-row>
+      <pptView></pptView>
     </el-main>
     <el-footer>
       <Footer></Footer>
@@ -27,21 +15,24 @@
 <script>
     import Navstu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
-    import question from "../../components/stuClass/question"
-    import help from "../../components/stuClass/help";
-    import task from "../../components/stuClass/task";
+    // import question from "../../components/stuClass/question"
+    // import help from "../../components/stuClass/help";
+    // import task from "../../components/stuClass/task";
     import pptView from "../../components/stuClass/ppt-view";
-    import problem from "../../components/stuClass/problem";
+    // import problem from "../../components/stuClass/problem";
+    //import newMenu from "../../components/stuClass/new-menu"
 
     export default {
         name: "stuClass",
-        components: {help, task, pptView, problem, question, Footer, Navstu},
+        components: {pptView, Footer, Navstu},
         props: [
             'id'
         ],
-        data () {
+        data() {
             return {
                 name: 'stuClass',
+                display: 0,
+                current:true
             }
         }
     }
@@ -55,5 +46,6 @@
 
   .main-box {
     margin-left: 10px;
+    margin-top:0px;
   }
 </style>

@@ -1,59 +1,53 @@
 <template>
   <div>
-    <el-card class="ppt-box">
-      <i class="el-icon-close" @click="open(current)"></i>
-      <component v-bind:is="currentTabComponent" :exerciseId="exercise.exerciseId" ></component>
-    </el-card>
+    <video class="videoPlay" controls>
+      <source src="video" type="videoType">
+    </video>
   </div>
 </template>
+
 <script>
-    import resourceShow from "../../components/startClass/resource-show";
-    import questionAnswer from "../../components/startClass/question-answer";
-    import textPlay from "../../components/startClass/text-play";
+    import store from '../../store'
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
     export default {
-        name:'new-comp',
-        components: {resourceShow, questionAnswer, textPlay},
-        props:['exercise'],
+        name: "resource-show",
+        props: ['exerciseId'],
+        computed: {
+            video() {
+                return store.state.startClass.exerciseMedia.mediaUrl
+            }
+        },
         data() {
             return {
-                current: true,
-                currentTabComponent:''
+                videoType: ''
             }
         },
         methods: {
-            open(current){
-                this.$emit('onEmmitCurrent', current)
-            },
-            getCurrentComponent(){
-                if(this.exercise.type ==='资源播放')
-                {
-                    this.currentTabComponent='resource-show';
-                    console.log(this.currentTabComponent);
-                }
-                else if(this.exercise.type ==='文本播放')
-                {
-                    this.currentTabComponent='text-play';
-                    console.log(this.currentTabComponent);
-                }
-                else if(this.exercise.type ==='互动问答')
-                {
-                    this.currentTabComponent='question-answer';
-                    console.log(this.currentTabComponent);
-                }
+            getType(index) {
+                this.videoType = "video/" + index
             }
         },
-        created(){
-            this.getCurrentComponent();
+        created() {
+            utils.request({
+                invoke: api.requestExerciseMedia,
+                params: {
+                    exerciseId: this.exerciseId
+                },
+                result: fakeData.EXERCISE_RESOURCE
+            })
+                .then(res => {
+                    store.commit('startClass/PLAY_RESOURCE', res.data);
+                    this.getType(res.data.fileType);
+                });
         }
     }
 </script>
 
 <style scoped>
-  .ppt-box{
-    text-align: center;
-    height:463px;
-  }
-  .el-icon-close{
-    float:right;
+  .videoPlay {
+    margin-top: 10px;
+    width: 100%;
+    height: 400px;
   }
 </style>

@@ -394,7 +394,26 @@ export const requestEditExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, {headers: headers});
 };
-
+export const requestPPT = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/ppt`, params, {headers: headers});
+};
+export const requestUploadPPT = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/push_pptpage`, params, {headers: headers});
+};
+export const requestPushPPTpage = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
+};
+export const requestIsStartActivity = params => {//!!!!缺少api
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
+};
+export const requestIsOver= params => {//!!!!缺少api
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
+};
 export const requestExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/exercise/text`, params, {headers: upload_headers});

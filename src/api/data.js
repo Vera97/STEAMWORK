@@ -416,7 +416,6 @@ export const GET_SLIDES_RESPONSE = {
         'https://images.unsplash.com/photo-1534957753291-64d667ce2927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
     ]
 };
-
 export const NEW_QUESTION = {
     code: 1,
     quesList: [
@@ -441,27 +440,27 @@ export const EXERCISE_LIST={
     code:1,
     exerciseList:[
         {
-            exerciseId:1,
+            exerciseId:112,
             title:'文本播放',
             type:'文本播放'
         },
         {
-            exerciseId:2,
+            exerciseId:111,
             title:'资源播放',
             type:'资源播放'
         },
         {
-            exerciseId:3,
+            exerciseId:222,
             title:'互动问答',
             type:'互动问答'
         },
         {
-            exerciseId:4,
+            exerciseId:333,
             title:'人员统计',
             type:'人员统计'
         },
         {
-            exerciseId:4,
+            exerciseId:444,
             title:'小组分组',
             type:'小组分组'
         }
@@ -500,5 +499,18 @@ export const NEW_QUESTIONS = {
     exerciseId: 123456789,
 };
 export const EDIT_QUESTIONS = {
+    code: 1,
+};
+export const RETURN_PPTPAGE ={
+    code: 1,
+};
+export const PUSH_PPT ={
+    code: 1,
+    pptPage:3
+};
+export const IS_START ={
+    code: 1,
+};
+export const IS_OVER ={
     code: 1,
 };

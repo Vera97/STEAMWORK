@@ -46,20 +46,34 @@
                         if(res.data.code === 1) {
                             that.slideList.push(...res.data.pptImagesList)
                         }
-                        else that.$message.error('获取ppt失败')
+                        else that.$message.error('获取ppt失败');
                     })
             },
             next() {
                 console.log(`next with current ${this.display}`);
-                this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1
+                this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1;
+                this.getPage();
             },
             previous() {
                 this.display = this.display === 0 ? 0 : this.display - 1
-            }
+            },
+            getPage() {
+                utils.request({
+                    invoke: api.requestUploadPPT,
+                    params: {
+                        classroomId: this.classroomId,
+                        pptPage: this.display
+                    },
+                    result: fakeData.RETURN_PPTPAGE
+                })
+                    .then(()=> {
+                        alert("获取成功！");
+                    })
+            },
         },
-        created() {
-            this.getSlides(0)
-        }
+        mounted() {
+            this.getSlides(0);
+        },
     }
 </script>
 
