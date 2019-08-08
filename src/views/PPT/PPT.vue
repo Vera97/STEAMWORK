@@ -57,7 +57,8 @@
                     url: '',
                     pptImagesList: []
                 },
-                courseSectionId: null
+                courseSectionId: null,
+                fileList:[]
             }
         },
         methods: {

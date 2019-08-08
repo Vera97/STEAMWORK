@@ -48,14 +48,14 @@
 
     export default {
         name: "startClass",
-        components: {askList, monitor, show,newComp, startActivities, classList, Footer, Nav},
+        components: {askList, monitor, show, newComp, startActivities, classList, Footer, Nav},
         computed:
             {
                 prog() {
                     return store.state.startClass.prog;
                 }
             },
-        data () {
+        data() {
             return {
                 current: true,
                 exercise: '',
@@ -65,7 +65,7 @@
                 pptIndex: null
             }
         },
-        methods:{
+        methods: {
             updateData() {
                 let that = this;
                 utils.request({
@@ -114,7 +114,7 @@
                 this.pptIndex = index
             }
         },
-        created() {
+        mounted() {
             let that = this;
             utils.request({
                 invoke: api.requestGetProgressStu,
@@ -126,8 +126,11 @@
             })
                 .then(res => {
                     store.commit('startClass/GET_PROG', res.data);
-                    // setInterval(that.updateData,1500);
-                })
+                    //setInterval(that.updateData, 1500);
+                });
+        },
+        destroyed(){
+            clearInterval(this.updateData);
         }
     }
 </script>

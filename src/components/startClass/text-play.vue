@@ -7,36 +7,36 @@
 </template>
 
 <script>
-  import store from '../../store'
-  import {api, fakeData} from '../../api'
-  import utils from '../../utils'
-  export default {
-    name: "text-show",
-    props:['exerciseId'],
+    import store from '../../store'
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
+    export default {
+        name: "text-show",
+        props:['exerciseId'],
 
-    computed:{
-      text(){
-        return store.state.startClass.exerciseText.content
-      }
-    },
-    created(){
-      // let that = this;
-      utils.request({
-        invoke: api.requestExerciseText,
-        params: {
-          exerciseId:this.exerciseId
+        computed:{
+            text(){
+                return store.state.startClass.exerciseText.content
+            }
         },
-        result: fakeData.EXERCISE_TEXT
-      })
-        .then(res => {
-          console.log(res.data);
-          alert(res.data.content);
-          store.commit('startClass/TEXT_RESOURCE', res.data);
-          // that.text = [];
-          // that.text.push(...res.data)
-        })
+        created(){
+            // let that = this;
+            utils.request({
+                invoke: api.requestExerciseText,
+                params: {
+                    exerciseId:this.exerciseId
+                },
+                result: fakeData.EXERCISE_TEXT
+            })
+                .then(res => {
+                    console.log(res.data);
+                    alert(res.data.content);
+                    store.commit('startClass/TEXT_RESOURCE', res.data);
+                    // that.text = [];
+                    // that.text.push(...res.data)
+                })
+        }
     }
-  }
 </script>
 
 <style scoped>

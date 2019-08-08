@@ -11,11 +11,11 @@
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
     export default {
-        name: "resource-show",
-        props: ['exerciseId'],
+        name: "stu-resource-show",
+        props: ['exerciseId','stuId'],
         computed: {
             video() {
-                return store.state.startClass.exerciseMedia.mediaUrl
+                return store.state.stuClass.exerciseMedia.mediaUrl
             }
         },
         data() {
@@ -30,14 +30,15 @@
         },
         created() {
             utils.request({
-                invoke: api.requestExerciseMedia,
+                invoke: api.requestGetCourseExerciseMedia,
                 params: {
+                    stuId: this.stuId,
                     exerciseId: this.exerciseId
                 },
                 result: fakeData.EXERCISE_RESOURCE
             })
                 .then(res => {
-                    store.commit('startClass/PLAY_RESOURCE', res.data);
+                    store.commit('stuClass/PLAY_RESOURCE', res.data);
                     this.getType(res.data.fileType);
                 });
         }
