@@ -20,51 +20,13 @@
                       @node-click="handleNodeClick">
               </el-tree>
             <div id="menu3" style="z-index:1;float:right;width:100%;" class="box-card3 text-center">
-              <el-card v-model="type" class="box-card" v-if="tag === '互动问答' || getValue(type) === 5">
-                <p><strong>互动问答</strong></p>
-                <el-input type="textarea"
-                          label="问题："
-                          :rows="2"
-                          placeholder="请输入您要编辑的问题"
-                          v-model="textarea1">
-                </el-input>
-                <el-input
-                        placeholder="输入选项内容"
-                        v-model="input1"
-                        class="in"
-                        clearable>
-                </el-input>
-                <el-input
-                        placeholder="输入选项内容"
-                        v-model="input2"
-                        class="in"
-                        clearable>
-                </el-input>
-                <el-button type="primary" icon="el-icon-plus" class="in">增加选项</el-button><br>
-                <el-button type="primary" icon="el-icon-plus" class="in">增加问题</el-button>
-              </el-card>
-
-              <el-card v-model="type" class="box-card3 text-center" v-else-if="tag === '文本编辑' || getValue(type) === 10">
-                <p><strong>编辑文本</strong></p>
-                <el-input type="textarea"
-                          :rows="6"
-                          placeholder="请输入您要编辑的内容"
-                          v-model="textarea2">
-                </el-input>
-              </el-card>
-
-
-                <el-card v-model="type" class="box-card3 text-center" v-else>
-                  <h2>填写相关内容</h2><br><br>
-                  <h4>（根据活动类型跳出对应的内容填写模板）</h4>
-                </el-card>
-
-                <div class="buttonlist" style="float:right;margin-bottom:5%;">
-                  <el-button type="primary" @click="conserve">保存</el-button>
-                  <el-button type="primary" @click="edit">修改</el-button>
-<!--                  <el-button type="primary" @click="del">删除</el-button>-->
-                </div>
-
+              <component
+                      :is="displayComponent"
+                      :exercise-id="exerciseId"
+                      :ppt-id="pptId"
+                      :ppt-page="select"
+                      @delete-activity="deleteHandler"
+              ></component>
               </div>
             </el-tab-pane>
             <el-tab-pane label="+ 编辑当页常见问题及解答">
@@ -101,13 +63,16 @@
 
 <script>
     import coursePpt from "./course-ppt";
+    import reactiveQuestion from './reactive-question'
+    import textDisplay from './text-display'
+
     import utils from '../../utils';
     import {api, fakeData} from '../../api';
     import store from '../../store';
 
     export default {
         name: "PPT",
-        components: {coursePpt},
+        components: {coursePpt, reactiveQuestion, textDisplay},
         props: {
             pptData: Object,
             courseSectionId: Number
@@ -118,30 +83,10 @@
                 input: '',
                 textarea1: '',
                 textarea2: '',
-                textarea3: '',
-                textarea4: '',
-                title: '幻灯片',
-                select: 0,
-                listData: [
-                    {
-                        activities: [
-                            {
-                                exerciseId: 1,
-                                pptId: 12334,
-                                pptPage: 1,
-                                type: 'abc',
-                                content: ''
-                            },
-                            {
-                                exerciseId: 2,
-                                pptId: 223345,
-                                pptPage: 2,
-                                type: 'def',
-                                content: ''
-                            }
-                        ]
-                    }
-                ],
+                select: 0,                /* the index of the selected ppt page. */
+                listData: [{
+                    activities: []
+                }],
                 defaultProps: {
                     label: 'type',
                     children: 'activities'
@@ -158,7 +103,10 @@
                     '讨论记录',
                     '作品展示',
                     '文本编辑'
-                ]
+                ],
+                displayComponent: '',
+                pptId: 1234,               /* not available yet. */
+                exerciseId: null
             }
         },
         computed: {
@@ -173,19 +121,6 @@
             conserve() {
                 if (this.tag === '文本编辑' || this.getValue(this.type) === 10) {
                     // alert("nibuh");
-                    utils.request({
-                        invoke: api.requestNewExerciseText,
-                        params: {
-                            pptId: 1234,
-                            pptPage: 10,
-                            type: '文本播放',
-                            content: 'sss',
-                        },
-                        result: fakeData.NEW_TEXT
-                    }).then(res => {
-                        store.commit('ppt/ADD_TEXT', res.data);
-                        alert('已经保存当前文本');
-                    });
                 }
                 if (this.tag === '互动问答' || this.getValue(this.type) === 5) {
                     // alert("nibuh");
@@ -211,14 +146,7 @@
             edit() {
                 if (this.tag === '互动问答' || this.getValue(this.type) === 5) {
                     // alert("nibuh");
-                    utils.request({
-                        invoke: api.requestEditExerciseText,
-                        params: {
-                            exerciseId: 1234,
-                            content: 'sss'
-                        },
-                        result: fakeData.EDIT_TEXT
-                    })
+
                     //     .then(res=>{
                     //     store.commit('ppt/ADD_TEXT',text);
                     // });
@@ -275,9 +203,22 @@
                     }
                 }, children)
             },
-            handleNodeClick(data) {
-                // alert(data.type);
-                store.commit("ppt/ADD_FLAG", data.type);
+            handleNodeClick(data, node) {
+                if(node.isLeaf) {
+                    switch (data.type) {
+                    case '互动问答':
+                        this.exerciseId = data.exerciseId;
+                        this.displayComponent = 'reactiveQuestion';
+                        break;
+                    case '文本播放':
+                        this.exerciseId = data.exerciseId;
+                        this.displayComponent = 'textDisplay';
+                        break;
+                    default:
+                        alert('暂不支持的活动类型！');
+                    }
+                    store.commit("ppt/ADD_FLAG", data.type);
+                }
             },
             getValue(value) {
                 if (value === '人员统计')
@@ -314,11 +255,6 @@
                     attrs: {placeholder: '请选择种类'},
                     props: {
                         value: that.type
-                    },
-                    on: {
-                        change: function (event) {
-                            that.type = event;
-                        }
                     }
                 }, optionList);
 
@@ -331,18 +267,17 @@
                 }).then(() => {
                     // alert(that.getValue(that.type));
                     that.listData[0].activities.push({
-                        exerciseId: 3,
-                        pptId: 12334,
-                        pptPage: 1,
+                        exerciseId: null,
                         type: that.type,
-                        content: ''
+                        title: that.type,
+                        state: true
                     });
-                    // that.type = ''
+                    that.type = ''
                 }).catch()
             },
             deleteActivity(data) {
                 let that = this;
-                this.$confirm('确定删除这个课时吗', '提示', {
+                this.$confirm('确定删除这个活动吗', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -369,8 +304,22 @@
                     this.$message.info('已取消删除')
                 })
             },
-            selectSlide(event, index) {
-                this.select = index
+            selectSlide(index) {
+                this.select = index;
+                utils.request({
+                    invoke: api.requestExercise,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        page: index + 1
+                    },
+                    result: fakeData.EXERCISE_LIST
+                })
+                    .then((function (res) {
+                        this.listData[0].activities = [];
+                        for(let i of res.data.exerciseList) {
+                            this.listData[0].activities.push(i)
+                        }
+                    }).bind(this))
             },
             // this method is used to select the first slide and get its content
             init() {
@@ -391,6 +340,10 @@
                     if(res.data.code===1)
                         alert("保存成功!");
                 });
+            },
+            // this function is to handle the delete request emitted by the sub component
+            deleteHandler({exerciseId}) {
+                this.deleteActivity({exerciseId})
             }
         }
     }
@@ -408,10 +361,6 @@
     margin-bottom: 2%;
   }
 
-  .box-card3 {
-    margin-bottom: 5%;
-  }
-
   .ali {
     margin-top: 20px;
   }
@@ -420,7 +369,7 @@
     display: inline-block;
     vertical-align: top;
     width: 100%;
-    padding: 0px;
+    padding: 0;
     margin-bottom: 5px;
   }
 
@@ -441,12 +390,8 @@
     border: #6495ED90 solid .1em;
     border-radius: .5em;
   }
-  .in{
-    width: 20%;
-    margin-top: 1%;
-    margin-right: 1%;
-  }
+
   p{
-    margin-top: 0px;
+    margin-top: 0;
   }
 </style>

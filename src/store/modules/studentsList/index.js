@@ -6,7 +6,8 @@ const state = {
     stuList: [],
     courseId: '',        /* the id of the course being display. */
     classId: '',
-    periodsList: []
+    periodsList: [],
+    relatedList: []
 };
 
 const mutations = {
@@ -50,6 +51,7 @@ const actions = {
             result: fakeData.COURSE_DETAIL
         })
             .then(res => {
+                // get the names corresponding to the courseId.
                 tmp = res.data.courseSection;
             });
 
@@ -101,7 +103,9 @@ const actions = {
     async renderClass(context) {
         context.state.periodsList = [];
         return context.dispatch('getStudentsList')
-    }
+    },
+
+    async getRelated(context) {}
 };
 
 

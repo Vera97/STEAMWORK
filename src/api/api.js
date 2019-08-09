@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = 'api';
+let base = 'http://localhost:2333/api';
 
 export const DEVELOPMENT = true;
 
@@ -38,6 +38,7 @@ function checkCookie() {
 
 let csrftoken = getCookie('csrftoken');
 let headers = {'X-CSRFtoken': csrftoken};
+let options = {headers: headers, withCredentials: true};
 
 
 /**
@@ -49,7 +50,7 @@ let headers = {'X-CSRFtoken': csrftoken};
  */
 export const loginTeacher = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/login/teacher`, params, {headers:headers});
+    return axios.post(`${base}/login/teacher`, params, options);
 };
 
 /**
@@ -61,7 +62,7 @@ export const loginTeacher = params => {
  */
 export const loginStudent = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/login/stu`, params, {headers:headers});
+    return axios.post(`${base}/login/stu`, params, options);
 };
 
 
@@ -75,7 +76,7 @@ export const loginStudent = params => {
  */
 export const getCourseChunk = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/getchunk`, params, {headers:headers});
+    return axios.post(`${base}/courses/getchunk`, params, options);
 };
 
 
@@ -87,7 +88,7 @@ export const getCourseChunk = params => {
  */
 export const requestCourseDetail = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/detail`, params, {headers:headers});
+    return axios.post(`${base}/courses/detail`, params, options);
 };
 
 /**
@@ -98,7 +99,7 @@ export const requestCourseDetail = params => {
  */
 export const requestCourseSteps = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/steps`, params, {headers:headers});
+    return axios.post(`${base}/courses/steps`, params, options);
 };
 
 /**
@@ -109,7 +110,7 @@ export const requestCourseSteps = params => {
  */
 export const requestStepsContent = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/steps_content`, params, {headers:headers});
+    return axios.post(`${base}/courses/steps_content`, params, options);
 };
 
 /**
@@ -120,7 +121,7 @@ export const requestStepsContent = params => {
  */
 export const requestSearchCourses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/search`, params, {headers:headers});
+    return axios.post(`${base}/courses/search`, params, options);
 };
 
 /**
@@ -134,7 +135,7 @@ export const requestSearchCourses = params => {
  */
 export const requestFilterCourses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/filter`, params, {headers:headers});
+    return axios.post(`${base}/courses/filter`, params, options);
 };
 
 /**
@@ -147,7 +148,7 @@ export const requestFilterCourses = params => {
  */
 export const requestAlterFavoriteTeacher = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/favorite_list`, params, {headers:headers});
+    return axios.post(`${base}/teacher/favorite_list`, params, options);
 };
 
 
@@ -159,7 +160,7 @@ export const requestAlterFavoriteTeacher = params => {
  */
 export const requestTeacherFavoriteList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/favorite_courses`, params, {headers:headers});
+    return axios.post(`${base}/teacher/favorite_courses`, params, options);
 };
 
 /**
@@ -170,18 +171,18 @@ export const requestTeacherFavoriteList = params => {
  */
 export const requestTeacherOwnCourses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/teacher_courses`, params, {headers:headers});
+    return axios.post(`${base}/teacher/teacher_courses`, params, options);
 };
 
 /**
- * url: /teacher/classes
+ * url: /teacher/get_classes
  * @param {Object} params
  * @param {number} params.teacherId
- * @returns {Promise<any> | {classList: Array<{classId: number, className: String, createDate: String}>}}
+ * @returns {Promise<{classList: Array<{classId: number, className: String, createDate: String}>}>}
  */
 export const requestTeacherClasses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/classes`, params, {headers:headers});
+    return axios.post(`${base}/teacher/get_classes`, params, options);
 };
 
 /**
@@ -195,7 +196,7 @@ export const requestTeacherClasses = params => {
  */
 export const requestAlterClassList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/edit_classes`, params, {headers:headers});
+    return axios.post(`${base}/teacher/edit_classes`, params, options);
 };
 
 /**
@@ -206,7 +207,7 @@ export const requestAlterClassList = params => {
  */
 export const requestStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/get_stulist`, params, {headers:headers});
+    return axios.post(`${base}/teacher/get_stulist`, params, options);
 };
 
 /**
@@ -219,33 +220,33 @@ export const requestStudentList = params => {
  */
 export const requestAlterStudentList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/edit_stulist`, params, {headers:headers});
+    return axios.post(`${base}/teacher/edit_stulist`, params, options);
 };
 
 /**
- * url: /teacher/stu_score
+ * url: /stu/score
  * @param {Object} params
  * @param {String} params.code
  * @param {number} params.stuId
  * @param {number} params.courseId
- * @param {String} params.courseTimeName
+ * @param {String} params.courseSectionId
  * @param {number} params.score
- * @returns {Promise<any> | {code: String, score: number}}
+ * @returns {Promise<{code: number, score: number}>}
  */
 export const requestClassStuScore = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/stu_score`, params, {headers:headers});
+    return axios.post(`${base}/stu/score`, params, options);
 };
 
 /**
  * url: /teacher/get_courselist
  * @param {Object} params
  * @param {number} params.classId
- * @returns {Promise<any> | {code: number, courseList: Array<{courseId: number, name: String}>}}
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, name: String}>}>}
  */
 export const requestClassCourseList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/get_courselist`, params, {headers:headers});
+    return axios.post(`${base}/teacher/get_courselist`, params, options);
 };
 
 /**
@@ -257,18 +258,18 @@ export const requestClassCourseList = params => {
  */
 export const requestAlterClassCourseList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
+    return axios.post(`${base}/teacher/edit_courselist`, params, options);
 };
 
 /**
  * url: /classroom/ppt
  * @param {Object} params
  * @param {number} params.courseSectionId
- * @returns {Promise<any> | {code: number, pptImagesList: Array<String>}}
+ * @returns {Promise<{code: number, pptImagesList: Array<String>}>}
  */
 export const requestSlides = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/edit_courselist`, params, {headers:headers});
+    return axios.post(`${base}/classroom/ppt`, params, options);
 };
 
 /**
@@ -278,7 +279,7 @@ export const requestSlides = params => {
  */
 export const requestSolveQuestion = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/confirm_question`, params, {headers:headers});
+    return axios.post(`${base}/classroom/confirm_question`, params, options);
 };
 
 /**
@@ -288,7 +289,7 @@ export const requestSolveQuestion = params => {
  */
 export const requestPushQuestion = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/ask_question`, params, {headers:headers});
+    return axios.post(`${base}/classroom/ask_question`, params, options);
 };
 
 /**
@@ -298,7 +299,7 @@ export const requestPushQuestion = params => {
  */
 export const requestQueueStu = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_question_queue`, params, {headers:headers});
+    return axios.post(`${base}/classroom/stu_question_queue`, params, options);
 };
 
 /**
@@ -308,36 +309,36 @@ export const requestQueueStu = params => {
  */
 export const requestClearQueueStu = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_question_queue`, params, {headers:headers});
+    return axios.post(`${base}/classroom/stu_question_queue`, params, options);
 };
 
 export const requestPushProgressStu = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_progress`, params, {headers:headers});
+    return axios.post(`${base}/classroom/stu_progress`, params, options);
 };
 export const requestGetProgressStu = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_progress`, params, {headers:headers});
+    return axios.post(`${base}/classroom/stu_progress`, params, options);
 };
 export const requestNewCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/course_prepare/new_course', params, {headers: headers});
+    return axios.post('${base)/course_prepare/new_course', params, options);
 };
 export const requestNewCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/course_prepare/new_coursesection`, params, {headers: headers});
+    return axios.post(`${base}/course_prepare/new_coursesection`, params, options);
 };
 export const requestDeleteCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_coursesection', params, {headers: headers});
+    return axios.post('${base)/courses_prepare/delete_coursesection', params, options);
 };
 export const requestDeleteCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_course', params, {headers: headers});
+    return axios.post('${base)/courses_prepare/delete_course', params, options);
 };
 export const requestEditCourseName = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/edit_course_name', params, {headers: headers});
+    return axios.post('${base)/courses_prepare/edit_course_name', params, options);
 };
 
 /**
@@ -351,7 +352,7 @@ export const requestEditCourseName = params => {
  */
 export const requestNewExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/new_exercise`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/new_exercise`, params, options);
 };
 
 /**
@@ -362,15 +363,24 @@ export const requestNewExercise = params => {
  */
 export const requestDeleteExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/delete_exercise`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/delete_exercise`, params, options);
 };
+
+/**
+ * url: /classroom/ppt_exercise
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.page
+ * @returns {Promise<{code: number, exerciseList: Array<{exerciseId: number,title: String, type: String}>}>}
+ */
 export const requestExercise= params => {
-    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post(`${base}/classroom/ppt_exercise`,params,{headers:headers});
+    if(DEVELOPMENT) return new Promise(resolve=> resolve());
+    return axios.post(`${base}/classroom/ppt_exercise`,params,options);
 };
+
 export const requestExerciseMedia= params => {
     if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post(`${base}/classroom/exercise/media`,params,{headers:headers});
+    return axios.post(`${base}/classroom/exercise/media`,params,options);
 };
 let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
 export const uploadFile = params => {
@@ -380,19 +390,19 @@ export const uploadFile = params => {
 };
 export const requestNewExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/new_exercise/question`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/new_exercise/question`, params, options);
 };
 export const requestEditExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/edit_exercise/question`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/edit_exercise/question`, params, options);
 };
 export const requestNewExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/new_exercise/text`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/new_exercise/text`, params, options);
 };
 export const requestEditExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, {headers: headers});
+    return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, options);
 };
 export const requestPPT = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
@@ -420,15 +430,15 @@ export const requestClassStuQuestion = params => {
 };
 export const requestAttendance = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_statics`, params, {headers: headers});
+    return axios.post(`${base}/classroom/stu_statics`, params, options);
 };
 export const requestExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/exercise/text`, params, {headers: headers});
+    return axios.post(`${base}/classroom/exercise/text`, params, options);
 };
 export const requestExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/exercise/question`, params, {headers: headers});
+    return axios.post(`${base}/classroom/exercise/question`, params, options);
 };
 export const requestNewQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
@@ -452,7 +462,7 @@ export const requestEditCourseWealth = params => {
  */
 export const requestStartClass = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/add`, params, {headers: headers});
+    return axios.post(`${base}/classroom/add`, params, options);
 };
 
 /**
@@ -463,7 +473,7 @@ export const requestStartClass = params => {
  */
 export const requestStuGroup = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_group/get`, params, {headers: headers});
+    return axios.post(`${base}/classroom/stu_group/get`, params, options);
 };
 
 /**
@@ -477,7 +487,7 @@ export const requestStuGroup = params => {
  */
 export const requestAlterGroup = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_group/edit`, params, {headers: headers});
+    return axios.post(`${base}/classroom/stu_group/edit`, params, options);
 };
 /**
  * url: /classroom/stu_group/add
@@ -489,7 +499,7 @@ export const requestAlterGroup = params => {
  */
 export const requestNewStuGroup = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_group/add`, params, {headers: headers});
+    return axios.post(`${base}/classroom/stu_group/add`, params, options);
 };
 
 /**
@@ -500,7 +510,7 @@ export const requestNewStuGroup = params => {
  */
 export const requestDeleteGroup = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_group/delete`, params, {headers: headers});
+    return axios.post(`${base}/classroom/stu_group/delete`, params, options);
 };
 
 /**

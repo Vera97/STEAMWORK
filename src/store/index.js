@@ -15,6 +15,7 @@ Vue.use(Vuex);
 
 const state = {
     teacherId: '',
+    stuId: '',
     userName: '',
     avatar: '',
     introduce: '',

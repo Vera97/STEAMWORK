@@ -1,8 +1,10 @@
 <template>
   <el-row>
     <el-col :span="4" v-for="(item, index) in coursesInDisplay" :key="item.courseId" :offset="index > 0 ? 1 : 0">
-      <CourseCell :title="item.title" :introduction="item.introduce"
-                  :id="item.courseId"></CourseCell>
+      <course-cell :title="item.title"
+                   :introduction="item.introduce"
+                  :course-id="item.courseId"
+      ></course-cell>
     </el-col>
     <el-col>
       <el-button-group>
@@ -18,7 +20,7 @@
 </template>
 
 <script>
-    import CourseCell from "../course-cell";
+    import courseCell from "../course-cell";
     import store from '../../store';
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
@@ -27,8 +29,8 @@
     const MAX_FOOTER = 5;
 
     export default {
-        name: "ClassList",
-        components: {CourseCell},
+        name: "class-list",
+        components: {courseCell},
         computed: {
             /* the total number of the pages. */
             length() {
@@ -64,9 +66,11 @@
                     this.getMore();
                     this.current++
                 }
-
             },
             getMore() {
+                if(store.state.home.all.length > (this.base + this.current + 1) * PAGE_COUNT) {
+                    return
+                }
                 utils.request({
                     invoke: api.getCourseChunk,
                     params: {
@@ -82,7 +86,6 @@
             }
         },
         created() {
-            window.vm = this;
             utils.request({
                 invoke: api.getCourseChunk,
                 params: {
@@ -91,11 +94,11 @@
                 result: fakeData.COURSE_COUNT
             })
                 .then(res => {
-                    store.commit('home/PUSH_COUNT', res.data.totalCount)
+                    store.commit('home/PUSH_COUNT', res.data.totalCount);
+                    this.base = -1;
+                    this.getMore();
+                    this.base = 0
                 });
-            this.base = -1;
-            this.getMore();
-            this.base = 0;
         }
     }
 </script>

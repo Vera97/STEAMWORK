@@ -30,9 +30,8 @@
         ],
         data() {
             return {
-                name: 'stuClass',
                 display: 0,
-                current:true
+                current: true
             }
         }
     }

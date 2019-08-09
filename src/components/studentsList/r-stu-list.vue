@@ -55,12 +55,20 @@
     </div>
     <div class="bottom">
       <h4 class="relative">关联课程：</h4>
-      <el-select value-key="id" class="select" multiple v-model="value" filterable remote :remote-method="search"
-                 placeholder="请选择">
+      <el-select
+              value-key="courseId"
+              class="select"
+              multiple
+              v-model="relatedList"
+              filterable
+              remote
+              :remote-method="search"
+              placeholder="请选择"
+      >
         <el-option
                 v-for="item in options"
-                :key="item.id"
-                :label="item.name"
+                :key="item.courseId"
+                :label="item.title"
                 :value="item">
         </el-option>
       </el-select>
@@ -109,7 +117,6 @@
                 })
             },
             search(input) {
-                let that = this;
                 utils.request({
                     invoke: api.requestSearchCourses,
                     params: {
@@ -117,11 +124,11 @@
                     },
                     result: fakeData.SEARCH_COURSE
                 })
-                    .then(res => {
-                        that.options = res.data.chunks.map(item => {
-                            return {name: item.title, id: item.courseId}
-                        })
-                    })
+                    .then((function (res) {
+                        this.options = res.data.chunks.map(item => {
+                            return {title: item.title, courseId: item.courseId}
+                        });
+                    }).bind(this))
             },
             save() {
                 for(let student of this.listData) {
@@ -172,6 +179,9 @@
             // unfortunately, scoreList is a second layer filed, which need to be assigned manually
             // use Object.assign in this.listData will destroy the array structure. so i split the assignment into two steps.
             render() {
+                this.baseOptions = store.state.studentsList.relatedList;
+                this.relatedList = store.state.studentsList.relatedList;
+                this.options = this.baseOptions;
                 this.listData = store.state.studentsList.stuList.map(item => {
                     return {
                         stuId: item.stuId,
@@ -215,9 +225,11 @@
         data() {
             return {
                 options: [],
+                baseOptions: [],          /* holds the original related courses. */
                 value: [],
                 input: '',
-                listData: []
+                listData: [],
+                relatedList: []
             }
         }
     }
