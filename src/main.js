@@ -20,11 +20,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if(to.path !== '/home') {
+    if(to.path !== '/') {
         if(!store.state.userName || store.state.userName === '') {
             store.commit('PROBE');
             if(!store.state.userName || store.state.userName === '') {
-                next({path: '/home'});
+                next({path: '/'});
                 alert('请先登陆')
             }
             else next();

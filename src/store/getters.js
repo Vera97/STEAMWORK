@@ -8,6 +8,12 @@ const getters = {
     },
     get_introduce(state) {
         return state.introduce
+    },
+    get_teacherId(state) {
+        return state.teacherId
+    },
+    get_stuId(state) {
+        return state.stuId
     }
 };
 

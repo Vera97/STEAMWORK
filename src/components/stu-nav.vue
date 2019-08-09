@@ -11,7 +11,7 @@
       <el-menu-item index="3" :route="{path: '/team'}">我的小组</el-menu-item>
       <el-menu-item index="4" :route="{path: '/stuClass'}">开始听课</el-menu-item>
       <div class="login">
-        <el-button type="primary" round size="mini" @click="logout" v-if="userName !== ''">注销</el-button>
+        <el-button type="primary" round size="mini" @click="logout" v-if="stuId !== ''">注销</el-button>
         <el-button round size="mini" @click="login" v-else>注册</el-button>
       </div>
       <div class="login">
@@ -19,7 +19,7 @@
                 :title="userName"
                 :content="introduction"
                 trigger="hover"
-                v-if="userName !== ''">
+                v-if="stuId !== ''">
           <el-avatar :src="require('../assets/avatar.png')"
                      slot='reference'></el-avatar>
         </el-popover>
@@ -58,6 +58,9 @@
             },
             introduction() {
                 return store.getters.get_introduce
+            },
+            stuId() {
+                return store.getters.get_stuId
             }
         },
         props: {
@@ -84,7 +87,7 @@
                     .then(res => {
                         if (res.data.code === 1) {
                             alert('服务端返回登录用户数据（头像）：' + res.data.userData);
-                            store.commit('LOG_IN', {
+                            store.commit('LOG_IN_TEACHER', {
                                 ...res.data.userData,
                                 teacherId: res.data.teacherId,
                                 userName: userName
@@ -99,12 +102,11 @@
             },
             logout() {
                 store.commit('LOG_OUT');
-                this.$router.go(0)
+                this.$router.replace({path: '/'})
             }
         },
         created() {
             store.commit('PROBE');
-            if (this.userName !== '') store.dispatch('home/get_fav_courses').then();
         }
     }
 </script>

@@ -611,6 +611,16 @@ export const NEW_GROUP_RESPONSE = {
     code: 1,
     groupId: 122
 };
+
+export const LOGIN_STU_RESPONSE = {
+    code: 1,
+    stuId: 123,
+    userData: {
+        headIcon: '/',
+        introduce: 'I am an ordinary student'
+    }
+};
+
 export const STU_QUESTIONS = {
     code: 1,  //如果是修改的话，scoreList就为0
     question: [

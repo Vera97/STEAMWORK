@@ -6,7 +6,7 @@
     <el-main>
       <el-row :gutter="0">
         <!--,对应图片左侧classList为左侧班级列表 -->
-        <el-col :span="4" class="classlist">
+        <el-col :span="4" class="class-list">
           <el-button type="primary" class="button" @click="open"> + 创建班级</el-button>
           <class-list :show-section="false" @course-selected="render" ref="classList"></class-list>
         </el-col>
@@ -103,7 +103,7 @@
     padding-left: 0;
   }
 
-  .classlist {
+  .class-list {
     margin-left: 20px;
   }
 
