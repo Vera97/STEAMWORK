@@ -74,38 +74,20 @@
                         type="textarea"
                         autosize
                         :rows="2"
-                        placeholder="自定义问题"
+                        placeholder="请输入问题名称"
                         v-model="textarea1">
                 </el-input>
                 <el-input
                         class="text"
                         type="textarea"
-                        autosize
+                        :autosize="{ minRows:6, maxRows:12}"
                         :rows="2"
-                        placeholder="请输入解答"
+                        placeholder="请输入问题内容及解答"
                         v-model="textarea2">
                 </el-input>
               </div>
-              <div class="ali">
-                <el-input
-                        class="text"
-                        type="textarea"
-                        autosize
-                        :rows="2"
-                        placeholder="自定义问题"
-                        v-model="textarea3">
-                </el-input>
-                <el-input
-                        class="text"
-                        type="textarea"
-                        autosize
-                        :rows="2"
-                        placeholder="请输入解答"
-                        v-model="textarea4">
-                </el-input>
-              </div>
               <div class="buttonlist" style="float:right;margin-bottom:5%;">
-                <el-button type="primary">保存</el-button>
+                <el-button type="primary" @click="save">保存</el-button>
                 <el-button type="primary">修改</el-button>
                 <el-button type="primary">删除</el-button>
               </div>
@@ -132,13 +114,13 @@
         },
         data() {
             return {
-                flag:0,
+                flag: 0,
                 input: '',
-                textarea1:'',
-                textarea2:'',
-                textarea3:'',
-                textarea4:'',
-                title:'幻灯片',
+                textarea1: '',
+                textarea2: '',
+                textarea3: '',
+                textarea4: '',
+                title: '幻灯片',
                 select: 0,
                 listData: [
                     {
@@ -179,17 +161,17 @@
                 ]
             }
         },
-        computed:{
-            tag(){
+        computed: {
+            tag() {
                 return store.state.ppt.flag;
             }
         },
-        created(){
+        created() {
             // console.log(this.tag);
         },
         methods: {
-            conserve(){
-                if(this.tag === '文本编辑' || this.getValue(this.type) === 10){
+            conserve() {
+                if (this.tag === '文本编辑' || this.getValue(this.type) === 10) {
                     // alert("nibuh");
                     utils.request({
                         invoke: api.requestNewExerciseText,
@@ -201,11 +183,11 @@
                         },
                         result: fakeData.NEW_TEXT
                     }).then(res => {
-                        store.commit('ppt/ADD_TEXT',res.data);
+                        store.commit('ppt/ADD_TEXT', res.data);
                         alert('已经保存当前文本');
                     });
                 }
-                if(this.tag === '互动问答' || this.getValue(this.type) === 5){
+                if (this.tag === '互动问答' || this.getValue(this.type) === 5) {
                     // alert("nibuh");
                     utils.request({
                         invoke: api.requestNewExerciseQuestion,
@@ -214,20 +196,20 @@
                             pptPage: 10,
                             type: '互动问答',
                             contentQuestion: 'sss',
-                            contentAnswerList: [{choice: 'A', choiceContent: 'sss'}, ],
+                            contentAnswerList: [{choice: 'A', choiceContent: 'sss'},],
                             answer: 'A'
                         },
                         result: fakeData.NEW_QUESTIONS
-                    }).then(res=>{
-                        store.commit('ppt/ADD_QUESTIONS',res.data);
+                    }).then(res => {
+                        store.commit('ppt/ADD_QUESTIONS', res.data);
                         // alert(res.data.exerciseId);
                         alert('文本已经保存！')
                     });
                 }
 
             },
-            edit(){
-                if(this.tag === '互动问答' || this.getValue(this.type) === 5){
+            edit() {
+                if (this.tag === '互动问答' || this.getValue(this.type) === 5) {
                     // alert("nibuh");
                     utils.request({
                         invoke: api.requestEditExerciseText,
@@ -241,14 +223,14 @@
                     //     store.commit('ppt/ADD_TEXT',text);
                     // });
                 }
-                if(this.tag === '互动问答' || this.getValue(this.type) === 5){
+                if (this.tag === '互动问答' || this.getValue(this.type) === 5) {
                     // alert("nibuh");
                     utils.request({
                         invoke: api.requestEditExerciseQuestion,
                         params: {
                             exerciseId: 1234,
                             contentQuestion: 'sss',
-                            contentAnswerList: [{choice: 'A', choiceContent: 'sss'}, ],
+                            contentAnswerList: [{choice: 'A', choiceContent: 'sss'},],
                             answer: 'A'
                         },
                         result: fakeData.EDIT_QUESTIONS
@@ -261,13 +243,25 @@
 
             renderContent(h, {node, data}) {
                 let children, that = this;
-                if(node.level === 1) {
+                if (node.level === 1) {
                     children = ['活动列表', h('span', {}, [
-                        h('el-button', {props: {size: 'mini', type: 'text'}, on: {click() {that.addActivity()}}}, ['新增活动'])
+                        h('el-button', {
+                            props: {size: 'mini', type: 'text'}, on: {
+                                click() {
+                                    that.addActivity()
+                                }
+                            }
+                        }, ['新增活动'])
                     ])]
                 } else {
                     children = [data.type, h('span', {}, [
-                        h('el-button', {props: {size: 'mini', type: 'text'}, on: {click() {that.deleteActivity(data)}}}, ['删除活动'])
+                        h('el-button', {
+                            props: {size: 'mini', type: 'text'}, on: {
+                                click() {
+                                    that.deleteActivity(data)
+                                }
+                            }
+                        }, ['删除活动'])
                     ])]
                 }
                 return h('span', {
@@ -283,28 +277,28 @@
             },
             handleNodeClick(data) {
                 // alert(data.type);
-                store.commit("ppt/ADD_FLAG",data.type);
+                store.commit("ppt/ADD_FLAG", data.type);
             },
-            getValue(value){
-                if(value === '人员统计')
+            getValue(value) {
+                if (value === '人员统计')
                     return 1;
-                if(value === '所需材料')
+                if (value === '所需材料')
                     return 2;
-                if(value === '环境布置')
+                if (value === '环境布置')
                     return 3;
-                if(value === '资源播放')
+                if (value === '资源播放')
                     return 4;
-                if(value === '互动问答')
+                if (value === '互动问答')
                     return 5;
-                if(value === '小组分组')
+                if (value === '小组分组')
                     return 6;
-                if(value === '设计方案')
+                if (value === '设计方案')
                     return 7;
-                if(value === '讨论记录')
+                if (value === '讨论记录')
                     return 8;
-                if(value === '作品展示')
+                if (value === '作品展示')
                     return 9;
-                if(value === '文本编辑')
+                if (value === '文本编辑')
                     return 10;
             },
             addActivity() {
@@ -312,7 +306,7 @@
                 let that = this;
 
                 let optionList = [];
-                for(let i of this.options) {
+                for (let i of this.options) {
                     optionList.push(h('el-option', {props: {key: i, label: i, value: i}, attrs: {value: i}}))
                 }
 
@@ -361,27 +355,42 @@
                         result: fakeData.SINGLE_NUMBER_CODE
                     })
                         .then(res => {
-                            if(res.data.code === 1) {
-                                for(let i = 0; i < that.listData[0].activities.length; i++) {
-                                    if(that.listData[0].activities[i].exerciseId === data.exerciseId) {
+                            if (res.data.code === 1) {
+                                for (let i = 0; i < that.listData[0].activities.length; i++) {
+                                    if (that.listData[0].activities[i].exerciseId === data.exerciseId) {
                                         that.listData[0].activities.splice(i, 1);
                                         break
                                     }
                                 }
                                 that.$message.info('成功删除');
-                            }
-                            else that.$message.info('删除失败')
+                            } else that.$message.info('删除失败')
                         })
                 }).catch(() => {
                     this.$message.info('已取消删除')
                 })
             },
-            selectSlide (event, index) {
+            selectSlide(event, index) {
                 this.select = index
             },
             // this method is used to select the first slide and get its content
             init() {
                 this.selectSlide(0)
+            },
+            save() {
+                let that = this;
+                utils.request({
+                    invoke: api.requestNewQuestion,
+                    params: {
+                        pptId: that.pptId,
+                        pptPage: that.pptPage,
+                        name: that.textarea1,
+                        content: that.textarea2
+                    },
+                    result: fakeData.NEW_QUESTIONS
+                }).then(res => {
+                    if(res.data.code===1)
+                        alert("保存成功!");
+                });
             }
         }
     }

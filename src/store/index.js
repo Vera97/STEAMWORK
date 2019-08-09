@@ -9,6 +9,7 @@ import studentsList from './modules/studentsList'
 import assignment from './modules/assignment'
 import ppt from './modules/ppt'
 import startClass from './modules/startClass'
+import stuClass from './modules/stuClass'
 
 Vue.use(Vuex);
 
@@ -28,7 +29,8 @@ export default new Vuex.Store({
         studentsList: studentsList,
         assignment: assignment,
         ppt: ppt,
-        startClass: startClass
+        startClass: startClass,
+        stuClass:stuClass
     },
     actions,
     getters,

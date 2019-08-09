@@ -13,12 +13,10 @@
     </div>
   </div>
 </template>
-
 <script>
     import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
-
     export default {
         name: 'steps',
         props: {
@@ -38,10 +36,9 @@
                         stepId: step.stepId
                     },
                     result: fakeData.STEP_CONTENT
+                }).then(res => {
+                    store.commit('assignment/ADD_CONTENT', res.data.html)
                 })
-                        .then(res => {
-                            store.commit('assignment/ADD_CONTENT', res.data.html)
-                        })
             }
         }
     }

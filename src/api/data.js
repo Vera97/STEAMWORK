@@ -416,7 +416,6 @@ export const GET_SLIDES_RESPONSE = {
         'https://images.unsplash.com/photo-1534957753291-64d667ce2927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
     ]
 };
-
 export const NEW_QUESTION = {
     code: 1,
     quesList: [
@@ -441,29 +440,34 @@ export const EXERCISE_LIST={
     code:1,
     exerciseList:[
         {
-            exerciseId:1,
+            exerciseId:112,
             title:'文本播放',
-            type:'文本播放'
+            type:'文本播放',
+            state:true,
         },
         {
-            exerciseId:2,
+            exerciseId:111,
             title:'资源播放',
-            type:'资源播放'
+            type:'资源播放',
+            state:true,
         },
         {
-            exerciseId:3,
+            exerciseId:222,
             title:'互动问答',
-            type:'互动问答'
+            type:'互动问答',
+            state:true,
         },
         {
-            exerciseId:4,
+            exerciseId:333,
             title:'人员统计',
-            type:'人员统计'
+            type:'人员统计',
+            state:true
         },
         {
-            exerciseId:4,
+            exerciseId:444,
             title:'小组分组',
-            type:'小组分组'
+            type:'小组分组',
+            state:true,
         }
     ]
 };
@@ -521,7 +525,7 @@ export const REQUEST_ATTENDANCE_RESPONSE = {
     ]
 };
 export const EXERCISE_TEXT = {
-    code: 1,
+    code: 1,//如果code为0，则说明教师没有开启此活动，没有以下字段
     content: '我是开始上课页面的播放文本中的一段文本'
 };
 export const EXERCISE_QUESTION = {
@@ -533,7 +537,7 @@ export const EXERCISE_QUESTION = {
         {choice: 'C', choiceContent: 'sssc'},
         {choice: 'D', choiceContent: 'sssd'},
     ],
-    answer: ['A', 'B',]
+    answer: ['A', 'B']
 };
 
 export const NEW_TEXT = {
@@ -545,12 +549,24 @@ export const EDIT_TEXT = {
 };
 export const NEW_QUESTIONS = {
     code: 1,
-    exerciseId: 123456789,
+    questionId: 123456789,
 };
 export const EDIT_QUESTIONS = {
     code: 1,
 };
-
+export const RETURN_PPTPAGE ={
+    code: 1,
+};
+export const PUSH_PPT ={
+    code: 1,
+    pptPage:3
+};
+export const IS_START ={
+    code: 1,
+};
+export const IS_OVER ={
+    code: 1,
+};
 export const START_CLASS_RESPONSE = {
     code: 1,
     classroomId: 123
@@ -605,3 +621,64 @@ export const LOGIN_STU_RESPONSE = {
     }
 };
 
+export const STU_QUESTIONS = {
+    code: 1,  //如果是修改的话，scoreList就为0
+    question: [
+        {question:'ssss1',answer:'ssss1'},
+        {question:'ssss2',answer:'ssss2'},
+        {question:'ssss3',answer:'ssss3'},
+        {question:'ssss4',answer:'ssss4'},
+        {question:'ssss5',answer:'ssss5'},
+        {question:'ssss6',answer:'ssss6'},
+        {question:'ssss7',answer:'ssss7'},
+        {question:'ssss8',answer:'ssss8'},
+        {question:'ssss9',answer:'ssss9'},
+        {question:'ssss10',answer:'ssss10'},
+    ]
+};
+export const EXERCISE_DESIGN = {
+    code: 1, //如果返回0，说明活动已被关闭。
+};
+export const STU_EXERCISE_LIST={
+    code:1,
+    exerciseList:[
+        {
+            exerciseId:112,
+            title:'文本播放',
+            type:'文本播放',
+            state:true,
+        },
+        {
+            exerciseId:111,
+            title:'资源播放',
+            type:'资源播放',
+            state:true,
+        },
+        {
+            exerciseId:222,
+            title:'互动问答',
+            type:'互动问答',
+            state:true,
+        },
+        {
+            exerciseId:333,
+            title:'方案设计',
+            type:'方案设计',
+            state:true
+        },
+        {
+            exerciseId:444,
+            title:'小组分组',
+            type:'小组分组',
+            state:true,
+        }
+    ]
+};
+export const EDIT_WEALTH ={
+    code: 1,
+    wealthAll:120
+};
+export const GET_WEALTH ={
+    code: 1,
+    wealthAll:80
+};
