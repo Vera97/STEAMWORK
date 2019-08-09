@@ -44,10 +44,9 @@
             handleNodeClick(data, node) {
                 if (node.isLeaf) {
                     if (node.level === 1) {
-                        // note id not classId
                         this.$emit('course-selected', data.courseId, null);
                     } else if (node.level === 2) {
-                        this.$emit('course-selected', node.parent.data.courseId, data.courseId);
+                        this.$emit('course-selected', node.parent.data.classId, data.courseId);
                     } else {
                         this.$emit('section-selected', data.courseSectionId, node.parent.parent.data.classId)
                     }

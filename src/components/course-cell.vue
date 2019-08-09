@@ -25,21 +25,12 @@
     color: #CCCCCC;
     font-size: .9em;
     margin: 1em 0;
+    height: 3em;
   }
 
   .el-card {
     text-align: center;
   }
-
-  /*.link {*/
-  /*  color: #2aabd2;*/
-  /*  cursor: pointer;*/
-  /*  font-size: .9em;*/
-  /*}*/
-
-  /*.link:hover {*/
-  /*  text-decoration: underline;*/
-  /*}*/
 
   .caption {
     font-size: 1.2em;

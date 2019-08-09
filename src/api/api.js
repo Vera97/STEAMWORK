@@ -76,7 +76,7 @@ export const loginStudent = params => {
  */
 export const getCourseChunk = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/getchunk`, {params}, options);
+    return axios.post(`${base}/courses/getchunk`, params, options);
 };
 
 
@@ -175,14 +175,14 @@ export const requestTeacherOwnCourses = params => {
 };
 
 /**
- * url: /teacher/classes
+ * url: /teacher/get_classes
  * @param {Object} params
  * @param {number} params.teacherId
- * @returns {Promise<any> | {classList: Array<{classId: number, className: String, createDate: String}>}}
+ * @returns {Promise<{classList: Array<{classId: number, className: String, createDate: String}>}>}
  */
 export const requestTeacherClasses = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/classes`, params, options);
+    return axios.post(`${base}/teacher/get_classes`, params, options);
 };
 
 /**

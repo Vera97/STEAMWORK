@@ -169,7 +169,7 @@
                 next(false)
             } else {
                 if(to.params.courseId)
-                  store.commit('CACHE_ID', to.params.courseId);
+                    store.commit('CACHE_ID', to.params.courseId);
                 next()
             }
         }

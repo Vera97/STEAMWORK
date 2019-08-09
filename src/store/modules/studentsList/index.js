@@ -6,7 +6,8 @@ const state = {
     stuList: [],
     courseId: '',        /* the id of the course being display. */
     classId: '',
-    periodsList: []
+    periodsList: [],
+    relatedList: []
 };
 
 const mutations = {
@@ -50,6 +51,23 @@ const actions = {
             result: fakeData.COURSE_DETAIL
         })
             .then(res => {
+                // get the names corresponding to the courseId.
+                state.relatedList = [];
+                for(let i of res.data.relatedCourse) {
+                    utils.request({
+                        invoke: api.requestCourseDetail,
+                        params: {
+                            courseId: i
+                        },
+                        result: fakeData.COURSE_DETAIL
+                    })
+                        .then(res => {
+                            state.relatedList.push({
+                                title: res.data.title,
+                                courseId: i
+                            })
+                        })
+                }
                 tmp = res.data.courseSection;
             });
 

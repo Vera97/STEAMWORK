@@ -56,7 +56,6 @@ const mutations = {
     },
 
     CACHE_ID(state, courseId) {
-        console.log(`invoked ${courseId}`);
         window.sessionStorage.setItem('cached_courseId', courseId.toString());
         state.cached_courseId = courseId
     },
