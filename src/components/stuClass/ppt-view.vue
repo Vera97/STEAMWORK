@@ -3,16 +3,16 @@
     <div class="left-box">
       <el-tag class="wealth" @addWealth="addWealth">财富:{{wealthAll}}</el-tag>
       <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
-        <el-menu-item index="1">
-          <i class="el-icon-phone-outline" @click="answer"></i>
+        <el-menu-item index="1" @click="answer">
+          <i class="el-icon-phone-outline"></i>
           <span slot="title">常见问题及解答</span>
         </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-question" @click="open"></i>
+        <el-menu-item index="2"  @click="open">
+          <i class="el-icon-question"></i>
           <span slot="title">寻求老师帮助</span>
         </el-menu-item>
-        <el-menu-item index="3">
-          <i class="el-icon-back" @click="previous"></i>
+        <el-menu-item index="3" @click="previous">
+          <i class="el-icon-back"></i>
           <span slot="title">返回上一页ppt</span>
         </el-menu-item>
         <el-menu-item v-for="item in exerciseList" :key="item.exerciseId">
@@ -56,6 +56,7 @@
                 display: 0,
                 cur: true,
                 wealth: 0,
+                callback: null
             }
         },
         computed: {
@@ -195,7 +196,7 @@
                 }).then(res => {
                     let template = '';
                     for (let i of res.data.question) {
-                        let tmp = `<div>问题：${i.question}<br>解答：${i.answer}<br></div>`
+                        let tmp = `<div>问题：${i.question}<br>解答：${i.answer}<br></div>`;
                         template += tmp;
                     }
                     this.$alert(template, '常见问题及解答', {
@@ -230,10 +231,10 @@
             this.getSlides(0);//获取并显示ppt
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
-            setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
+            this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
-            clearInterval(this.getPage);
+            clearInterval(this.callback);
         }
     }
 </script>

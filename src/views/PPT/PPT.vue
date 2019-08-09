@@ -55,7 +55,8 @@
             return {
                 pptData: {
                     url: '',
-                    pptImagesList: []
+                    pptImagesList: [],
+                    pptId: 1234               /* this field doesn't appear in the api. */
                 },
                 courseSectionId: null,
                 fileList:[]

@@ -52,22 +52,6 @@ const actions = {
         })
             .then(res => {
                 // get the names corresponding to the courseId.
-                state.relatedList = [];
-                for(let i of res.data.relatedCourse) {
-                    utils.request({
-                        invoke: api.requestCourseDetail,
-                        params: {
-                            courseId: i
-                        },
-                        result: fakeData.COURSE_DETAIL
-                    })
-                        .then(res => {
-                            state.relatedList.push({
-                                title: res.data.title,
-                                courseId: i
-                            })
-                        })
-                }
                 tmp = res.data.courseSection;
             });
 
@@ -119,7 +103,9 @@ const actions = {
     async renderClass(context) {
         context.state.periodsList = [];
         return context.dispatch('getStudentsList')
-    }
+    },
+
+    async getRelated(context) {}
 };
 
 

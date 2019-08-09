@@ -224,25 +224,25 @@ export const requestAlterStudentList = params => {
 };
 
 /**
- * url: /teacher/stu_score
+ * url: /stu/score
  * @param {Object} params
  * @param {String} params.code
  * @param {number} params.stuId
  * @param {number} params.courseId
- * @param {String} params.courseTimeName
+ * @param {String} params.courseSectionId
  * @param {number} params.score
- * @returns {Promise<any> | {code: String, score: number}}
+ * @returns {Promise<{code: number, score: number}>}
  */
 export const requestClassStuScore = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/stu_score`, params, options);
+    return axios.post(`${base}/stu/score`, params, options);
 };
 
 /**
  * url: /teacher/get_courselist
  * @param {Object} params
  * @param {number} params.classId
- * @returns {Promise<any> | {code: number, courseList: Array<{courseId: number, name: String}>}}
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, name: String}>}>}
  */
 export const requestClassCourseList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -265,11 +265,11 @@ export const requestAlterClassCourseList = params => {
  * url: /classroom/ppt
  * @param {Object} params
  * @param {number} params.courseSectionId
- * @returns {Promise<any> | {code: number, pptImagesList: Array<String>}}
+ * @returns {Promise<{code: number, pptImagesList: Array<String>}>}
  */
 export const requestSlides = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/teacher/edit_courselist`, params, options);
+    return axios.post(`${base}/classroom/ppt`, params, options);
 };
 
 /**
@@ -365,10 +365,19 @@ export const requestDeleteExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/delete_exercise`, params, options);
 };
+
+/**
+ * url: /classroom/ppt_exercise
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.page
+ * @returns {Promise<{code: number, exerciseList: Array<{exerciseId: number,title: String, type: String}>}>}
+ */
 export const requestExercise= params => {
-    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
+    if(DEVELOPMENT) return new Promise(resolve=> resolve());
     return axios.post(`${base}/classroom/ppt_exercise`,params,options);
 };
+
 export const requestExerciseMedia= params => {
     if(DEVELOPMENT) return new Promise(  resolve=> resolve());
     return axios.post(`${base}/classroom/exercise/media`,params,options);
