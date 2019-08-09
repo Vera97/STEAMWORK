@@ -12,20 +12,27 @@
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
     import store from '../../store'
+    import { mapState } from 'vuex'
 
     import stuResourceShow from "../../components/stuClass/stu-resource-show";
     import stuDesign from "../../components/stuClass/stu-design";
     import stuTextPlay from "../../components/stuClass/stu-text-play";
+    import answer from './answer'
+    import display from './display'
 
     export default {
         name: "act-list",
-        components: {stuResourceShow, stuDesign, stuTextPlay},
-        props: ['exercise'],
+        components: {stuResourceShow, stuDesign, stuTextPlay, answer, display},
         data() {
             return {
                 name: "act-list",
                 currentTabComponent: '',
             }
+        },
+        computed: {
+            ...mapState({
+                exercise: state => state.stuClass.exercise
+            })
         },
         methods: {
             open() {
@@ -39,6 +46,10 @@
                     this.currentTabComponent = 'stu-text-play';
                 } else if (this.exercise.type === '方案设计') {
                     this.currentTabComponent = 'stu-design';
+                } else if (this.exercise.type === '互动问答') {
+                    this.currentTabComponent = 'answer'
+                } else if (this.exercise.type === '作品展示') {
+                    this.currentTabComponent = 'display'
                 }
             },
             complete() {
@@ -79,6 +90,7 @@
 <style scoped>
   .el-icon-close {
     float: right;
+    cursor: pointer;
   }
 
   .ppt-box {

@@ -671,6 +671,12 @@ export const STU_EXERCISE_LIST={
             title:'小组分组',
             type:'小组分组',
             state:true,
+        },
+        {
+            exerciseId: 55555,
+            title: '作品展示',
+            type: '作品展示',
+            state: true
         }
     ]
 };

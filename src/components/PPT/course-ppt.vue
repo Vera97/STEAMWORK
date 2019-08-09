@@ -7,12 +7,12 @@
 </template>
 
 <script>
-  export default {
-    name: "course-ppt",
-    props: {
-        src: String
+    export default {
+        name: "course-ppt",
+        props: {
+            src: String
+        }
     }
-  }
 </script>
 
 <style scoped lang="scss">

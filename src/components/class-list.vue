@@ -101,20 +101,18 @@
                             that.listData[k].child.push(...courseList);
                         });
 
-                    if (!flag && !this.showSection) {
-                        if (that.listData[k].child.length !== 0) {
-                            flag = true;
-                            let classId = that.listData[k].classId;
-                            let courseId = that.listData[k].child[0].courseId;
-                            let key = that.listData[k].child[0].key;
-                            that.expandKey = [that.listData[k].key];
+                    if (!flag && !this.showSection && that.listData[k].child.length !== 0) {
+                        flag = true;
+                        let classId = that.listData[k].classId;
+                        let courseId = that.listData[k].child[0].courseId;
+                        let key = that.listData[k].child[0].key;
+                        that.expandKey = [that.listData[k].key];
 
-                            // use the id to fetch the list of student
-                            // if currently no course has been rendered
-                            if (store.state.studentsList.courseId === '') {
-                                that.$emit('course-selected', classId, courseId);
-                                that.$refs.tree.setCurrentKey(key);
-                            }
+                        // use the id to fetch the list of student
+                        // if currently no course has been rendered
+                        if (store.state.studentsList.courseId === '') {
+                            that.$emit('course-selected', classId, courseId);
+                            that.$refs.tree.setCurrentKey(key);
                         }
                     }
 
