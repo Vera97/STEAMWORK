@@ -255,6 +255,11 @@
                     attrs: {placeholder: '请选择种类'},
                     props: {
                         value: that.type
+                    },
+                    on: {
+                        change(e) {
+                            that.type = e
+                        }
                     }
                 }, optionList);
 

@@ -6,7 +6,7 @@
     <el-main class="main-box">
       <el-row :gutter="24">
         <el-col :span="5">
-          <class-list :show-section="true" @section-selected="loadMaterial"></class-list>
+          <class-list :show-section="true" :show-options="false" @section-selected="loadMaterial"></class-list>
           <askList></askList>
         </el-col>
         <el-col :span="14">
@@ -62,7 +62,8 @@
                 selectedSectionId: null,
                 classId: null,
                 classroomId: null,
-                pptIndex: null
+                pptIndex: null,
+                studentsList: []
             }
         },
         methods: {
@@ -82,6 +83,7 @@
                         alert("chenggong");
                     })
             },
+            // start the class, request the classroom, load the material
             loadMaterial(courseSectionId, classId) {
                 this.classId = classId;
                 utils.request({
@@ -93,9 +95,28 @@
                     result: fakeData.START_CLASS_RESPONSE
                 })
                     .then((function(res) {
-                        this.classroomId = res.data.classroomId;
-                        this.selectedSectionId = parseInt(courseSectionId);
-                        this.$refs.show.getSlides(parseInt(courseSectionId))
+                        if(res.data.code === 1) {
+                            this.classroomId = res.data.classroomId;
+                            this.selectedSectionId = parseInt(courseSectionId);
+                            this.$refs.show.getSlides(parseInt(courseSectionId));
+                            this.getStuList();
+                            this.$message.success('成功开始上课！')
+                        }
+                        else this.$message.error('开课失败')
+                    }).bind(this))
+            },
+            getStuList() {
+                utils.request({
+                    invoke: api.requestStudentList,
+                    params: {
+                        classId: this.classId
+                    },
+                    result: fakeData.STUDENT_LIST
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            this.studentsList.push(res.data.stuList);
+                        } else this.$message.error('获取学生列表失败')
                     }).bind(this))
             },
             onEmitIndex(index) {

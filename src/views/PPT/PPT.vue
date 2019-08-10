@@ -12,6 +12,7 @@
           <ppt-upload
                   ref="pptUpload"
                   :course-section-id="courseSectionId"
+                  :course-section-name="courseSectionName"
                   @upload="handleUpload"
           ></ppt-upload>
           <PPTshow ref="PPTshow" :ppt-data="pptData"></PPTshow>
@@ -54,11 +55,11 @@
         data() {
             return {
                 pptData: {
-                    url: '',
                     pptImagesList: [],
-                    pptId: 1234               /* this field doesn't appear in the api. */
+                    pptId: null
                 },
                 courseSectionId: null,
+                courseSectionName: null,
                 fileList:[]
             }
         },
@@ -79,8 +80,9 @@
                 this.pptData.url = url;
                 this.pptData.pptImagesList.push(...pptImagesList)
             },
-            sectionSelect(courseSectionId) {
+            sectionSelect({courseSectionId, courseSectionName}) {
                 this.courseSectionId = courseSectionId;
+                this.courseSectionName = courseSectionName;
                 utils.request({
                     invoke: api.requestSlides,
                     params: {
@@ -90,9 +92,9 @@
                 })
                     .then((function(res) {
                         if(res.data.code === 1) {
-                            this.pptData.url = res.data.url;
+                            this.pptData.pptId = res.data.pptId;
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
-                            this.$refs.pptUpload.inject(res.data.url);
+                            this.$refs.pptUpload.inject();
                             this.$refs.PPTshow.init()
                         }
                     }).bind(this))

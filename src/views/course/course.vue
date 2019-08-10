@@ -134,7 +134,7 @@
                     invoke: api.requestAlterFavoriteTeacher,
                     params: {
                         code: code,
-                        userName: parseInt(store.state.teacherId),
+                        teacherId: parseInt(store.state.teacherId),
                         courseId: parseInt(store.state.cached_courseId),
                     },
                     result: fakeData.SINGLE_NUMBER_CODE
@@ -152,7 +152,7 @@
                     invoke: api.requestAlterFavoriteTeacher,
                     params: {
                         code: code,
-                        userName: store.state.userName,
+                        teacherId: store.state.teacherId,
                         courseId: parseInt(store.state.cached_courseId),
                     },
                     result: fakeData.SINGLE_NUMBER_CODE

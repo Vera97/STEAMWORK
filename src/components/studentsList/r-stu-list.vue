@@ -64,6 +64,7 @@
               remote
               :remote-method="search"
               placeholder="请选择"
+              @change="handleRelatedChange"
       >
         <el-option
                 v-for="item in options"
@@ -72,18 +73,30 @@
                 :value="item">
         </el-option>
       </el-select>
-      <el-button type="primary" class="save" @click="save">保存</el-button>
+      <el-button type="primary" class="save" @click="savePrompt">保存</el-button>
     </div>
   </div>
 </template>
 
 <script>
-    import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
 
     export default {
         name: "r-stu-list",
+        data() {
+            return {
+                options: [],
+                baseOptions: [],          /* holds the original related courses. */
+                value: [],
+                input: '',
+                listData: [],             /* holds the data for the students. */
+                relatedList: [],
+                periodsList: [],
+                classId: null,
+                courseId: null
+            }
+        },
         methods: {
             deleteRow: function (row) {
                 this.$confirm('确定要移除这位学生吗？（所有相关信息将无法恢复）:', '提示', {
@@ -95,20 +108,21 @@
                         invoke: api.requestAlterStudentList,
                         params: {
                             code: 'stu_list_remove',
-                            classId: parseInt(store.state.studentsList.classId),
+                            classId: parseInt(this.classId),
                             stuId: parseInt(row.stuId)
                         },
                         result: fakeData.SINGLE_NUMBER_CODE
                     })
-                        .then(res => {
+                        .then((function(res) {
                             if(res.data.code === 1) {
-                                store.commit('studentsList/REMOVE_STUDENT', row.stuId);
+                                this.listData = this.listData.filter(item => {
+                                    return item.stuId.toString() !== row.stuId.toString()
+                                });
                                 this.$message.success('移除成功')
                             } else {
                                 this.$message.error('移除失败')
                             }
-                        })
-
+                        }).bind(this))
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -130,24 +144,34 @@
                         });
                     }).bind(this))
             },
-            save() {
+            savePrompt() {
+                this.$confirm('是否保存学生名单与成绩？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                })
+                    .then((function () {
+                        this.save()
+                    }).bind(this))
+                    .catch();
+            },
+            async save() {
                 for(let student of this.listData) {
                     for(let period in student.scoreList) {
 
                         let courseSectionId = undefined;
-                        for(let i of store.state.studentsList.periodsList) {
+                        for(let i of this.periodsList) {
                             if(i.courseSectionName === period) {
                                 courseSectionId = i.courseSectionId;
                                 break;
                             }
                         }
 
-                        utils.request({
+                        await utils.request({
                             invoke: api.requestClassStuScore,
                             params: {
                                 code: 'stu_score_edit',
                                 stuId: student.stuId,
-                                courseId: store.state.studentsList.courseId,     /* may be not valid */
+                                courseId: this.courseId,     /* may be not valid */
                                 courseSectionId: courseSectionId,
                                 score: parseInt(student.scoreList[period])
                             },
@@ -156,44 +180,104 @@
                     }
                 }
 
-                this.$emit('change-class-list', this.value);
-
-                utils.request({
-                    invoke: api.requestClassCourseList,
-                    params: {
-                        code: 'course_list_edit',
-                        classId: store.state.studentsList.classId,
-                        courseList: this.value
-                    },
-                    result: fakeData.SINGLE_RESPONSE_WORD
-                })
-                    .then();
-
-                this.value = []
+                // this.$emit('change-class-list', this.value);
+                //
+                // utils.request({
+                //     invoke: api.requestAlterClassCourseList,
+                //     params: {
+                //         code: 'course_list_edit',
+                //         classId: store.state.studentsList.classId,
+                //         courseList: this.value
+                //     },
+                //     result: fakeData.SINGLE_RESPONSE_WORD
+                // })
+                //     .then();
+                //
+                // this.value = []
             },
             rate() {
-                console.log(store.state.studentsList.stuList)
+                console.log(this.listData)
             },
 
             // note that only fields in the first layer will be responsive under directly assignment
-            // unfortunately, scoreList is a second layer filed, which need to be assigned manually
+            // unfortunately, scoreList is a second layer field, which need to be assigned manually
             // use Object.assign in this.listData will destroy the array structure. so i split the assignment into two steps.
-            render() {
-                this.baseOptions = store.state.studentsList.relatedList;
-                this.relatedList = store.state.studentsList.relatedList;
-                this.options = this.baseOptions;
-                this.listData = store.state.studentsList.stuList.map(item => {
-                    return {
-                        stuId: item.stuId,
-                        stuName: item.stuName,
-                        scoreList: {},
-                        stuNumber: item.stuNumber
-                    }
-                });
+            async render(classId, courseId) {
+                // get the students list.
+                [this.classId, this.courseId] = [classId, courseId];
+                this.listData = [];
+                this.periodsList = [];
+                await utils.request({
+                    invoke: api.requestStudentList,
+                    params: {
+                        classId: parseInt(classId)
+                    },
+                    result: fakeData.STUDENT_LIST
+                })
+                    .then((function(res) {
+                        for(let i of res.data.stuList) {
+                            this.listData.push({...i, scoreList: {}})
+                        }
+                    }).bind(this));
 
-                for(let i = 0; i < this.listData.length; i++) {
-                    this.listData[i].scoreList = Object.assign({}, this.listData[i].scoreList, store.state.studentsList.stuList[i].scoreList)
+                if(!courseId) return;
+
+                let tmp;
+
+                await utils.request({
+                    invoke: api.requestCourseDetail,
+                    params: {
+                        courseId: parseInt(courseId)
+                    },
+                    result: fakeData.COURSE_DETAIL
+                })
+                    .then(res => {
+                        // get the names corresponding to the courseId.
+                        tmp = res.data.courseSection;
+                    });
+
+                for(let k = 0; k < this.listData.length; k++) {
+                    let id = this.listData[k].stuId;
+
+                    // get the score of each student according to all of the period names
+                    for(let i of tmp) {
+                        await utils.request({
+                            invoke: api.requestClassStuScore,
+                            params: {
+                                code: 'stu_score',
+                                stuId: parseInt(id),
+                                courseId: parseInt(courseId),
+                                courseSectionId: i.courseSectionId
+                            },
+                            result: fakeData.STUDENT_SCORE
+                        })
+                            .then((function(res) {
+                                this.$set(this.listData[k].scoreList, i.courseSectionName, res.data.score)
+                            }).bind(this))
+                    }
                 }
+
+                this.periodsList.push(...tmp);
+
+                this.relatedList = [];
+                utils.request({
+                    invoke: api.requestClassCourseList,
+                    params: {
+                        classId: classId
+                    },
+                    result: fakeData.COURSES_IN_CLASS
+                })
+                    .then((function (res) {
+                        for(let i of res.data.courseList) {
+                            this.relatedList.push({
+                                title: i.courseName,
+                                courseId: i.courseId
+                            })
+                        }
+                    }).bind(this));
+
+                this.baseOptions = this.relatedList;
+                this.options = this.baseOptions
             },
             addStudent() {
                 this.$prompt('学生名称:', {
@@ -215,21 +299,10 @@
                             })
                         }
                     })
-            }
-        },
-        computed: {
-            periodsList() {
-                return store.state.studentsList.periodsList
-            }
-        },
-        data() {
-            return {
-                options: [],
-                baseOptions: [],          /* holds the original related courses. */
-                value: [],
-                input: '',
-                listData: [],
-                relatedList: []
+            },
+            handleRelatedChange(e) {
+                console.log('hit');
+                console.log(e)
             }
         }
     }

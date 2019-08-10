@@ -36,7 +36,10 @@
         methods: {
             handleNodeClick(data, node) {
                 if(node.isLeaf) {
-                    this.$emit('section-selected', data.courseSectionId)
+                    this.$emit('section-selected', {
+                        courseSectionId: data.courseSectionId,
+                        courseSectionName: data.courseSectionName
+                    })
                 }
             },
             open() {

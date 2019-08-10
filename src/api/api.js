@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -142,7 +142,7 @@ export const requestFilterCourses = params => {
  * url: /teacher/favorite_list
  * @param {Object} params
  * @param {String} params.code
- * @param {String} params.teacherId
+ * @param {number} params.teacherId
  * @param {number} params.courseId
  * @returns {Promise<any> | {code: number}}
  */
@@ -192,7 +192,7 @@ export const requestTeacherClasses = params => {
  * @param {number} params.teacherId
  * @param {number} params.classId
  * @param {String} params.className
- * @returns {Promise<any> | {code: number, class: {classId: number, className: String, createDate: String}}}
+ * @returns {Promise<{code: number, class: {classId: number, className: String, createDate: String}}>}
  */
 export const requestAlterClassList = params => {
     if(DEVELOPMENT) return new Promise(resolve => resolve());
@@ -252,6 +252,7 @@ export const requestClassCourseList = params => {
 /**
  * url: /teacher/edit_courselist
  * @param {Object} params
+ * @param {String} params.code
  * @param {number} params.classId
  * @param {number} params.courseId
  * @returns {Promise<any> | {code: number}}
