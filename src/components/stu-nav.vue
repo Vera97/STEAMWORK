@@ -8,7 +8,7 @@
       <div class="nav-type">学生端</div>
       <el-menu-item index="1" :route="{path: '/resource'}">课程资源</el-menu-item>
       <el-menu-item index="2" :route="{path: '/mySuccess'}">我的成就</el-menu-item>
-      <el-menu-item index="3" :route="{path: '/team'}">我的小组</el-menu-item>
+      <el-menu-item index="3" @click="foundTeam">我的小组</el-menu-item>
       <el-menu-item index="4" :route="{path: '/stuClass'}">开始听课</el-menu-item>
       <div class="login">
         <el-button type="primary" round size="mini" @click="logout" v-if="stuId !== ''">注销</el-button>
@@ -103,6 +103,40 @@
             logout() {
                 store.commit('LOG_OUT');
                 this.$router.replace({path: '/'})
+            },
+            foundTeam(){
+                //向后端请求，成功则跳转，不成功则alert
+                utils.request({
+                    invoke: api.requestExercise,
+                    params: {
+                        pptId: this.pptId,
+                        page: this.page,
+                    },
+                    result: fakeData.EXERCISE_LIST
+                }).then(res => {
+                    for(let i=0;i<res.data.exerciseList.length;i++){
+                        if(res.data.exerciseList[i].type === '讨论记录'){
+                            utils.request({
+                                invoke: api.requestTeacherStartExercise,
+                                params: {
+                                    classroomId:this.classroomId,
+                                    exerciseId: res.data.exerciseList[i].exerciseId,
+                                },
+                                result: fakeData.ACTIVITY_CODE
+                            }).then(res => {
+                                if(res.data.code === 1){
+                                    this.$router.push({path: '/team'});
+                                }
+                                else{
+                                    alert('小组尚未开启');
+                                    this.$router.go(-1);
+                                }
+                            })
+                        }
+                    }
+                })
+
+
             }
         },
         created() {
