@@ -1,52 +1,64 @@
 <template>
   <div class="content">
-    <el-button type="primary" class="button1">
-      +创建小组
-    </el-button>
-    <el-button type="primary" class="button2">
-      +加入小组
-    </el-button>
     <el-card class="box-card">
-      <h3>小组列表</h3>
-      <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+      <h3>小组成员列表</h3>
+      <el-tree :data="groupData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
     </el-card>
   </div>
 </template>
 
 <script>
+    import store from '../../store'
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
     export default {
         name: "team-list",
         data() {
-        return {
-            data: [{
-                label: 'XX学校XX班（1)',
-                children: [{
-                    label: '3D打印',
-                }]
-            }, {
-                label: 'XX学校XX班（1)',
-                children: [{
-                    label: '3D打印',
-                }]
-            },{
-                label: 'XX学校XX班（2)',
-                children: [{
-                    label: '航模',
-                },{
-                    label: '无人机',
-                }]
-            }],
-            defaultProps: {
-                children: 'children',
-                label: 'label'
+            return {
+                defaultProps: {
+                    children: '',
+                    label: 'stuName'
+                },
+                groupData: [],
+                stuId: 12
+            };
+        },
+        methods: {
+            handleNodeClick(data) {
+                console.log(data);
+                utils.request({
+                    invoke: api.requestStuDiscussionGet,
+                    params: {
+                        groupId: this.groupId,
+                        stuId: this.stuId,
+                        discussionNumber: this.discussionNumber,
+                    },
+                    result: fakeData.GROUP_CODE
+                })
+                    .then(res => {
+                        store.commit('team/GROUP_CONTENT', res.data.discussionContent);
+                    })
             }
-        };
-    },
-    methods: {
-        handleNodeClick(data) {
-            console.log(data);
+        },
+        created() {
+            utils.request({
+                invoke: api.requestStuGroup,
+                params: {
+                    classroomId: this.classroomId,
+                },
+                result: fakeData.GET_GROUP
+            }).then(res => {
+                if (res.data.code === 1) {
+                    for (let i = 0; i < res.data.groupList.length; i++) {
+                        for (let j = 0; j < res.data.groupList[i].members.length; j++) {
+                            if (this.stuId === res.data.groupList[i].members[j].stuId) {
+                                this.groupData = res.data.groupList[i].members;
+                            }
+                        }
+                    }
+                }
+            });
         }
-    }
     }
 </script>
 

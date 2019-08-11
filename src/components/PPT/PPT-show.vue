@@ -210,7 +210,7 @@
                         this.exerciseId = data.exerciseId;
                         this.displayComponent = 'reactiveQuestion';
                         break;
-                    case '文本播放':
+                    case '文本编辑':
                         this.exerciseId = data.exerciseId;
                         this.displayComponent = 'textDisplay';
                         break;
@@ -255,6 +255,11 @@
                     attrs: {placeholder: '请选择种类'},
                     props: {
                         value: that.type
+                    },
+                    on:{
+                        change(e){
+                            that.type = e;
+                        }
                     }
                 }, optionList);
 
