@@ -2,7 +2,10 @@
   <div class="content">
     <el-card class="box-card">
       <h3>小组成员列表</h3>
-      <el-tree :data="groupData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+      <el-tree
+              :data="data"
+              :props="defaultProps"
+              @node-click="handleNodeClick"></el-tree>
     </el-card>
   </div>
 </template>
@@ -15,11 +18,29 @@
         name: "team-list",
         data() {
             return {
+                data: [
+                    {
+                        stuName: '张三',
+                        stuId: 1233,
+                        stuNumber: 1015555
+                    },
+                    {
+                        stuName: '李四',
+                        stuId: 1234,
+                        stuNumber: 1015565
+                    },
+                    {
+                        stuName: '王五',
+                        stuId: 1235,
+                        stuNumber: 1015755
+                    }
+                ],
                 defaultProps: {
-                    children: '',
-                    label: 'stuName'
+                    children: 'children',
+                    label(data) {
+                        return `${data.stuName}(${data.stuNumber})`
+                    }
                 },
-                groupData: [],
                 stuId: 12
             };
         },
@@ -53,6 +74,7 @@
                         for (let j = 0; j < res.data.groupList[i].members.length; j++) {
                             if (this.stuId === res.data.groupList[i].members[j].stuId) {
                                 this.groupData = res.data.groupList[i].members;
+                                return
                             }
                         }
                     }
@@ -62,18 +84,15 @@
     }
 </script>
 
-<style scoped>
-  .button1 {
-    width: 48%;
-  }
+<style scoped lang="scss">
+  .content {
+    width: 80%;
+    margin-top: 1em;
 
-  .button2 {
-    float: right;
-    width: 48%;
-  }
-
-  .box-card {
-    margin-top: 20px;
-    width: 100%;
+    .header {
+      font-weight: bolder;
+      margin-bottom: 1em;
+      text-indent: 1em;
+    }
   }
 </style>

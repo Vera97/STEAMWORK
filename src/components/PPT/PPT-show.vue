@@ -256,9 +256,9 @@
                     props: {
                         value: that.type
                     },
-                    on:{
-                        change(e){
-                            that.type = e;
+                    on: {
+                        change(e) {
+                            that.type = e
                         }
                     }
                 }, optionList);

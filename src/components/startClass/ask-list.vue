@@ -64,48 +64,44 @@
                     that.questions.push(...res.data.questionList);
                 })
             },
-                open() {
-                    this.$confirm('是否解决了该学生问题？确认后该学生学号将从队列中移除。', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                    }).then(() => {
-                        utils.request({
-                            invoke: api.requestSolveQuestion,//
-                            params: {
-                                code: 'solve_question',
-                                stuId: store.state.userName
-                            },
-                            result: fakeData.STU_QUESTION
-                        })//向后端请求操作
+            open() {
+                this.$confirm('是否解决了该学生问题？确认后该学生学号将从队列中移除。', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    utils.request({
+                        invoke: api.requestSolveQuestion,//
+                        params: {
+                            code: 'solve_question',
+                            stuId: store.state.userName
+                        },
+                        result: fakeData.STU_QUESTION
+                    })//向后端请求操作
+                        .then(res => {
+                            if(res.data.code == '1'){
+                                let that = this;
+                                setInterval(that.updateData,5000);//定时向后端请求读取学生队列，五秒一次
+                                this.$message({
+                                    type: 'success',
+                                    message: '成功移除该学生学号'
+                                });
 
-                            .then(res => {
-                                if(res.data.code == '1'){
-                                    let that = this;
-                                    setInterval(that.updateData,5000);//定时向后端请求读取学生队列，五秒一次
-                                    this.$message({
-                                        type: 'success',
-                                        message: '成功移除该学生学号'
-                                    });
+                            }
+                            else{
 
-                                }
-                                else{
-
-                                    this.$message({
-                                        type: 'error',
-                                        message: '请求失败'
-                                    });
-                                }
-                            })//后端请求移除学生学号
-
-
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消'
-                        });
-                    })
-                }
-
+                                this.$message({
+                                    type: 'error',
+                                    message: '请求失败'
+                                });
+                            }
+                        })//后端请求移除学生学号
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                })
+            }
         }
     }
 </script>

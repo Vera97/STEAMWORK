@@ -47,7 +47,6 @@
                     })
                         .then((function (res) {
                             if (res.data.code === 1) {
-                                alert('服务端返回登录用户数据（头像）：' + res.data.userData);
                                 store.commit('LOG_IN_TEACHER', {
                                     ...res.data.userData,
                                     teacherId: res.data.teacherId,

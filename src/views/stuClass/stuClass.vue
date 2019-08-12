@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <Navstu></Navstu>
+      <Navstu active-index="4"></Navstu>
     </el-header>
     <el-main class="main-box">
       <pptView></pptView>
@@ -39,12 +39,16 @@
 
 <style scoped>
   * {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .main-box {
     margin-left: 10px;
-    margin-top:0px;
+    margin-top: 0;
+  }
+
+  .el-footer {
+    padding-right: 0;
   }
 </style>
