@@ -6,19 +6,24 @@
             placeholder="请输入内容"
             v-model="textarea">
     </el-input>
-    <el-button class="button" @click="refresh" type="primary">点击上传后确认完成</el-button>
   </div>
 </template>
 
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
-
     export default {
         name: "stu-design",
         data() {
             return{
-                textarea:''
+                textarea:'',
+                exerciseId:15
+            }
+        },
+        props: {
+            complete: {
+                type: Function,
+                default: null
             }
         },
         methods: {
@@ -32,10 +37,11 @@
                     result: fakeData.EXERCISE_DESIGN
                 })
                     .then(res => {
-                        if(res.data.code === 1){
+                        if (res.data.code === 1) {
                             alert("上传设计方案成功！");
+                            this.complete();
                         }
-                    })
+                    });
             }
         }
     }
