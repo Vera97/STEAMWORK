@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = false;
+export const DEVELOPMENT = true;
 
 export const WATCH_ALL = false;
 

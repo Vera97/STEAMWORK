@@ -19,24 +19,6 @@ const router = new VueRouter({
     routes: routes
 });
 
-router.beforeEach((to, from, next) => {
-    if(to.path !== '/') {
-        if(!store.state.userName || store.state.userName === '') {
-            store.commit('PROBE');
-            if(!store.state.userName || store.state.userName === '') {
-                next({path: '/'});
-                alert('请先登陆')
-            }
-            else next();
-        } else {
-            next();
-        }
-    }
-    else {
-        next()
-    }
-});
-
 new Vue({
     render: h => h(App),
     router,
