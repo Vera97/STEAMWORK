@@ -2,7 +2,7 @@
   <div>
     <el-card class="ppt-box">
       <i class="el-icon-close" @click="open"></i>
-      <component v-bind:is="currentTabComponent"></component>
+      <component :complete="complete" v-bind:is="currentTabComponent"></component>
       <el-button type="primary" class="button" @click="complete">确认完成</el-button>
     </el-card>
   </div>
@@ -76,7 +76,6 @@
                 for(let i = 0;i < store.state.stuClass.exerciseList.length; i++){
                     if(store.state.stuClass.exerciseList[i].exerciseId === this.exercise.exerciseId){
                         store.state.stuClass.exerciseList[i].state=false;
-                        console.log(store.state.stuClass.exerciseList[i].state);
                     }
                 }
             }
