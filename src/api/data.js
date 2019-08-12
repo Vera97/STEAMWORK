@@ -468,7 +468,13 @@ export const EXERCISE_LIST={
             title:'小组分组',
             type:'小组分组',
             state:true,
-        }
+        },
+        {
+            exerciseId:555,
+            title:'讨论记录',
+            type:'讨论记录',
+            state:true,
+        },
     ]
 };
 export const EXERCISE_RESOURCE={
@@ -680,11 +686,35 @@ export const STU_EXERCISE_LIST={
         }
     ]
 };
-export const EDIT_WEALTH ={
+export const EDIT_WEALTH = {
     code: 1,
     wealthAll:120
 };
-export const GET_WEALTH ={
+export const GET_WEALTH = {
     code: 1,
     wealthAll:80
+};
+export const ACTIVITY_CODE = {
+    code:1,
+};
+export const GROUP_CODE = {
+    code:1,
+    discussionContent: 'html'
+};
+export const GET_GROUP ={
+    code: 1,
+    groupList:[
+        {
+            groupId: 10,
+            leaderStuId: 1,
+            groupName: 'sss',
+            members: [
+                {stuId: 12, stuName: 'dss1', stuNumber: 101253421},
+                {stuId: 133, stuName: 'dss2', stuNumber: 101255321},
+                {stuId: 144, stuName: 'dss3', stuNumber: 101253321},
+                {stuId: 155, stuName: 'dss4', stuNumber: 101253441},
+                {stuId: 166, stuName: 'dss5', stuNumber: 101253721},
+            ]
+        },
+    ]
 };

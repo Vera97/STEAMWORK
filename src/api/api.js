@@ -546,3 +546,25 @@ export const requestUploadCourseExerciseDesign = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/course/course_section_exercise_design/upload`, params, {headers: headers});
 };
+
+/**
+ * url: /teacher/classroom/start_exercise
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestTeacherStartExercise = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/start_exercise`, params, {headers: headers});
+};
+
+/**
+ * url: /stu/group/discussion/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestStuDiscussionGet = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/group/discussion/get`, params, {headers: headers});
+};
