@@ -118,5 +118,6 @@
   .w {
     margin-left: 10px;
     margin-right: 10px;
+    min-height: 505px;
   }
 </style>

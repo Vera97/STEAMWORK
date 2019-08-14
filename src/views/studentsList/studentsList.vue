@@ -8,7 +8,7 @@
         <!--,对应图片左侧classList为左侧班级列表 -->
         <el-col :span="4" class="class-list">
           <el-button type="primary" class="button" @click="open"> + 创建班级</el-button>
-          <class-list :show-section="false" @course-selected="render" ref="classList"></class-list>
+          <class-list :show-section="false" :show-options="true" @course-selected="render" ref="classList"></class-list>
         </el-col>
         <!-- 对应图片右侧，rstulist为右侧学生列表 -->
         <el-col :span="19" style="float:right;">
@@ -27,11 +27,9 @@
     import Footer from "../../components/hd-footer";
     import classList  from "../../components/class-list";
     import rStuList from "../../components/studentsList/r-stu-list";
-
     import {api, fakeData} from '../../api';
     import store from '../../store';
     import utils from '../../utils';
-
     export default {
         name: "studentsList",
         components: {Footer, Nav, classList, rStuList},
@@ -43,8 +41,6 @@
         },
         methods: {
             open() {
-                let that = this;
-
                 this.$prompt('班级名称:', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
@@ -59,40 +55,28 @@
                             },
                             result: fakeData.ALTER_CLASS_RESPONSE
                         })
-                            .then(res => {
+                            .then((function(res) {
                                 // successfully added a class, so the class list ought to be updated.
                                 if(res.data.code === 1) {
-                                    alert('修改成功！');
-                                    that.$refs.classList.addCourse({
+                                    this.$message.success('修改成功');
+                                    this.$refs.classList.addCourse({
                                         classId: res.data.class.classId,
                                         className: res.data.class.className,
                                         createDate: res.data.class.createDate,
                                         courseDetail: []
                                     })
                                 }
-                                else alert('修改失败！')
-                            })
+                                else this.$message.error('修改失败')
+                            }).bind(this))
                     }
                 })
             },
             render(classId, courseId) {
-                let that = this;
-
-                store.commit('studentsList/SUBMIT_ID', {classId, courseId});
-                let promise = courseId ?
-                    store.dispatch('studentsList/render_course') :
-                    store.dispatch('studentsList/renderClass');
-                promise.then(() => {
-                    that.$refs.rStuList.render()
-                })
+                this.$refs.rStuList.render(classId, courseId);
             },
             updateClassList(value) {
                 this.$refs.classList.addRelated(value)
             }
-        },
-        beforeRouteLeave(to, from, next) {
-            store.commit('studentsList/SUBMIT_ID', {classId: '', courseId: ''});
-            next()
         }
     }
 </script>
@@ -102,16 +86,13 @@
     margin-left: 0;
     padding-left: 0;
   }
-
   .class-list {
     margin-left: 20px;
   }
-
   .button {
     margin-bottom: 10px;
     width: 100%;
   }
-
   .el-footer {
     padding: 0;
   }

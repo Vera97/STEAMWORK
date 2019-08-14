@@ -18,8 +18,8 @@ const state = {
         code:'',
         mediaUrl:''
     },
-    exercise:'',
-    wealthAll:''
+    wealthAll:'',
+    currentExercise:''
 };
 
 const getters = {};
@@ -47,8 +47,8 @@ const mutations = {
     TEXT_DESIGN(state,exerciseDesign){
         state.exerciseDesign = exerciseDesign;
     },
-    ADD_CURRENT_EXERCISE(state,exercise){
-        state.exercise = exercise;
+    ADD_CURRENT_EXERCISE(state,currentExercise){
+        state.currentExercise = currentExercise;
     },
     ADD_WEALTH(state, wealthAll) {
         state.wealthAll = wealthAll;

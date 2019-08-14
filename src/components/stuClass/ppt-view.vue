@@ -7,17 +7,17 @@
           <i class="el-icon-phone-outline"></i>
           <span slot="title">常见问题及解答</span>
         </el-menu-item>
-        <el-menu-item index="2"  @click="open">
+        <el-menu-item index="2" @click="open">
           <i class="el-icon-question"></i>
           <span slot="title">寻求老师帮助</span>
         </el-menu-item>
         <el-menu-item index="3" @click="previous">
-          <i class="el-icon-back"></i>
+          <i class="el-icon-caret-left"></i>
           <span slot="title">返回上一页ppt</span>
         </el-menu-item>
-        <el-menu-item v-for="item in exerciseList" :key="item.exerciseId">
-          <i class="el-icon-star-off" @click="openAct(item)" v-if="item.state"></i>
-          <i class="el-icon-star-on" @click="completeAct" v-else></i>
+        <el-menu-item v-for="item in exerciseList" :key="item.exerciseId" @click="openAct(item)">
+          <i class="el-icon-star-off" v-if="!item.state"></i>
+          <i class="el-icon-star-on"  v-else></i>
           <span slot="title">{{item.title}}</span>
         </el-menu-item>
       </el-menu>
@@ -132,6 +132,7 @@
                 utils.request({//向后端请求当前活动是否被开启
                     invoke: api.requestIsStartActivity,
                     params: {
+                        classroomId:this.classroomId,
                         exerciseId: item.exerciseId,
                     },
                     result: fakeData.IS_START
@@ -178,11 +179,6 @@
                             store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
                         }
                     })
-            },
-            completeAct() {
-                this.$alert('该活动已完成', '提示', {
-                    confirmButtonText: '确定',
-                });
             },
             answer() {
                 utils.request({

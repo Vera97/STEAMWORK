@@ -10,7 +10,43 @@
              :props="defaultProps"
              @node-click="handleNodeClick"
              :render-after-expand="false"
-    ></el-tree>
+             :expand-on-click-node="false"
+    >
+      <span class="custom-tree-node" slot-scope="{node}">
+        <span>{{ node.label }}</span>
+        <span v-if="showOptions">
+          <el-popover
+                  class="pop-pane"
+                  v-if="node.level === 1"
+                  placement="right"
+                  title="请选择要添加的课程"
+                  trigger="click"
+                  v-model="visible[node.key]"
+          >
+            <i class="node-icon el-icon-plus" slot="reference"></i>
+            <el-select
+                    class="course-selector"
+                    value-key="courseId"
+                    v-model="relatedSelect"
+                    filterable
+                    remote
+                    :remote-method="search"
+                    placeholder="请选择"
+            >
+              <el-option
+                      v-for="item in options"
+                      :key="item.courseId"
+                      :label="item.courseName"
+                      :value="item">
+              </el-option>
+            </el-select>
+            <el-button type="primary" size="small" class="select-confirm" @click="addRelated(node)">确定</el-button>
+          </el-popover>
+          <i class="node-icon el-icon-edit" @click="editPrompt(node)" v-if="node.level === 1"></i>
+          <i class="node-icon el-icon-delete" @click="deletePrompt(node)"></i>
+        </span>
+      </span>
+    </el-tree>
   </el-card>
 </template>
 
@@ -18,11 +54,11 @@
     import store from '../store'
     import {api, fakeData} from '../api'
     import utils from '../utils'
-
     export default {
         name: "class-list",
         props: {
-            showSection: Boolean
+            showSection: Boolean,
+            showOptions: Boolean
         },
         data() {
             return {
@@ -37,24 +73,31 @@
                     }
                 },
                 key: 0,                 /* a unique key for the node. to select a node after loaded. */
-                expandKey: []
+                expandKey: [],
+                options: [],
+                relatedSelect: null,
+                visible: []
             };
         },
         methods: {
             handleNodeClick(data, node) {
                 if (node.isLeaf) {
                     if (node.level === 1) {
-                        this.$emit('course-selected', data.courseId, null);
+                        this.$emit('course-selected', data.classId, null);
                     } else if (node.level === 2) {
                         this.$emit('course-selected', node.parent.data.classId, data.courseId);
                     } else {
-                        this.$emit('section-selected', data.courseSectionId, node.parent.parent.data.classId)
+                        this.$confirm('确认开始这节课吗？', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消'
+                        })
+                            .then((function () {
+                                this.$emit('section-selected', data.courseSectionId, node.parent.parent.data.classId)
+                            }).bind(this)).catch()
                     }
                 }
             },
             getClass() {
-                let that = this;
-
                 return utils.request({
                     invoke: api.requestTeacherClasses,
                     params: {
@@ -62,7 +105,7 @@
                     },
                     result: fakeData.CLASSES
                 })
-                    .then(res => {
+                    .then((function(res) {
                         /* watch out! adding attributes and array items directly after the mount
                         * cannot be caught by the el-tree, and the node tree won't be updated.
                         * so the offspring won't appear in the subtree, and the whole tree remain
@@ -70,17 +113,15 @@
                         * via Array.push method, and add every attributes before the mount or use the
                         * method provided by vue. */
                         for (let i of res.data.classList) {
-                            that.listData.push({...i, child: [], key: that.key});
-                            that.key++
+                            this.listData.push({...i, child: [], key: this.key});
+                            this.key++
                         }
-                    })
+                    }).bind(this))
             },
             // get the courses in the classes
             // grab the first course and render it
             async getSubCourses() {
-                let that = this;
                 let flag = false;
-
                 for (let k = 0; k < this.listData.length; k++) {
                     let classId = this.listData[k].classId;
                     await utils.request({
@@ -90,32 +131,27 @@
                         },
                         result: fakeData.COURSES_IN_CLASS
                     })
-                        .then(res => {
+                        .then((function(res) {
                             let courseList = res.data.courseList.map(item => {
                                 return {
                                     courseId: item.courseId,
                                     courseName: item.courseName,
-                                    key: that.key++
+                                    key: this.key++
                                 }
                             });
-                            that.listData[k].child.push(...courseList);
-                        });
-
-                    if (!flag && !this.showSection && that.listData[k].child.length !== 0) {
+                            this.listData[k].child.push(...courseList);
+                        }).bind(this));
+                    if (!flag && !this.showSection && this.listData[k].child.length !== 0) {
                         flag = true;
-                        let classId = that.listData[k].classId;
-                        let courseId = that.listData[k].child[0].courseId;
-                        let key = that.listData[k].child[0].key;
-                        that.expandKey = [that.listData[k].key];
-
+                        let classId = this.listData[k].classId;
+                        let courseId = this.listData[k].child[0].courseId;
+                        let key = this.listData[k].child[0].key;
+                        this.expandKey = [this.listData[k].key];
                         // use the id to fetch the list of student
                         // if currently no course has been rendered
-                        if (store.state.studentsList.courseId === '') {
-                            that.$emit('course-selected', classId, courseId);
-                            that.$refs.tree.setCurrentKey(key);
-                        }
+                        this.$emit('course-selected', classId, courseId);
+                        this.$refs.tree.setCurrentKey(key);
                     }
-
                     if(this.showSection) {
                         for (let i = 0; i < this.listData[k].child.length; i++) {
                             utils.request({
@@ -125,17 +161,17 @@
                                 },
                                 result: fakeData.COURSE_DETAIL
                             })
-                                .then(res => {
+                                .then((function(res) {
                                     this.$set(this.listData[k].child[i], 'child', []);
                                     let courseSectionList = res.data.courseSection.map(item => {
                                         return {
                                             courseSectionId: item.courseSectionId,
                                             courseSectionName: item.courseSectionName,
-                                            key: that.key++
+                                            key: this.key++
                                         }
                                     });
                                     this.listData[k].child[i].child.push(...courseSectionList);
-                                })
+                                }).bind(this))
                         }
                     }
                 }
@@ -143,12 +179,116 @@
             addCourse(course) {
                 this.listData.push(course)
             },
-            addRelated(value) {
-                for (let i = 0; i < this.listData.length; i++) {
-                    if (this.listData[i].id === store.state.studentsList.classId) {
-                        this.listData[i].courseDetail.push(...value)
-                    }
+            addRelated(node) {
+                utils.request({
+                    invoke: api.requestAlterClassCourseList,
+                    params: {
+                        code: 'course_list_add',
+                        classId: node.data.classId,
+                        courseId: this.relatedSelect.courseId
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            this.$refs.tree.append(this.relatedSelect, node);
+                            this.$set(this.visible, node.key, false);
+                            this.relatedSelect = null;
+                            this.$message.success('添加成功')
+                        } else
+                            this.$message.error('添加失败')
+                    }).bind(this))
+            },
+            deletePrompt(node) {
+                if(node.level === 2) {
+                    this.$confirm('确认要删除这个课程吗', '确认', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(() => this.deleteRelated(node)).catch()
+                } else {
+                    this.$confirm('确认要删除这个班级吗', '确认', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消'
+                    }).then(() => this.deleteClass(node)).catch()
                 }
+            },
+            deleteRelated(node) {
+                utils.request({
+                    invoke: api.requestAlterClassCourseList,
+                    params: {
+                        code: 'course_list_remove',
+                        classId: node.parent.data.classId,
+                        courseId: node.data.courseId
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            this.$refs.tree.remove(node);
+                            this.$message.success('删除成功')
+                        } else
+                            this.$message.error('删除失败')
+                    }).bind(this))
+            },
+            deleteClass(node) {
+                utils.request({
+                    invoke: api.requestAlterClassList,
+                    params: {
+                        code: 'class_list_remove',
+                        teacherId: store.state.teacherId,
+                        classId: node.data.classId
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            this.$refs.tree.remove(node);
+                            this.$message.success('删除成功')
+                        } else
+                            this.$message.error('删除失败')
+                    }).bind(this))
+            },
+            editPrompt(node) {
+                this.$prompt('请输入想要修改的名称', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                })
+                    .then((function ({value}) {
+                        if(node.level === 1) this.editClassName(node, value);
+                        else this.$message.error('无法在此处修改课程名称')
+                    }).bind(this))
+            },
+            editClassName(node, className) {
+                utils.request({
+                    invoke: api.requestAlterClassList,
+                    params: {
+                        code: 'class_list_update',
+                        teacherId: parseInt(store.state.teacherId),
+                        classId: node.data.classId,
+                        className: className
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            node.data.className = className;
+                            this.$message.success('修改成功')
+                        } else this.$message.error('修改失败')
+                    }).bind(this))
+            },
+            search(input) {
+                utils.request({
+                    invoke: api.requestSearchCourses,
+                    params: {
+                        course_name_keyword: input
+                    },
+                    result: fakeData.SEARCH_COURSE
+                })
+                    .then((function (res) {
+                        this.options = res.data.chunks.map(item => {
+                            return {courseName: item.title, courseId: item.courseId}
+                        });
+                    }).bind(this))
             }
         },
         async created() {
@@ -159,4 +299,27 @@
 </script>
 
 <style scoped>
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
+  .node-icon {
+    margin-left: .5em;
+  }
+  .pop-pane {
+    position: relative;
+  }
+  .course-selector {
+    padding: 1em;
+  }
+  .select-confirm {
+    position: relative;
+    width: 5em;
+    margin: 0 auto;
+    display: block;
+  }
 </style>

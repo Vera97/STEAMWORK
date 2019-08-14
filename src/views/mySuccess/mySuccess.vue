@@ -6,7 +6,7 @@
     <el-main class="main-box">
       <el-row :gutter="24">
         <el-col :span="5">
-          <classList></classList>
+          <stuClassList></stuClassList>
         </el-col>
         <el-col :span="18">
           <diary></diary>
@@ -22,23 +22,24 @@
 <script>
     import NavStu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
-    import classList from "../../components/class-list"
+    import stuClassList from "../../components/mySuccess/stu-class-list"
     import diary from "../../components/mySuccess/diary";
 
     export default {
         name: "mySuccess",
-        components: {diary, classList, Footer, NavStu}
+        components: {diary, stuClassList, Footer, NavStu}
 
     }
 </script>
 
 <style scoped>
   * {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .main-box {
     margin-left: 10px;
+    min-height:505px;
   }
 </style>
