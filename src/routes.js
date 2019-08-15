@@ -9,6 +9,7 @@ import team from "./views/team/team";
 import resource from "./views/resource/resource"
 import mySuccess from "./views/mySuccess/mySuccess"
 import stuClass from "./views/stuClass/stuClass"
+import admin from "./views/admin/admin"
 import index from "./views/index"
 
 import store from './store'
@@ -113,7 +114,11 @@ let routes = [
         props: true,
         beforeEnter: studentGuard
     },
-
+    {
+        path: '/admin',
+        component: admin,
+        props: true
+    },
     {
         path: '*',
         component: notFound
