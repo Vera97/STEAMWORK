@@ -824,3 +824,16 @@ export const STUDENT_OWN_COURSE = {
         }
     ]
 };
+
+export const REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL = {
+    code: 1,
+    classroomId: 11,
+    groupList: [12, 13, 14],
+    courseSectionId: 2,
+    pptUrl: '',
+    pptImagesList: ['/', '/']
+};
+
+export const REQUEST_JOIN_CLASS_RESPONSE_FAIL = {
+    code: 0
+};

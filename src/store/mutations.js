@@ -62,6 +62,18 @@ const mutations = {
     PROBE_COURSE(state) {
         let tmp = fetch('cached_courseId');
         state.cached_courseId = tmp === '' ? '' : parseInt(tmp)
+    },
+    STU_CLASSROOM_ID(state, {classroomId}) {
+        state.classroomId = classroomId
+    },
+    STU_GROUP_LIST(state, {groupList}) {
+        state.groupList = [];
+        if(groupList.length !== 0) {
+            state.groupList.push(...groupList)
+        }
+    },
+    STU_COURSE_SECTION_ID(state, {courseSectionId}) {
+        state.courseSectionId = courseSectionId
     }
 };
 

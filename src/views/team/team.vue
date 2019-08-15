@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <NavStu active-index="3"></NavStu>
+      <nav-stu active-index="3"></nav-stu>
     </el-header>
     <el-main>
       <el-row :gutter="0">
@@ -16,7 +16,7 @@
       </el-row>
     </el-main>
     <el-footer>
-      <hdfooter></hdfooter>
+      <hd-footer></hd-footer>
     </el-footer>
   </el-container>
 </template>
@@ -25,11 +25,11 @@
     import NavStu from "../../components/stu-nav";
     import teamList from "../../components/team/team-list";
     import mainPanel from "../../components/team/main";
-    import hdfooter from "../../components/hd-footer";
+    import hdFooter from "../../components/hd-footer";
 
     export default {
         name: "team",
-        components: {teamList,mainPanel,hdfooter, NavStu},
+        components: {teamList, mainPanel, hdFooter, NavStu},
         beforeRouteEnter(to, from, next) {
             // TODO check whether group discussion is available
             next()

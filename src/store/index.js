@@ -21,7 +21,10 @@ const state = {
     userName: '',
     avatar: '',
     introduce: '',
-    cached_courseId: ''             /* cache a courseId for the course page. */
+    cached_courseId: '',             /* cache a courseId for the course page. */
+    classroomId: null,
+    groupList: [],
+    courseSectionId: null
 };
 
 // 创建 store 实例
