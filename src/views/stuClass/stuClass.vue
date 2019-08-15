@@ -25,9 +25,6 @@
     export default {
         name: "stuClass",
         components: {pptView, Footer, Navstu},
-        props: [
-            'id'
-        ],
         data() {
             return {
                 display: 0,

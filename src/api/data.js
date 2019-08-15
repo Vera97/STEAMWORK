@@ -718,3 +718,25 @@ export const GET_GROUP ={
         },
     ]
 };
+
+export const GET_EXERCISE_STATE_COMPLETED = {
+    code: 1,
+    exerciseStateList: [
+        {
+            exerciseId: 10,
+            exerciseType: '讨论记录',
+            state: 1
+        }
+    ]
+};
+
+export const GET_EXERCISE_STATE_UNCOMPLETED = {
+    code: 1,
+    exerciseStateList: [
+        {
+            exerciseId: 10,
+            exerciseType: '讨论记录',
+            state: 0
+        }
+    ]
+};

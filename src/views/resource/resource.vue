@@ -29,18 +29,42 @@
     import task from "../../components/resource/task";
     import pptCenter from "../../components/resource/ppt-center";
 
+    import utils from '../../utils'
+    import {api, fakeData} from '../../api'
+    import store from '../../store'
+
     export default {
         name: "resource",
         components: {pptCenter, task, growUp, Footer, NavStu},
+        beforeRouteEnter(to, from, next) {
+            let flag = false;
 
-
+            utils.request({
+                invoke: api.requestExerciseState,
+                params: {
+                    stuId: store.state.stuId,
+                    courseSectionId: 123
+                },
+                result: fakeData.GET_EXERCISE_STATE_COMPLETED
+            })
+                .then((function (res) {
+                    for(let i of res.data.exerciseStateList) {
+                        if(i.state === 0) {
+                            this.$message.error('请先完成所有练习');
+                            flag = true;
+                            break
+                        }
+                    }
+                    if(flag) next()
+                }).bind(this))
+        }
     }
 </script>
 
 <style scoped>
   * {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .main-box {
