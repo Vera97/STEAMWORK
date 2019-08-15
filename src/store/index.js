@@ -10,6 +10,8 @@ import ppt from './modules/ppt'
 import startClass from './modules/startClass'
 import stuClass from './modules/stuClass'
 import team from './modules/team'
+import resource from './modules/resource'
+import mySuccess from './modules/mySuccess'
 
 Vue.use(Vuex);
 
@@ -31,6 +33,8 @@ export default new Vuex.Store({
         startClass: startClass,
         stuClass:stuClass,
         team:team,
+        resource:resource,
+        mySuccess:mySuccess
     },
     actions,
     getters,

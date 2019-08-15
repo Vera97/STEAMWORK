@@ -12,7 +12,7 @@
     import utils from '../../utils'
     export default {
         name: "stu-resource-show",
-        props: ['exerciseId','stuId'],
+        props: ['currentExercise'],
         computed: {
             video() {
                 return store.state.stuClass.exerciseMedia.mediaUrl
@@ -33,12 +33,12 @@
                 invoke: api.requestGetCourseExerciseMedia,
                 params: {
                     stuId: this.stuId,
-                    exerciseId: this.exerciseId
+                    exerciseId: this.currentExercise.exerciseId
                 },
                 result: fakeData.EXERCISE_RESOURCE
             })
                 .then(res => {
-                    store.commit('stuClass/PLAY_RESOURCE', res.data);
+                    //store.commit('stuClass/PLAY_RESOURCE', res.data);
                     this.getType(res.data.fileType);
                 });
         }

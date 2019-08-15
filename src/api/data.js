@@ -443,13 +443,11 @@ export const EXERCISE_LIST={
             exerciseId:112,
             title:'文本播放',
             type:'文本播放',
-            state:true,
         },
         {
             exerciseId:111,
             title:'资源播放',
             type:'资源播放',
-            state:true,
         },
         {
             exerciseId:222,
@@ -461,19 +459,16 @@ export const EXERCISE_LIST={
             exerciseId:333,
             title:'人员统计',
             type:'人员统计',
-            state:true
         },
         {
             exerciseId:444,
             title:'小组分组',
             type:'小组分组',
-            state:true,
         },
         {
             exerciseId:555,
             title:'讨论记录',
             type:'讨论记录',
-            state:true,
         },
     ]
 };
@@ -652,37 +647,26 @@ export const STU_EXERCISE_LIST={
             exerciseId:112,
             title:'文本播放',
             type:'文本播放',
-            state:true,
         },
         {
             exerciseId:111,
             title:'资源播放',
             type:'资源播放',
-            state:true,
         },
         {
             exerciseId:222,
             title:'互动问答',
             type:'互动问答',
-            state:true,
         },
         {
             exerciseId:333,
             title:'方案设计',
             type:'方案设计',
-            state:true
-        },
-        {
-            exerciseId:444,
-            title:'小组分组',
-            type:'小组分组',
-            state:true,
         },
         {
             exerciseId: 55555,
             title: '作品展示',
             type: '作品展示',
-            state: true
         }
     ]
 };
@@ -737,6 +721,106 @@ export const GET_EXERCISE_STATE_UNCOMPLETED = {
             exerciseId: 10,
             exerciseType: '讨论记录',
             state: 0
+        }
+    ]
+};
+
+export const GET_STATE_EXERCISE = {
+    code: 1,
+    exerciseStateList:[
+        {
+            exerciseId:112,
+            title:'文本播放',
+            type:'文本播放',
+            state:0,
+        },
+        {
+            exerciseId:111,
+            title:'资源播放',
+            type:'资源播放',
+            state:0,
+        },
+        {
+            exerciseId:222,
+            title:'互动问答',
+            type:'互动问答',
+            state:0,
+        },
+        {
+            exerciseId:333,
+            title:'方案设计',
+            type:'方案设计',
+            state:0
+        },
+        {
+            exerciseId: 55555,
+            title: '作品展示',
+            type: '作品展示',
+            state: 1//0未完成，1已完成
+        }
+    ]
+};
+export const EXERCISE_CONTENT_QUESTION = {
+    code: 1,
+    answerList: ['A', 'B']
+};
+export const EXERCISE_CONTENT_DESIGN = {
+    code: 1,
+    designContent: 'sss'
+};
+export const EXERCISE_CONTENT_PHOTO = {
+    code: 1, //如果返回0，说明活动已被关闭。
+    photoList: ['https://images.unsplash.com/photo-1485199692108-c3b5069de6a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1485199692108-c3b5069de6a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80', ]
+};
+export const STUDENT_OWN_COURSE = {
+    code: 1,
+    stuCourseList: [
+        {
+            stuCourseId: 10011,
+            courseId: 1001,
+            courseName: '课程1',
+            courseSectionList: [
+                {
+                    courseSectionId: 1,
+                    courseSectionName: '课时1',
+                },
+                {
+                    courseSectionId: 2,
+                    courseSectionName: '课时2',
+                },
+                {
+                    courseSectionId: 3,
+                    courseSectionName: '课时3',
+                },
+                {
+                    courseSectionId: 4,
+                    courseSectionName: '课时4',
+                },
+                {
+                    courseSectionId: 5,
+                    courseSectionName: '课时5',
+                },
+                {
+                    courseSectionId: 6,
+                    courseSectionName: '课时6',
+                },
+            ]
+        },
+        {
+            stuCourseId: 10022,
+            courseId: 1002,
+            courseName: '课程2',
+            courseSectionList: [
+                {
+                    courseSectionId: 111,
+                    courseSectionName: 'ss11',
+                },
+                {
+                    courseSectionId: 222,
+                    courseSectionName: 'ss22',
+                },
+            ]
         }
     ]
 };

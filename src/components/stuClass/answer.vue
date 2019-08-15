@@ -5,13 +5,22 @@
     <div class="option" v-for="(item, index) in options" :key="index">
       <el-radio :label="index" v-model="checked">{{ item }}</el-radio>
     </div>
-    <el-button type="primary" @click="submit">提交</el-button>
+    <el-button type="primary" class="button" @click="submit">确认完成</el-button>
   </div>
 </template>
 
 <script>
+    import utils from '../../utils'
+    import {api, fakeData} from '../../api'
     export default {
         name: "answer",
+        props: {
+            complete: {
+                type: Function,
+                default: null
+            },
+            currentExercise:Object
+        },
         data () {
             return {
                 type: '单选题',
@@ -27,7 +36,20 @@
         },
         methods: {
             submit() {
-                alert('谢谢作答')
+                utils.request({
+                    invoke: api.requestUploadCourseExerciseDesign,
+                    params: {
+                        stuId: this.stuId,
+                        designContent: this.textarea
+                    },
+                    result: fakeData.EXERCISE_DESIGN
+                })
+                    .then(res => {
+                        if (res.data.code === 1) {
+                            alert('谢谢作答');
+                            this.complete();
+                        }
+                    });
             }
         }
     }
@@ -46,13 +68,9 @@
   .option {
     margin: 1em 0;
   }
-
-  .el-button {
-    margin: 1em auto;
-    width: 5em;
-    text-align: center;
-    position: relative;
-    display: block;
+  .button{
+    float:right;
+    margin-top:10px;
   }
 
   p {

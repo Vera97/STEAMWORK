@@ -54,7 +54,6 @@
     import store from '../store'
     import {api, fakeData} from '../api'
     import utils from '../utils'
-
     export default {
         name: "class-list",
         props: {
@@ -123,7 +122,6 @@
             // grab the first course and render it
             async getSubCourses() {
                 let flag = false;
-
                 for (let k = 0; k < this.listData.length; k++) {
                     let classId = this.listData[k].classId;
                     await utils.request({
@@ -143,20 +141,17 @@
                             });
                             this.listData[k].child.push(...courseList);
                         }).bind(this));
-
                     if (!flag && !this.showSection && this.listData[k].child.length !== 0) {
                         flag = true;
                         let classId = this.listData[k].classId;
                         let courseId = this.listData[k].child[0].courseId;
                         let key = this.listData[k].child[0].key;
                         this.expandKey = [this.listData[k].key];
-
                         // use the id to fetch the list of student
                         // if currently no course has been rendered
                         this.$emit('course-selected', classId, courseId);
                         this.$refs.tree.setCurrentKey(key);
                     }
-
                     if(this.showSection) {
                         for (let i = 0; i < this.listData[k].child.length; i++) {
                             utils.request({
@@ -313,18 +308,6 @@
     padding-right: 8px;
   }
 
-  .node-icon {
-    margin-left: .5em;
-  }
-
-  .pop-pane {
-    position: relative;
-  }
-
-  .course-selector {
-    padding: 1em;
-  }
-
   .select-confirm {
     position: relative;
     width: 5em;
@@ -332,3 +315,4 @@
     display: block;
   }
 </style>
+

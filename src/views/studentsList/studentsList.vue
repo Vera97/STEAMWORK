@@ -27,11 +27,9 @@
     import Footer from "../../components/hd-footer";
     import classList  from "../../components/class-list";
     import rStuList from "../../components/studentsList/r-stu-list";
-
     import {api, fakeData} from '../../api';
     import store from '../../store';
     import utils from '../../utils';
-
     export default {
         name: "studentsList",
         components: {Footer, Nav, classList, rStuList},
@@ -88,16 +86,13 @@
     margin-left: 0;
     padding-left: 0;
   }
-
   .class-list {
     margin-left: 20px;
   }
-
   .button {
     margin-bottom: 10px;
     width: 100%;
   }
-
   .el-footer {
     padding: 0;
   }

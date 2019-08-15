@@ -15,12 +15,11 @@
 <script>
     import Navstu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
-    // import question from "../../components/stuClass/question"
-    // import help from "../../components/stuClass/help";
-    // import task from "../../components/stuClass/task";
     import pptView from "../../components/stuClass/ppt-view";
-    // import problem from "../../components/stuClass/problem";
-    //import newMenu from "../../components/stuClass/new-menu"
+
+    import store from '../../store'
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
 
     export default {
         name: "stuClass",
@@ -30,6 +29,15 @@
                 display: 0,
                 current: true
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            utils.request({
+                invoke: api.requestJoinClass,
+                params: {
+                    stuId: store.state.stuId
+                },
+                result: null
+            })
         }
     }
 </script>

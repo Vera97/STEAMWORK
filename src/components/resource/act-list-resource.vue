@@ -16,22 +16,22 @@
     import stuResourceShow from "../../components/stuClass/stu-resource-show";
     import stuDesign from "../../components/stuClass/stu-design";
     import stuTextPlay from "../../components/stuClass/stu-text-play";
-    import answer from './answer'
-    import display from './display'
+    import answer from '../../components/stuClass/answer'
+    import display from '../../components/stuClass/display'
 
     export default {
-        name: "act-list",
-        components: {stuResourceShow, stuDesign, stuTextPlay, answer, display},
+        name: "act-list-resource",
+        components: {stuResourceShow, stuDesign, stuTextPlay,answer, display},
         data() {
             return {
-                name: "act-list",
+                name: "act-list-resource",
                 currentTabComponent: '',
                 isNeed:true
             }
         },
         computed: {
             currentExercise() {
-                return store.state.stuClass.currentExercise;
+                return store.state.resource.currentExercise;
             }
         },
         methods: {
@@ -39,17 +39,18 @@
                 this.$parent.onEmmitCur();
             },
             getCurrentComponent() {
-                if (store.state.stuClass.currentExercise.type === '资源播放') {
+                if (store.state.resource.currentExercise.type === '资源播放') {
                     this.currentTabComponent = 'stu-resource-show';
-                } else if (store.state.stuClass.currentExercise.type === '文本播放') {
+                    console.log(this.currentTabComponent);
+                } else if (store.state.resource.currentExercise.type === '文本播放') {
                     this.currentTabComponent = 'stu-text-play';
-                } else if (store.state.stuClass.currentExercise.type === '方案设计') {
+                } else if (store.state.resource.currentExercise.type === '方案设计') {
                     this.currentTabComponent = 'stu-design';
                     this.isNeed=false;
-                } else if (store.state.stuClass.currentExercise.type === '互动问答') {
+                } else if (store.state.resource.currentExercise.type === '互动问答') {
                     this.currentTabComponent = 'answer';
                     this.isNeed=false;
-                } else if (store.state.stuClass.currentExercise.type === '作品展示') {
+                } else if (store.state.resource.currentExercise.type === '作品展示') {
                     this.currentTabComponent = 'display'
                 }
             },
@@ -57,7 +58,6 @@
                 utils.request({
                     invoke: api.requestIsOver,
                     params: {
-                        classroomId:this.classroomId,
                         exerciseId: store.state.resource.currentExercise.exerciseId,
                     },
                     result: fakeData.IS_OVER,
@@ -75,9 +75,9 @@
                         }
                     });
                 //向后端请求更改活动状态，
-                for(let i = 0;i < store.state.stuClass.exerciseList.length; i++){
-                    if(store.state.stuClass.exerciseList[i].exerciseId === store.state.stuClass.currentExercise.exerciseId){
-                        store.state.stuClass.exerciseList[i].state=1;
+                for (let i = 0; i < store.state.resource.exerciseList.length; i++) {
+                    if (store.state.resource.exerciseList[i].exerciseId === store.state.resource.currentExercise.exerciseId) {
+                        store.state.resource.exerciseList[i].state = 1;
                     }
                 }
             }
@@ -95,12 +95,13 @@
   }
 
   .ppt-box {
-    width:100%;
-    height:90%;
+    width: 100%;
+    height: 90%;
     min-height: 600px;
   }
+
   .button {
     float: right;
-    margin-top:10px;
+    margin-top: 10px;
   }
 </style>
