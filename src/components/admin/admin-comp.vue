@@ -1,5 +1,5 @@
 <template>
-  <component v-bind:is="currentTabComponent"></component>
+  <component v-bind:is="currentTabComponent" class="component"></component>
 </template>
 
 <script>
@@ -15,7 +15,7 @@
         components: {teacherList,tagList},
         computed:{
             currentTabComponent(){
-                return store.state.admin.index;
+                return store.state.admin.index||'teacher-list';
             }
         },
         data(){
@@ -27,5 +27,7 @@
 </script>
 
 <style scoped>
-
+  .component{
+    margin-top:2%;
+  }
 </style>

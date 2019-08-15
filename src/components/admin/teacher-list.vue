@@ -64,7 +64,7 @@
                 console.log(index, row);
             },
             handleDelete(index, row) {
-                console.log(index, row);
+                row.splice(index, 1);
             }
         },
     }

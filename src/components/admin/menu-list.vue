@@ -1,7 +1,9 @@
 <template>
-  <el-row class="tac">
-    <el-col :span="12">
-      <el-menu class="el-menu-vertical-demo">
+  <div class="main-box">
+    <p class="title">您好！管理员</p>
+    <el-menu
+              default-active="1"
+              class="el-menu-vertical-demo">
         <el-menu-item index="1" @click="changeCur1">
           <i class="el-icon-menu"></i>
           <span slot="title">导航一</span>
@@ -19,8 +21,7 @@
           <span slot="title">导航四</span>
         </el-menu-item>
       </el-menu>
-    </el-col>
-  </el-row>
+  </div>
 </template>
 
 <script>
@@ -51,5 +52,16 @@
 </script>
 
 <style scoped>
-
+    .title{
+      margin-bottom:5px;
+      text-align:center;
+      border:1px solid  #DCDFE6;
+      padding-top:10px;
+      padding-bottom:10px;
+      font-size:20px;
+      color:#409EFF;
+    }
+    .el-menu-vertical-demo{
+      margin-top:10%;
+    }
 </style>

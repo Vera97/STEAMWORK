@@ -25,14 +25,18 @@
 
 <style scoped>
   * {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
+    margin-right:0;
+    padding-right:0;
+    margin-top:0;
+    padding-top:0;
   }
   .leader-box{
       float:left;
-      margin-top:2%;
-      margin-left:2%;
-      width:20%;
+      margin-left:1%;
+      width:15%;
+      margin-right:2%;
     }
   .table-box{
       float:right;
