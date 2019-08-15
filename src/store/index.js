@@ -5,7 +5,6 @@ import getters from './getters'
 import actions from './actions'
 
 import home from './modules/home'
-import studentsList from './modules/studentsList'
 import assignment from './modules/assignment'
 import ppt from './modules/ppt'
 import startClass from './modules/startClass'
@@ -29,7 +28,6 @@ const state = {
 export default new Vuex.Store({
     modules: {
         home: home,
-        studentsList: studentsList,
         assignment: assignment,
         ppt: ppt,
         startClass: startClass,

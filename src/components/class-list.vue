@@ -307,15 +307,7 @@
     font-size: 14px;
     padding-right: 8px;
   }
-  .node-icon {
-    margin-left: .5em;
-  }
-  .pop-pane {
-    position: relative;
-  }
-  .course-selector {
-    padding: 1em;
-  }
+
   .select-confirm {
     position: relative;
     width: 5em;
@@ -323,3 +315,4 @@
     display: block;
   }
 </style>
+

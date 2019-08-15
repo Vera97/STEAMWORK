@@ -17,8 +17,8 @@
       <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
     </el-upload>
     <div class="ppt-name" v-else>
-      <span>{{ url }}</span>
-      <el-button type="danger" @click="deletePPT">删除</el-button>
+      <span>{{ courseSectionName + '的ppt' }}</span>
+      <el-button type="danger" @click="deletePPT" size="mini">删除</el-button>
     </div>
   </div>
 </template>
@@ -30,13 +30,13 @@
     export default {
         name: "ppt-upload",
         props: {
-            courseSectionId: Number
+            courseSectionId: Number,
+            courseSectionName: String
         },
         data() {
             return {
                 fileList: [],    /* it's not used. */
                 uploaded: false,
-                url: ''
             }
         },
         methods: {
@@ -67,8 +67,7 @@
                             if (res.data.code === 1) {
                                 this.$message.success('成功上传');
                                 that.uploaded = true;
-                                that.url = res.data.url;
-                                that.$emit('upload', res.data.url, res.data.pptImagesList);
+                                that.$emit('upload', res.data.pptId, res.data.pptImagesList);
                             } else {
                                 this.$message.error('上传失败')
                             }
@@ -84,8 +83,7 @@
             deletePPT() {
                 console.log('delete')
             },
-            inject(url) {
-                this.url = url;
+            inject() {
                 this.uploaded = true
             }
         }

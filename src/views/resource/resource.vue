@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <NavStu></NavStu>
+      <NavStu active-index="1"></NavStu>
     </el-header>
     <el-main class="main-box">
           <pptCenter></pptCenter>

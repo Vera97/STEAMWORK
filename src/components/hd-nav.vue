@@ -86,7 +86,6 @@
                 })
                     .then(res => {
                         if(res.data.code === 1) {
-                            alert('服务端返回登录用户数据（头像）：' + res.data.userData);
                             store.commit('LOG_IN_TEACHER', {...res.data.userData, teacherId: res.data.teacherId, userName: userName});
                             store.dispatch('home/get_fav_courses').then();
 

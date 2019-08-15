@@ -1,6 +1,6 @@
 <template>
-  <el-card class="card">
-    <div class="text-center" style="padding: 15px;">
+  <el-card class="card" :body-style="{padding: '.5em'}">
+    <div class="text-center">
       <img class="image" :src="src" alt="you didn't see me">
     </div>
   </el-card>
