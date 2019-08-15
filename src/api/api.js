@@ -49,7 +49,7 @@ let options = {headers: headers, withCredentials: true};
  * @returns {Promise<any> | {code: number, teacherId: number, userData: {headIcon: String, introduce: String}}}
  */
 export const loginTeacher = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/login/teacher`, params, options);
 };
 
@@ -61,7 +61,7 @@ export const loginTeacher = params => {
  * @returns {Promise<any> | {code: number, stuId: number, userdata: {headIcon: String, introduce: String}}}}
  */
 export const loginStudent = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/login/stu`, params, options);
 };
 
@@ -75,7 +75,7 @@ export const loginStudent = params => {
  * @returns {Promise<any> | {totalCount: number, chunks: Array<{courseId: number, title: String, cover: String, introduce: String}>}}
  */
 export const getCourseChunk = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/getchunk`, params, options);
 };
 
@@ -87,7 +87,7 @@ export const getCourseChunk = params => {
  * @returns {Promise<any> | {title: String, courseSection: Array<{courseSectionId: number, courseSectionName: String}>, courseIntro: String, courseImgVideo: String, relatedCourse: Array<number>}}
  */
 export const requestCourseDetail = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/detail`, params, options);
 };
 
@@ -98,7 +98,7 @@ export const requestCourseDetail = params => {
  * @returns {Promise<any> | Array<{title: String, stepId: number}>}
  */
 export const requestCourseSteps = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/steps`, params, options);
 };
 
@@ -109,7 +109,7 @@ export const requestCourseSteps = params => {
  * @returns {Promise<any> | {html: String}}
  */
 export const requestStepsContent = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/steps_content`, params, options);
 };
 
@@ -120,7 +120,7 @@ export const requestStepsContent = params => {
  * @returns {Promise<any> | {chunks: Array<{title: String, courseId: number, cover: String, introduce: String}>}}
  */
 export const requestSearchCourses = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/search`, params, options);
 };
 
@@ -134,7 +134,7 @@ export const requestSearchCourses = params => {
  * @returns {Promise<any> | {chunks: Array<{courseId: number, title: String, cover: String, introduce: String}>}}
  */
 export const requestFilterCourses = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses/filter`, params, options);
 };
 
@@ -147,7 +147,7 @@ export const requestFilterCourses = params => {
  * @returns {Promise<any> | {code: number}}
  */
 export const requestAlterFavoriteTeacher = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/favorite_list`, params, options);
 };
 
@@ -159,7 +159,7 @@ export const requestAlterFavoriteTeacher = params => {
  * @returns {Promise<any> | Array<{title: String, courseId: number, cover: String, introduce: String}>}
  */
 export const requestTeacherFavoriteList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/favorite_courses`, params, options);
 };
 
@@ -170,7 +170,7 @@ export const requestTeacherFavoriteList = params => {
  * @returns {Promise<any> | {courses: Array<{courseId: number, title: String, cover: String, introduce: String}>}}
  */
 export const requestTeacherOwnCourses = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/teacher_courses`, params, options);
 };
 
@@ -181,7 +181,7 @@ export const requestTeacherOwnCourses = params => {
  * @returns {Promise<{classList: Array<{classId: number, className: String, createDate: String}>}>}
  */
 export const requestTeacherClasses = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/get_classes`, params, options);
 };
 
@@ -195,7 +195,7 @@ export const requestTeacherClasses = params => {
  * @returns {Promise<{code: number, class: {classId: number, className: String, createDate: String}}>}
  */
 export const requestAlterClassList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/edit_classes`, params, options);
 };
 
@@ -206,7 +206,7 @@ export const requestAlterClassList = params => {
  * @returns {Promise<{code: number, stuList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
  */
 export const requestStudentList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/get_stulist`, params, options);
 };
 
@@ -219,7 +219,7 @@ export const requestStudentList = params => {
  * @returns {Promise<any> | {code: number}}
  */
 export const requestAlterStudentList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/edit_stulist`, params, options);
 };
 
@@ -234,7 +234,7 @@ export const requestAlterStudentList = params => {
  * @returns {Promise<{code: number, score: number}>}
  */
 export const requestClassStuScore = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/score`, params, options);
 };
 
@@ -245,7 +245,7 @@ export const requestClassStuScore = params => {
  * @returns {Promise<{code: number, courseList: Array<{courseId: number, name: String}>}>}
  */
 export const requestClassCourseList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/get_courselist`, params, options);
 };
 
@@ -258,7 +258,7 @@ export const requestClassCourseList = params => {
  * @returns {Promise<any> | {code: number}}
  */
 export const requestAlterClassCourseList = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/edit_courselist`, params, options);
 };
 
@@ -269,7 +269,7 @@ export const requestAlterClassCourseList = params => {
  * @returns {Promise<{code: number, pptImagesList: Array<String>}>}
  */
 export const requestSlides = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/ppt`, params, options);
 };
 
@@ -279,7 +279,7 @@ export const requestSlides = params => {
  * @returns {Promise<AxiosResponse<T>>|Promise<any>}
  */
 export const requestSolveQuestion = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/confirm_question`, params, options);
 };
 
@@ -289,7 +289,7 @@ export const requestSolveQuestion = params => {
  * @returns {Promise<AxiosResponse<T>>|Promise<any>}
  */
 export const requestPushQuestion = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/ask_question`, params, options);
 };
 
@@ -299,7 +299,7 @@ export const requestPushQuestion = params => {
  * @returns {Promise<AxiosResponse<T>>|Promise<any>}
  */
 export const requestQueueStu = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_question_queue`, params, options);
 };
 
@@ -309,16 +309,16 @@ export const requestQueueStu = params => {
  * @returns {Promise<AxiosResponse<T>>|Promise<any>}
  */
 export const requestClearQueueStu = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_question_queue`, params, options);
 };
 
 export const requestPushProgressStu = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_progress`, params, options);
 };
 export const requestGetProgressStu = params => {
-    if(DEVELOPMENT) return new Promise(resolve => resolve());
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_progress`, params, options);
 };
 export const requestNewCourse = params => {
@@ -374,14 +374,14 @@ export const requestDeleteExercise = params => {
  * @param {number} params.page
  * @returns {Promise<{code: number, exerciseList: Array<{exerciseId: number,title: String, type: String}>}>}
  */
-export const requestExercise= params => {
-    if(DEVELOPMENT) return new Promise(resolve=> resolve());
-    return axios.post(`${base}/classroom/ppt_exercise`,params,options);
+export const requestExercise = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/ppt_exercise`, params, options);
 };
 
-export const requestExerciseMedia= params => {
-    if(DEVELOPMENT) return new Promise(  resolve=> resolve());
-    return axios.post(`${base}/classroom/exercise/media`,params,options);
+export const requestExerciseMedia = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exercise/media`, params, options);
 };
 let upload_headers = {'X-CSRFtoken': csrftoken, 'Content-Type': 'multipart/form-data'};
 export const uploadFile = params => {
@@ -417,13 +417,13 @@ export const requestPushPPTpage = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
 };
-export const requestIsStartActivity = params => {//!!!!缺少api
+export const requestIsStartActivity = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
+    return axios.post(`${base}/teacher/classroom/start_exercise`, params, {headers: headers});
 };
-export const requestIsOver= params => {//!!!!缺少api
+export const requestIsOver = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, {headers: headers});
+    return axios.post(`${base}/teacher/classroom/close_exercise`, params, {headers: headers});
 };
 export const requestClassStuQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
@@ -568,3 +568,56 @@ export const requestStuDiscussionGet = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/group/discussion/get`, params, {headers: headers});
 };
+/**
+ * url: /stu/exercise/detail/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestGetExerciseState = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/exercise/detail/get`, params, {headers: headers});
+};
+/**
+ * url:/stu/course/course_section_exercise_question/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestGetCourseExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_question/get`, params, {headers: headers});
+};
+/**
+ * url: /stu/course/course_section_exercise_design/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestGetCourseExerciseDesign = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_design/get`, params, {headers: headers});
+};
+/**
+ * url: /stu/course/course_section_exercise_design/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestGetCourseExercisePhoto = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_photo/get`, params, {headers: headers});
+};
+/**
+ * url: /stu/achievement/course_list/get
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestStuCourseList = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/achievement/course_list/get`, params, {headers: headers});
+};
+
+
+

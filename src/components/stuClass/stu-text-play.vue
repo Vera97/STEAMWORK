@@ -13,7 +13,7 @@
     export default {
         name: "stu-text-show",
         props:[
-            'stuId', 'exerciseId'
+            'currentExercise'
         ],
         computed:{
             text(){
@@ -26,7 +26,7 @@
                 invoke: api.requestGetCourseExerciseText,
                 params: {
                     stuId: this.stuId,
-                    exerciseId:this.exerciseId
+                    exerciseId:this.currentExercise.exerciseId
                 },
                 result: fakeData.EXERCISE_TEXT
             })

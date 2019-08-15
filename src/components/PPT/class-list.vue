@@ -15,23 +15,24 @@
 
 <script>
     import CourseCell from "../Course-cell";
+
     export default {
         name: "ClassList",
         components: {CourseCell},
-        data(){
-          return {
-              title:'科目xxxx',
-              introduction:'一句话的简介xxxx',
-            // items:[
-            //   {title:'科目00001'},{introduction:'一句话的简介000001'},
-            //   {title:'科目00002'},{introduction:'一句话的简介000002'},
-            //   {title:'科目00003'},{introduction:'一句话的简介000003'},
-            //   {title:'科目00004'},{introduction:'一句话的简介000004'},
-            //   {title:'科目00005'},{introduction:'一句话的简介000005'}
-            // ],
+        data() {
+            return {
+                title: '科目xxxx',
+                introduction: '一句话的简介xxxx',
+                // items:
+                //   {title:'科目00001'},{introduction:'一句话的简介000001'},
+                //   {title:'科目00002'},{introduction:'一句话的简介000002'},
+                //   {title:'科目00003'},{introduction:'一句话的简介000003'},
+                //   {title:'科目00004'},{introduction:'一句话的简介000004'},
+                //   {title:'科目00005'},{introduction:'一句话的简介000005'}
+                // ],
 
-          }
-      }
+            }
+        }
 
     }
 </script>

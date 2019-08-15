@@ -6,6 +6,7 @@
             placeholder="请输入内容"
             v-model="textarea">
     </el-input>
+    <el-button type="primary" class="button" @click="refresh">确认完成</el-button>
   </div>
 </template>
 
@@ -17,14 +18,14 @@
         data() {
             return{
                 textarea:'',
-                exerciseId:15
             }
         },
         props: {
             complete: {
                 type: Function,
                 default: null
-            }
+            },
+            currentExercise:Object//可从中获取当前活动的id
         },
         methods: {
             refresh() {
@@ -56,7 +57,7 @@
     }
   }
   .button{
-    float:left;
+    float:right;
     margin-top:10px;
   }
 </style>
