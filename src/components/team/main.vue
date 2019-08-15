@@ -1,19 +1,24 @@
 <template>
   <div class="content">
-    <el-tabs type="border-card" v-model="active">
-      <el-tab-pane label="聊天互动" name="聊天互动">编辑文字</el-tab-pane>
-      <el-tab-pane label="绘制头脑风暴" name="绘制头脑风暴">绘制头脑风暴</el-tab-pane>
-    </el-tabs>
+    <p>this is the uploaded content</p>
+    <img src="#" alt="not available yet. ">
+    <vue-drawing></vue-drawing>
+    <el-button type="primary" size="medium">提交</el-button>
   </div>
 </template>
 
 <script>
+    import utils from '../../utils'
+    import {api, fakeData} from '../../api'
+
     export default {
-        name: "upload",
-        data(){
+        name: "main",
+        data() {
             return {
-                active: '聊天互动'
             };
+        },
+        created () {
+
         }
     }
 </script>

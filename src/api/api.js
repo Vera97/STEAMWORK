@@ -562,12 +562,27 @@ export const requestTeacherStartExercise = params => {
  * url: /stu/group/discussion/get
  * @param {Object} params
  * @param {number} params.groupId
- * @returns {Promise<{code: number}>}
+ * @param {number} params.stuId
+ * @param {number} params.discussionNumber
+ * @returns {Promise<{code: number, discussionContent: String}>}
  */
 export const requestStuDiscussionGet = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/group/discussion/get`, params, {headers: headers});
 };
+
+/**
+ * url: /stu/exercise/detail/get
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @param {number} params.courseSectionId
+ * @returns {Promise<{code: number, exerciseStateList: Array<{exerciseId: number, exerciseType: String, state: number}>}>}
+ */
+export const requestExerciseState = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/exercise/detail/get`, params, options);
+};
+
 /**
  * url: /stu/exercise/detail/get
  * @param {Object} params
@@ -619,5 +634,13 @@ export const requestStuCourseList = params => {
     return axios.post(`${base}/stu/achievement/course_list/get`, params, {headers: headers});
 };
 
-
-
+/**
+ * url: /stu/classroom/stu/join_class
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @returns {Promise<{code: number, classroomId: number, groupList: Array<number>, courseSectionId: number, pptUrl: String, pptImageList: Array<String>}>}
+ */
+export const requestJoinClass = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/stu/join_class`, params, options);
+};

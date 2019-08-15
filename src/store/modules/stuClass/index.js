@@ -10,11 +10,11 @@ const state = {
         }
     ],
     stuList: [],
-    exerciseText:{
+    exerciseText: {
         code: '',
         content: '',
     },
-    exerciseMedia:{
+    exerciseMedia: {
         code:'',
         mediaUrl:''
     },

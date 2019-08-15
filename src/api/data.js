@@ -702,6 +702,29 @@ export const GET_GROUP ={
         },
     ]
 };
+
+export const GET_EXERCISE_STATE_COMPLETED = {
+    code: 1,
+    exerciseStateList: [
+        {
+            exerciseId: 10,
+            exerciseType: '讨论记录',
+            state: 1
+        }
+    ]
+};
+
+export const GET_EXERCISE_STATE_UNCOMPLETED = {
+    code: 1,
+    exerciseStateList: [
+        {
+            exerciseId: 10,
+            exerciseType: '讨论记录',
+            state: 0
+        }
+    ]
+};
+
 export const GET_STATE_EXERCISE = {
     code: 1,
     exerciseStateList:[
@@ -798,6 +821,19 @@ export const STUDENT_OWN_COURSE = {
                     courseSectionName: 'ss22',
                 },
             ]
-        },
+        }
     ]
+};
+
+export const REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL = {
+    code: 1,
+    classroomId: 11,
+    groupList: [12, 13, 14],
+    courseSectionId: 2,
+    pptUrl: '',
+    pptImagesList: ['/', '/']
+};
+
+export const REQUEST_JOIN_CLASS_RESPONSE_FAIL = {
+    code: 0
 };

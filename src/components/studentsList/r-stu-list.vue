@@ -54,25 +54,6 @@
       </el-table>
     </div>
     <div class="bottom">
-      <h4 class="relative">关联课程：</h4>
-      <el-select
-              value-key="courseId"
-              class="select"
-              multiple
-              v-model="relatedList"
-              filterable
-              remote
-              :remote-method="search"
-              placeholder="请选择"
-              @change="handleRelatedChange"
-      >
-        <el-option
-                v-for="item in options"
-                :key="item.courseId"
-                :label="item.title"
-                :value="item">
-        </el-option>
-      </el-select>
       <el-button type="primary" class="save" @click="savePrompt">保存</el-button>
     </div>
   </div>
@@ -86,10 +67,6 @@
         name: "r-stu-list",
         data() {
             return {
-                options: [],
-                baseOptions: [],          /* holds the original related courses. */
-                value: [],
-                input: '',
                 listData: [],             /* holds the data for the students. */
                 relatedList: [],
                 periodsList: [],
@@ -130,20 +107,6 @@
                     });
                 })
             },
-            search(input) {
-                utils.request({
-                    invoke: api.requestSearchCourses,
-                    params: {
-                        course_name_keyword: input
-                    },
-                    result: fakeData.SEARCH_COURSE
-                })
-                    .then((function (res) {
-                        this.options = res.data.chunks.map(item => {
-                            return {title: item.title, courseId: item.courseId}
-                        });
-                    }).bind(this))
-            },
             savePrompt() {
                 this.$confirm('是否保存学生名单与成绩？', '提示', {
                     confirmButtonText: '确定',
@@ -179,21 +142,6 @@
                         })
                     }
                 }
-
-                // this.$emit('change-class-list', this.value);
-                //
-                // utils.request({
-                //     invoke: api.requestAlterClassCourseList,
-                //     params: {
-                //         code: 'course_list_edit',
-                //         classId: store.state.studentsList.classId,
-                //         courseList: this.value
-                //     },
-                //     result: fakeData.SINGLE_RESPONSE_WORD
-                // })
-                //     .then();
-                //
-                // this.value = []
             },
             rate() {
                 console.log(this.listData)
@@ -258,26 +206,6 @@
                 }
 
                 this.periodsList.push(...tmp);
-
-                this.relatedList = [];
-                utils.request({
-                    invoke: api.requestClassCourseList,
-                    params: {
-                        classId: classId
-                    },
-                    result: fakeData.COURSES_IN_CLASS
-                })
-                    .then((function (res) {
-                        for(let i of res.data.courseList) {
-                            this.relatedList.push({
-                                title: i.courseName,
-                                courseId: i.courseId
-                            })
-                        }
-                    }).bind(this));
-
-                this.baseOptions = this.relatedList;
-                this.options = this.baseOptions
             },
             addStudent() {
                 this.$prompt('学生名称:', {
@@ -299,10 +227,6 @@
                             })
                         }
                     })
-            },
-            handleRelatedChange(e) {
-                console.log('hit');
-                console.log(e)
             }
         }
     }

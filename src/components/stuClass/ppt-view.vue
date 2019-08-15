@@ -27,7 +27,7 @@
         <p>·10:12(倒计时）</p>
       </div>
       <img
-              v-for="(item, index) in slideList"
+              v-for="(item, index) in pptImagesList"
               class="display"
               :key="index"
               :src="item"
@@ -48,10 +48,12 @@
     export default {
         name: "ppt-view",
         components: {actList},
+        props: {
+            pptId: Number,
+            pptImagesList: Array
+        },
         data() {
             return {
-                name: 'stuClass',
-                slideList: [],
                 isCollapse: true,
                 display: 0,
                 cur: true,
@@ -62,9 +64,6 @@
         computed: {
             number() {
                 return store.state.stuClass.number;
-            },
-            pptId() {
-                return store.state.stuClass.pptId;
             },
             exerciseList() {
                 return store.state.stuClass.exerciseList;
@@ -82,7 +81,7 @@
                     invoke: api.requestQueueStu,
                     params: {
                         code: 'get_stuQueue',
-                        classroomId: this.Id
+                        classroomId: store.state.classroomId
                     },
                     result: fakeData.STU_QUESTION
                 })
@@ -94,22 +93,6 @@
                         });
                     });
             },
-            getSlides(courseSectionId) {
-                let that = this;
-                utils.request({
-                    invoke: api.requestPPT,
-                    params: {
-                        courseSectionId: courseSectionId
-                    },
-                    result: fakeData.GET_SLIDES_RESPONSE
-                })
-                    .then(res => {
-                        if (res.data.code === 1) {
-                            that.slideList.push(...res.data.pptImagesList)
-                        } else that.$message.error('获取ppt失败');
-                        store.commit('stuClass/ADD_pptId', res.data.pptId)
-                    })
-            },
             previous() {//向前翻页
                 this.display = this.display === 0 ? 0 : this.display - 1
             },
@@ -117,27 +100,27 @@
                 utils.request({
                     invoke: api.requestPushPPTpage,
                     params: {
-                        classroomId: this.classroomId,
-                        stuId: this.stuId
+                        classroomId: store.state.classroomId,
+                        stuId: store.state.stuId
                     },
                     result: fakeData.PUSH_PPT
                 })
-                    .then(res => {
+                    .then(function(res) {
                         if (res.data.pptPage !== this.display) {
                             this.display = res.data.pptPage;
                         }
-                    })
+                    }.bind(this))
             },
             openAct(item) {//点击活动按钮
                 utils.request({//向后端请求当前活动是否被开启
                     invoke: api.requestIsStartActivity,
                     params: {
-                        classroomId:this.classroomId,
+                        classroomId: store.state.classroomId,
                         exerciseId: item.exerciseId,
                     },
                     result: fakeData.IS_START
                 })
-                    .then(res => {
+                    .then(function(res) {
                         if (res.data.code === 1) {
                             this.cur = false;//打开活动组件
                             store.commit('stuClass/ADD_CURRENT_EXERCISE',item);//传递当前点击的活动内容
@@ -146,7 +129,7 @@
                                 confirmButtonText: '确定',
                             });
                         }
-                    });
+                    }.bind(this));
             },
             onEmmitCur() {//接受从act-list关闭按钮传值，以关闭活动组件
                 this.cur = true;
@@ -155,7 +138,7 @@
                 utils.request({
                     invoke: api.requestExercise,
                     params: {
-                        pptId: store.state.stuClass.pptId,
+                        pptId: this.pptId,
                         progress: this.display
                     },
                     result: fakeData.STU_EXERCISE_LIST
@@ -170,7 +153,7 @@
                     params: {
                         stuId: this.stuId,
                         courseSectionId: this.courseSectionId,
-                        wealthNum:10
+                        wealthNum: 10
                     },
                     result: fakeData.EDIT_WEALTH
                 })
@@ -209,22 +192,21 @@
             },
             getWealth(){//获取财富值
                 utils.request({
-                    invoke: api.requestGetCourseWealth ,
+                    invoke: api.requestGetCourseWealth,
                     params: {
-                        stuId: this.stuId,
-                        courseSectionId: this.courseSectionId
+                        stuId: store.state.stuId,
+                        courseSectionId: store.state.courseSectionId
                     },
                     result: fakeData.GET_WEALTH
                 })
                     .then(res => {
-                        if(res.data.code===1){
+                        if(res.data.code === 1) {
                             store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
                         }
                     })
             }
         },
         mounted() {
-            this.getSlides(0);//获取并显示ppt
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
             this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数

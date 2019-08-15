@@ -1,10 +1,10 @@
 <template>
   <el-container>
     <el-header>
-      <Navstu active-index="4"></Navstu>
+      <nav-stu active-index="4"></nav-stu>
     </el-header>
     <el-main class="main-box">
-      <pptView></pptView>
+      <ppt-view :ppt-id="pptId" :ppt-images-list="pptImagesList"></ppt-view>
     </el-main>
     <el-footer>
       <Footer></Footer>
@@ -13,26 +13,45 @@
 </template>
 
 <script>
-    import Navstu from "../../components/stu-nav";
+    import navStu from "../../components/stu-nav";
     import Footer from "../../components/hd-footer";
-    // import question from "../../components/stuClass/question"
-    // import help from "../../components/stuClass/help";
-    // import task from "../../components/stuClass/task";
     import pptView from "../../components/stuClass/ppt-view";
-    // import problem from "../../components/stuClass/problem";
-    //import newMenu from "../../components/stuClass/new-menu"
+
+    import store from '../../store'
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
 
     export default {
         name: "stuClass",
-        components: {pptView, Footer, Navstu},
-        props: [
-            'id'
-        ],
+        components: {pptView, Footer, navStu},
         data() {
             return {
                 display: 0,
-                current: true
+                current: true,
+                pptId: null,
+                pptImagesList: []
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            utils.request({
+                invoke: api.requestJoinClass,
+                params: {
+                    stuId: store.state.stuId
+                },
+                result: fakeData.REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL
+            })
+                .then(function (res) {
+                    if(res.data.code === 1) {
+                        store.commit('STU_CLASSROOM_ID', {classroomId: res.data.classroomId});
+                        store.commit('STU_GROUP_LIST', {groupList: res.data.groupList});
+                        store.commit('STU_COURSE_SECTION_ID', {courseSectionId: res.data.courseSectionId});
+                        this.pptId = res.data.pptId;
+                        this.pptImagesList.push(...res.data.pptImagesList);
+                        next()
+                    } else {
+                        this.$message.error('上课尚未开始')
+                    }
+                }.bind(this))
         }
     }
 </script>

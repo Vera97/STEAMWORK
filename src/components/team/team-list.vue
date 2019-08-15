@@ -18,30 +18,15 @@
         name: "team-list",
         data() {
             return {
-                data: [
-                    {
-                        stuName: '张三',
-                        stuId: 1233,
-                        stuNumber: 1015555
-                    },
-                    {
-                        stuName: '李四',
-                        stuId: 1234,
-                        stuNumber: 1015565
-                    },
-                    {
-                        stuName: '王五',
-                        stuId: 1235,
-                        stuNumber: 1015755
-                    }
-                ],
+                data: [],
                 defaultProps: {
                     children: 'children',
                     label(data) {
                         return `${data.stuName}(${data.stuNumber})`
                     }
                 },
-                stuId: 12
+                groupId: null,
+                discussionNumber: 123       /* need a way to get it */
             };
         },
         methods: {
@@ -72,8 +57,9 @@
                 if (res.data.code === 1) {
                     for (let i = 0; i < res.data.groupList.length; i++) {
                         for (let j = 0; j < res.data.groupList[i].members.length; j++) {
-                            if (this.stuId === res.data.groupList[i].members[j].stuId) {
-                                this.groupData = res.data.groupList[i].members;
+                            if (store.state.stuId === res.data.groupList[i].members[j].stuId) {
+                                this.data = res.data.groupList[i].members;
+                                this.groupId = res.data.groupList[i].groupId;
                                 return
                             }
                         }
