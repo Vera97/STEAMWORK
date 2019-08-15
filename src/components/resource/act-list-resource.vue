@@ -3,7 +3,7 @@
     <el-card class="ppt-box">
       <i class="el-icon-close" @click="open"></i>
       <component :complete="complete" v-bind:is="currentTabComponent" :currentExercise="currentExercise"></component>
-      <el-button type="primary" class="button" @click="complete">确认完成</el-button>
+      <el-button type="primary" class="button" @click="complete" v-if="isNeed">确认完成</el-button>
     </el-card>
   </div>
 </template>
@@ -26,6 +26,7 @@
             return {
                 name: "act-list-resource",
                 currentTabComponent: '',
+                isNeed:true
             }
         },
         computed: {
@@ -45,8 +46,10 @@
                     this.currentTabComponent = 'stu-text-play';
                 } else if (store.state.resource.currentExercise.type === '方案设计') {
                     this.currentTabComponent = 'stu-design';
+                    this.isNeed=false;
                 } else if (store.state.resource.currentExercise.type === '互动问答') {
-                    this.currentTabComponent = 'answer'
+                    this.currentTabComponent = 'answer';
+                    this.isNeed=false;
                 } else if (store.state.resource.currentExercise.type === '作品展示') {
                     this.currentTabComponent = 'display'
                 }
