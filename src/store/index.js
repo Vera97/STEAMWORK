@@ -13,6 +13,7 @@ import stuClass from './modules/stuClass'
 import team from './modules/team'
 import resource from './modules/resource'
 import mySuccess from './modules/mySuccess'
+import admin from './modules/admin'
 
 Vue.use(Vuex);
 
@@ -36,7 +37,8 @@ export default new Vuex.Store({
         stuClass:stuClass,
         team:team,
         resource:resource,
-        mySuccess:mySuccess
+        mySuccess:mySuccess,
+        admin:admin
     },
     actions,
     getters,
