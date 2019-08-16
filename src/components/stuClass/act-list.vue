@@ -13,9 +13,9 @@
     import {api, fakeData} from '../../api'
     import store from '../../store'
 
-    import stuResourceShow from "../../components/stuClass/stu-resource-show";
-    import stuDesign from "../../components/stuClass/stu-design";
-    import stuTextPlay from "../../components/stuClass/stu-text-play";
+    import stuResourceShow from "../../components/stuClass/stu-resource-show"
+    import stuDesign from "../../components/stuClass/stu-design"
+    import stuTextPlay from "../../components/stuClass/stu-text-play"
     import answer from './answer'
     import display from './display'
 
@@ -26,7 +26,7 @@
             return {
                 name: "act-list",
                 currentTabComponent: '',
-                isNeed:true
+                isNeed: true
             }
         },
         computed: {
@@ -57,7 +57,7 @@
                 utils.request({
                     invoke: api.requestIsOver,
                     params: {
-                        classroomId:this.classroomId,
+                        classroomId: store.state.classroomId,
                         exerciseId: store.state.resource.currentExercise.exerciseId,
                     },
                     result: fakeData.IS_OVER,

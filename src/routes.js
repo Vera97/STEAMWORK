@@ -92,6 +92,7 @@ let routes = [
     },
     {
         path: '/team',
+        name: 'team',
         component: team,
         props: true,
         beforeEnter: studentGuard

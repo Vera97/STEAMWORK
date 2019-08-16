@@ -57,8 +57,7 @@
                 isCollapse: true,
                 display: 0,
                 cur: true,
-                wealth: 0,
-                callback: null
+                callback: null,
             }
         },
         computed: {
@@ -68,10 +67,10 @@
             exerciseList() {
                 return store.state.stuClass.exerciseList;
             },
-            exercise(){
+            exercise() {
                 return store.state.stuClass.exercise;
             },
-            wealthAll(){
+            wealthAll() {
                 return store.state.stuClass.wealthAll;
             }
         },
@@ -151,8 +150,8 @@
                 utils.request({
                     invoke: api.requestEditCourseWealth ,
                     params: {
-                        stuId: this.stuId,
-                        courseSectionId: this.courseSectionId,
+                        stuId: store.state.stuId,
+                        courseSectionId: store.state.courseSectionId,
                         wealthNum: 10
                     },
                     result: fakeData.EDIT_WEALTH
@@ -167,18 +166,12 @@
                 utils.request({
                     invoke: api.requestClassStuQuestion,
                     params: {
-                        stuId: this.stuId,
-                        courseId: this.courseId,
-                        courseSectionId: '',
+                        pptId: this.pptId,
+                        pptPage: this.display
                     },
-                    result: fakeData.STU_QUESTIONS,
+                    result: fakeData.PPT_QUESTION_RESPONSE,
                 }).then(res => {
-                    let template = '';
-                    for (let i of res.data.question) {
-                        let tmp = `<div>问题：${i.question}<br>解答：${i.answer}<br></div>`;
-                        template += tmp;
-                    }
-                    this.$alert(template, '常见问题及解答', {
+                    this.$alert(res.data.content, '常见问题及解答', {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: '关闭',
                         callback: action => {

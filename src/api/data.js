@@ -637,6 +637,13 @@ export const STU_QUESTIONS = {
         {question:'ssss10',answer:'ssss10'},
     ]
 };
+
+export const PPT_QUESTION_RESPONSE = {
+    code: 1,
+    questionName: '常见问题1',
+    content: '<h1>这是一个<em>常见</em>的<i>问题</i></h1>'
+};
+
 export const EXERCISE_DESIGN = {
     code: 1, //如果返回0，说明活动已被关闭。
 };
@@ -667,6 +674,11 @@ export const STU_EXERCISE_LIST={
             exerciseId: 55555,
             title: '作品展示',
             type: '作品展示',
+        },
+        {
+            exerciseId: 8392839,
+            title: '互动讨论',
+            type: '互动讨论'
         }
     ]
 };
@@ -825,13 +837,23 @@ export const STUDENT_OWN_COURSE = {
     ]
 };
 
+// NOTE pptId is pptUrl in api
 export const REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL = {
     code: 1,
     classroomId: 11,
     groupList: [12, 13, 14],
     courseSectionId: 2,
-    pptUrl: '',
-    pptImagesList: ['/', '/']
+    pptId: 123,
+    pptImagesList: [
+        'https://images.unsplash.com/photo-1485199692108-c3b5069de6a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1429277005502-eed8e872fe52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1482498081626-c0d36d9c5ab9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+        'https://images.unsplash.com/photo-1463736932348-4915535cf6f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+        'https://images.unsplash.com/photo-1505483531331-fc3cf89fd382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=755&q=80',
+        'https://images.unsplash.com/photo-1480866179948-2caa74d9082a?ixlib=rb-1.2.1&auto=format&fit=crop&w=890&q=80',
+        'https://images.unsplash.com/photo-1534957753291-64d667ce2927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+    ]
 };
 
 export const REQUEST_JOIN_CLASS_RESPONSE_FAIL = {

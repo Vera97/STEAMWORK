@@ -42,4 +42,8 @@
     margin-left: 10px;
     min-height:505px;
   }
+
+  .el-footer {
+    padding-right: 0;
+  }
 </style>

@@ -24,15 +24,15 @@
 <script>
     import NavStu from "../../components/stu-nav";
     import teamList from "../../components/team/team-list";
-    import mainPanel from "../../components/team/main";
+    import mainPanel from "../../components/team/main-panel";
     import hdFooter from "../../components/hd-footer";
 
     export default {
         name: "team",
         components: {teamList, mainPanel, hdFooter, NavStu},
         beforeRouteEnter(to, from, next) {
-            // TODO check whether group discussion is available
-            next()
+            if (to.params.code === 1) next();
+            else next('/stuClass')
         }
     }
 
