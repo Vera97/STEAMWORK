@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-button type="primary" @click="open" style="width: 100%;margin-bottom: 10px">+ 新建课程</el-button>
     <el-card class="box-card">
       <h3>课程列表</h3>
       <el-tree
@@ -18,6 +17,7 @@
     import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
+
     export default {
         name: "stu-class-list",
         data() {
@@ -105,38 +105,6 @@
                 if(node.isLeaf) {
                     this.$emit('section-selected', data.courseSectionId)
                 }
-            },
-            open() {
-                let that = this;
-                this.$prompt('请输入课程名称：', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    //向后端请求加入数据库
-                    utils.request({
-                        invoke: api.requestNewCourse,
-                        params: {
-                            teacherId: store.state.teacherId,
-                            courseName: value
-                        },
-                        result: fakeData.ADD_COURSE
-                    }).then(res => {
-                        that.listData.push({
-                            courseId:res.data.courseId,
-                            title:value,
-                            courseSection: []
-                        });
-                    });
-                    this.$message({
-                        type: 'success',
-                        message: '你新建的课程名称: ' + value
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                    });
-                });
             }
         },
         async created() {

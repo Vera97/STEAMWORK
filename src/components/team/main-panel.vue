@@ -12,7 +12,7 @@
     import {api, fakeData} from '../../api'
 
     export default {
-        name: "main",
+        name: "main-panel",
         data() {
             return {
             };

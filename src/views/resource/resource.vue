@@ -25,13 +25,13 @@
         name: "resource",
         components: {pptCenter, Footer, NavStu},
         beforeRouteEnter(to, from, next) {
-            let flag = false;
+            let flag = true;
 
             utils.request({
                 invoke: api.requestExerciseState,
                 params: {
                     stuId: store.state.stuId,
-                    courseSectionId: 123
+                    courseSectionId: store.state.courseSectionId
                 },
                 result: fakeData.GET_EXERCISE_STATE_COMPLETED
             })
@@ -39,7 +39,7 @@
                     for(let i of res.data.exerciseStateList) {
                         if(i.state === 0) {
                             this.$message.error('请先完成所有练习');
-                            flag = true;
+                            flag = false;
                             break
                         }
                     }

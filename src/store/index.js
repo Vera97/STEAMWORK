@@ -25,7 +25,9 @@ const state = {
     cached_courseId: '',             /* cache a courseId for the course page. */
     classroomId: null,
     groupList: [],
-    courseSectionId: null
+    courseSectionId: null,
+    pptId: null,
+    currentPage: null
 };
 
 // 创建 store 实例

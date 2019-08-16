@@ -46,6 +46,7 @@
     import store from '../store'
     import {api, fakeData} from '../api'
     import utils from '../utils'
+    import { mapState } from 'vuex'
 
     export default {
         name: "Nav",
@@ -61,10 +62,13 @@
             },
             stuId() {
                 return store.getters.get_stuId
-            }
+            },
+            ...mapState(['pptId, currentPage'])
         },
         props: {
-            ['active-index']: String
+            ['active-index']: String,
+            pptId: Number,
+            page: Number
         },
         data() {
             return {
@@ -109,22 +113,25 @@
                     invoke: api.requestExercise,
                     params: {
                         pptId: this.pptId,
-                        page: this.page,
+                        page: this.currentPage,
                     },
                     result: fakeData.EXERCISE_LIST
                 }).then(res => {
                     for(let i=0;i<res.data.exerciseList.length;i++){
                         if(res.data.exerciseList[i].type === '讨论记录'){
                             utils.request({
-                                invoke: api.requestTeacherStartExercise,
+                                invoke: api.requestCourseExerciseElse,
                                 params: {
-                                    classroomId:this.classroomId,
+                                    stuId: store.state.stuId,
                                     exerciseId: res.data.exerciseList[i].exerciseId,
                                 },
-                                result: fakeData.ACTIVITY_CODE
+                                result: fakeData.SINGLE_NUMBER_CODE
                             }).then(res => {
                                 if(res.data.code === 1){
-                                    this.$router.push({path: '/team'});
+                                    this.$router.push({
+                                        name: 'team',
+                                        params: {code: 1}
+                                    });
                                 }
                                 else{
                                     alert('小组尚未开启');
@@ -134,8 +141,6 @@
                         }
                     }
                 })
-
-
             }
         },
         created() {

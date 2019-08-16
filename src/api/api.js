@@ -425,10 +425,19 @@ export const requestIsOver = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classroom/close_exercise`, params, {headers: headers});
 };
+
+/**
+ * url: /stu/classroom/get_ppt_question
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @returns {Promise<{code: number, questionName: String, content: String}>}
+ */
 export const requestClassStuQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/stu/class`, params, {headers: headers});
+    return axios.post(`${base}/stu/classroom/get_ppt_question`, params, {headers: headers});
 };
+
 export const requestAttendance = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/stu_statics`, params, options);
@@ -559,6 +568,18 @@ export const requestTeacherStartExercise = params => {
 };
 
 /**
+ * url: /stu/course/course_section_exercise_else/get
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @param {number} params.exerciseId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestCourseExerciseElse = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_else/get`, params, options);
+};
+
+/**
  * url: /stu/group/discussion/get
  * @param {Object} params
  * @param {number} params.groupId
@@ -626,8 +647,8 @@ export const requestGetCourseExercisePhoto = params => {
 /**
  * url: /stu/achievement/course_list/get
  * @param {Object} params
- * @param {number} params.groupId
- * @returns {Promise<{code: number}>}
+ * @param {number} params.stuId
+ * @returns {Promise<{code: number, stuCourseList: Array<{stuCourseId: number, courseId: number, courseName: String, courseSectionList: Array<courseSectionId: number, courseSectionName: String>}>}>}
  */
 export const requestStuCourseList = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
