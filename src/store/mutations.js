@@ -74,6 +74,12 @@ const mutations = {
     },
     STU_COURSE_SECTION_ID(state, {courseSectionId}) {
         state.courseSectionId = courseSectionId
+    },
+    STU_PPT_ID(state, {pptId}) {
+        state.pptId = pptId
+    },
+    STU_PPT_PAGE(state, {currentPage}) {
+        state.currentPage = currentPage
     }
 };
 

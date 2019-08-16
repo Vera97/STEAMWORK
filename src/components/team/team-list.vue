@@ -50,7 +50,7 @@
             utils.request({
                 invoke: api.requestStuGroup,
                 params: {
-                    classroomId: this.classroomId,
+                    classroomId: store.state.classroomId,
                 },
                 result: fakeData.GET_GROUP
             }).then(res => {

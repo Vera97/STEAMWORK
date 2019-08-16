@@ -470,6 +470,11 @@ export const EXERCISE_LIST={
             title:'讨论记录',
             type:'讨论记录',
         },
+        {
+            exerciseId: 382893,
+            title: '互动讨论',
+            type: '互动讨论'
+        }
     ]
 };
 export const EXERCISE_RESOURCE={
@@ -706,7 +711,7 @@ export const GET_GROUP ={
             groupName: 'sss',
             members: [
                 {stuId: 12, stuName: 'dss1', stuNumber: 101253421},
-                {stuId: 133, stuName: 'dss2', stuNumber: 101255321},
+                {stuId: 123, stuName: 'dss2', stuNumber: 101255321},
                 {stuId: 144, stuName: 'dss3', stuNumber: 101253321},
                 {stuId: 155, stuName: 'dss4', stuNumber: 101253441},
                 {stuId: 166, stuName: 'dss5', stuNumber: 101253721},

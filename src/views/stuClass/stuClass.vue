@@ -20,15 +20,17 @@
     import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
+    import { mapState } from 'vuex'
 
     export default {
         name: "stuClass",
         components: {pptView, Footer, navStu},
+        computed: {
+            ...mapState(['pptId'])
+        },
         data() {
             return {
-                display: 0,
                 current: true,
-                pptId: null,
                 pptImagesList: []
             }
         },
@@ -45,51 +47,14 @@
                         store.commit('STU_CLASSROOM_ID', {classroomId: res.data.classroomId});
                         store.commit('STU_GROUP_LIST', {groupList: res.data.groupList});
                         store.commit('STU_COURSE_SECTION_ID', {courseSectionId: res.data.courseSectionId});
+                        store.commit('STU_PPT_ID', {pptId: res.data.pptId});
                         next(vm => {
-                            vm.pptId = res.data.pptId;
                             vm.pptImagesList.push(...res.data.pptImagesList);
                         })
                     } else {
                         this.$message.error('上课尚未开始')
                     }
                 }.bind(this))
-        },
-        async beforeRouteLeave (to, from, next) {
-            let flag = false;
-            if (to.path !== '/team' || (to.path === '/team' && to.params.code === 1)) {
-                next();
-                return
-            }
-            for (let i of store.state.stuClass.exerciseList) {
-                if (i.type === '互动讨论') {
-                    await utils.request({
-                        invoke: api.requestCourseExerciseElse,
-                        params: {
-                            stuId: store.state.stuId,
-                            exerciseId: i.exerciseId
-                        },
-                        result: fakeData.SINGLE_NUMBER_CODE
-                    })
-                        .then(function (res) {
-                            if (res.data.code === 1) {
-                                flag = true;
-                                next({
-                                    name: 'team',
-                                    params: {
-                                        code: 1         // this code will be checked before enter the page.
-                                    }
-                                });
-                            }
-                        }.bind(this));
-                    if (flag) return
-                }
-            }
-            this.$alert('互动讨论尚未开始', '消息', {
-                confirmButtonText: '确定',
-                callback: function () {
-                    this.$router.go(0)
-                }.bind(this)
-            })
         }
     }
 </script>

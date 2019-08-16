@@ -93,7 +93,8 @@
                     });
             },
             previous() {//向前翻页
-                this.display = this.display === 0 ? 0 : this.display - 1
+                this.display = this.display === 0 ? 0 : this.display - 1;
+                store.commit('STU_PPT_PAGE', {currentPage: this.display})
             },
             getPage() {//向后端请求教师端当前页数
                 utils.request({
@@ -107,6 +108,7 @@
                     .then(function(res) {
                         if (res.data.pptPage !== this.display) {
                             this.display = res.data.pptPage;
+                            store.commit('STU_PPT_PAGE', {currentPage: this.display})
                         }
                     }.bind(this))
             },
