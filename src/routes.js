@@ -24,6 +24,10 @@ const studentGuard = function(to, from, next) {
     routeBase('stuId', next)
 };
 
+const adminGuard = function (to, from, next) {
+    routeBase('adminId', next)
+};
+
 const routeBase = (identity, next) => {
     if(!store.state[identity] || store.state[identity] === '') {
         store.commit('PROBE');
@@ -116,7 +120,8 @@ let routes = [
     {
         path: '/admin',
         component: admin,
-        props: true
+        props: true,
+        beforeEnter: adminGuard
     },
     {
         path: '*',
