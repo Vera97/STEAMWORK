@@ -18,7 +18,6 @@
     import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
-    // import {request} from "../../utils/request";
 
     export default {
         name: "askList",

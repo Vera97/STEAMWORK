@@ -63,8 +63,8 @@
                     utils.request({
                         invoke: api.loginStudent,
                         params: {
-                            userName: this.userName,
-                            passWord: this.password
+                            userName: this.form.userName,
+                            passWord: this.form.password
                         },
                         result: fakeData.LOGIN_STU_RESPONSE
                     })
@@ -76,7 +76,7 @@
                                     userName: this.form.userName
                                 });
 
-                                this.$router.push({path: 'stuClass'})
+                                this.$router.push({path: '/stuClass'})
                             } else {
                                 this.$message.error('用户名或密码错误')
                             }
