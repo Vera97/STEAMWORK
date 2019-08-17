@@ -470,6 +470,11 @@ export const EXERCISE_LIST={
             title:'讨论记录',
             type:'讨论记录',
         },
+        {
+            exerciseId: 382893,
+            title: '互动讨论',
+            type: '互动讨论'
+        }
     ]
 };
 export const EXERCISE_RESOURCE={
@@ -637,6 +642,13 @@ export const STU_QUESTIONS = {
         {question:'ssss10',answer:'ssss10'},
     ]
 };
+
+export const PPT_QUESTION_RESPONSE = {
+    code: 1,
+    questionName: '常见问题1',
+    content: '<h1>这是一个<em>常见</em>的<i>问题</i></h1>'
+};
+
 export const EXERCISE_DESIGN = {
     code: 1, //如果返回0，说明活动已被关闭。
 };
@@ -667,6 +679,11 @@ export const STU_EXERCISE_LIST={
             exerciseId: 55555,
             title: '作品展示',
             type: '作品展示',
+        },
+        {
+            exerciseId: 8392839,
+            title: '互动讨论',
+            type: '互动讨论'
         }
     ]
 };
@@ -694,7 +711,7 @@ export const GET_GROUP ={
             groupName: 'sss',
             members: [
                 {stuId: 12, stuName: 'dss1', stuNumber: 101253421},
-                {stuId: 133, stuName: 'dss2', stuNumber: 101255321},
+                {stuId: 123, stuName: 'dss2', stuNumber: 101255321},
                 {stuId: 144, stuName: 'dss3', stuNumber: 101253321},
                 {stuId: 155, stuName: 'dss4', stuNumber: 101253441},
                 {stuId: 166, stuName: 'dss5', stuNumber: 101253721},
@@ -825,15 +842,48 @@ export const STUDENT_OWN_COURSE = {
     ]
 };
 
+// NOTE pptId is pptUrl in api
 export const REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL = {
     code: 1,
     classroomId: 11,
     groupList: [12, 13, 14],
     courseSectionId: 2,
-    pptUrl: '',
-    pptImagesList: ['/', '/']
+    pptId: 123,
+    pptImagesList: [
+        'https://images.unsplash.com/photo-1485199692108-c3b5069de6a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1429277005502-eed8e872fe52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+        'https://images.unsplash.com/photo-1482498081626-c0d36d9c5ab9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+        'https://images.unsplash.com/photo-1463736932348-4915535cf6f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+        'https://images.unsplash.com/photo-1505483531331-fc3cf89fd382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=755&q=80',
+        'https://images.unsplash.com/photo-1480866179948-2caa74d9082a?ixlib=rb-1.2.1&auto=format&fit=crop&w=890&q=80',
+        'https://images.unsplash.com/photo-1534957753291-64d667ce2927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80',
+    ]
 };
 
 export const REQUEST_JOIN_CLASS_RESPONSE_FAIL = {
     code: 0
+};
+
+export const GET_DISCUSSION_LIST = {
+    code: 1,
+    discussionList: [
+        {
+            discussionNumber: 1,
+            pptPage: 1
+        },
+        {
+            discussionNumber: 2,
+            pptPage: 2
+        },
+        {
+            discussionNumber: 3,
+            pptPage: 3
+        }
+    ]
+};
+
+export const DISCUSSION_CONTENT = {
+    code: 1,
+    discussionContent: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300" viewBox="0,0,500,300"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><text x="77.44788" y="79.66666" fill="#000000" stroke="none" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="start">一些内容</text><path d="M40.44788,108.66666h1l1,1l4,1l4,2l6,4l2,2h5l6,1h3h2l5,1h5h5h2h3l3,-2l4,-2l4,-1h4h1h2l1,1l1,1h2l1,1h5l6,4h6l14,2h18l12,-1l11,-4l15,-4l6,-1l4,-2h2h3h2h6h5h4h4l2,1" fill="none" stroke="#000000"/></g></svg>'
 };

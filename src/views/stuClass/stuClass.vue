@@ -20,15 +20,17 @@
     import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
+    import { mapState } from 'vuex'
 
     export default {
         name: "stuClass",
         components: {pptView, Footer, navStu},
+        computed: {
+            ...mapState(['pptId'])
+        },
         data() {
             return {
-                display: 0,
                 current: true,
-                pptId: null,
                 pptImagesList: []
             }
         },
@@ -45,9 +47,10 @@
                         store.commit('STU_CLASSROOM_ID', {classroomId: res.data.classroomId});
                         store.commit('STU_GROUP_LIST', {groupList: res.data.groupList});
                         store.commit('STU_COURSE_SECTION_ID', {courseSectionId: res.data.courseSectionId});
-                        this.pptId = res.data.pptId;
-                        this.pptImagesList.push(...res.data.pptImagesList);
-                        next()
+                        store.commit('STU_PPT_ID', {pptId: res.data.pptId});
+                        next(vm => {
+                            vm.pptImagesList.push(...res.data.pptImagesList);
+                        })
                     } else {
                         this.$message.error('上课尚未开始')
                     }
