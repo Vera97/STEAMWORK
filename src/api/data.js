@@ -864,3 +864,26 @@ export const REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL = {
 export const REQUEST_JOIN_CLASS_RESPONSE_FAIL = {
     code: 0
 };
+
+export const GET_DISCUSSION_LIST = {
+    code: 1,
+    discussionList: [
+        {
+            discussionNumber: 1,
+            pptPage: 1
+        },
+        {
+            discussionNumber: 2,
+            pptPage: 2
+        },
+        {
+            discussionNumber: 3,
+            pptPage: 3
+        }
+    ]
+};
+
+export const DISCUSSION_CONTENT = {
+    code: 1,
+    discussionContent: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300" viewBox="0,0,500,300"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><text x="77.44788" y="79.66666" fill="#000000" stroke="none" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="start">一些内容</text><path d="M40.44788,108.66666h1l1,1l4,1l4,2l6,4l2,2h5l6,1h3h2l5,1h5h5h2h3l3,-2l4,-2l4,-1h4h1h2l1,1l1,1h2l1,1h5l6,4h6l14,2h18l12,-1l11,-4l15,-4l6,-1l4,-2h2h3h2h6h5h4h4l2,1" fill="none" stroke="#000000"/></g></svg>'
+};

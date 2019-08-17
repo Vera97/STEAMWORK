@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <h3>小组成员列表</h3>
       <el-tree
-              :data="data"
+              :data="groupData"
               :props="defaultProps"
               @node-click="handleNodeClick"></el-tree>
     </el-card>
@@ -11,61 +11,25 @@
 </template>
 
 <script>
-    import store from '../../store'
-    import {api, fakeData} from '../../api'
-    import utils from '../../utils'
     export default {
         name: "team-list",
+        props: {
+            groupData: Array
+        },
         data() {
             return {
-                data: [],
                 defaultProps: {
                     children: 'children',
                     label(data) {
                         return `${data.stuName}(${data.stuNumber})`
                     }
-                },
-                groupId: null,
-                discussionNumber: 123       /* need a way to get it */
+                }
             };
         },
         methods: {
             handleNodeClick(data) {
-                console.log(data);
-                utils.request({
-                    invoke: api.requestStuDiscussionGet,
-                    params: {
-                        groupId: this.groupId,
-                        stuId: this.stuId,
-                        discussionNumber: this.discussionNumber,
-                    },
-                    result: fakeData.GROUP_CODE
-                })
-                    .then(res => {
-                        store.commit('team/GROUP_CONTENT', res.data.discussionContent);
-                    })
+                this.$emit('peek-peer', data)
             }
-        },
-        created() {
-            utils.request({
-                invoke: api.requestStuGroup,
-                params: {
-                    classroomId: store.state.classroomId,
-                },
-                result: fakeData.GET_GROUP
-            }).then(res => {
-                if (res.data.code === 1) {
-                    for (let i = 0; i < res.data.groupList.length; i++) {
-                        for (let j = 0; j < res.data.groupList[i].members.length; j++) {
-                            if (store.state.stuId === res.data.groupList[i].members[j].stuId) {
-                                this.data = res.data.groupList[i].members;
-                                this.groupId = res.data.groupList[i].groupId;
-                                return
-                            }
-                        }
-                    }
-                }
-            });
         }
     }
 </script>

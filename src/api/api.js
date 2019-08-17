@@ -589,7 +589,21 @@ export const requestCourseExerciseElse = params => {
  */
 export const requestStuDiscussionGet = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/stu/group/discussion/get`, params, {headers: headers});
+    return axios.post(`${base}/stu/group/discussion/get`, params, options);
+};
+
+/**
+ * url: /stu/group/discussion/upload
+ * @param {Object} params
+ * @param {number} params.groupId
+ * @param {number} params.stuId
+ * @param {number} params.discussionNumber
+ * @param {String} params.discussionContent
+ * @returns {Promise<{code: number}>}
+ */
+export const requestStuDiscussionUpload = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/group/discussion/upload`, params, options);
 };
 
 /**
@@ -664,4 +678,15 @@ export const requestStuCourseList = params => {
 export const requestJoinClass = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/stu/join_class`, params, options);
+};
+
+/**
+ * url: /stu/group/discussion_exercise/get_number
+ * @param {object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number, discussionList: Array<{discussionNumber: number, pptPage: number}>}>}
+ */
+export const requestStuDiscussion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/group/discussion_exercise/get_number`, params, options);
 };
