@@ -8,9 +8,6 @@
         {{item.stuId}}
       </el-tag>
     </div>
-    <div>
-      <p>顺序显示提问同学的ID，学生端确认解决问题后将从队列中移除。</p>
-    </div>
   </div>
 </template>
 

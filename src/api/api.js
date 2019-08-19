@@ -360,7 +360,7 @@ export const requestNewExercise = params => {
  * url: /courses_prepare/delete_exercise
  * @param {Object} params
  * @param {number} params.exerciseId
- * @returns {Promise<any> | {code: number}}
+ * @returns {Promise<{code: number}>}
  */
 export const requestDeleteExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
@@ -389,21 +389,74 @@ export const uploadFile = params => {
     return axios.post(`${base}/files/courses_prepare/new_ppt`, params, {headers: upload_headers});
 
 };
+
+/**
+ * url: /courses_prepare/new_exercise/question
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @param {String} params.contentQuestion
+ * @param {Array<{choice: String, choiceContent: String}>} params.contentAnswerList
+ * @param {Array<String>} params.answerList
+ * @returns {Promise<{code: number, exerciseId: number}>}
+ */
 export const requestNewExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_exercise/question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/edit_exercise/question
+ * @param {Object} params
+ * @param {number} params.exerciseId
+ * @param {String} params.contentQuestion
+ * @param {Array<{choice: String, choiceContent: String}>} params.contentAnswerList
+ * @param {Array<String>} params.answerList
+ * @returns {Promise<{code: number}>}
+ */
 export const requestEditExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_exercise/question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/new_exercise/text
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @param {String} params.content
+ * @returns {Promise<{code: number, exerciseId: number}>}
+ */
 export const requestNewExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_exercise/text`, params, options);
 };
+
+/**
+ * url: /courses_prepare/edit_exercise/text
+ * @param {Object} params
+ * @param {number} params.exerciseId
+ * @param {String} params.content
+ * @returns {Promise<{code: number}>}
+ */
 export const requestEditExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_exercise/text`, params, options);
+};
+
+/**
+ * url: /courses_prepare/new_exercise/else
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @returns {Promise<{code: number, exerciseId: number}>}
+ */
+export const requestExerciseElse = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/else`, params, options);
 };
 export const requestPPT = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());

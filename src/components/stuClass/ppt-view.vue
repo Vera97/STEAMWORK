@@ -204,7 +204,7 @@
         mounted() {
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
-            this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
+            // this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
             clearInterval(this.callback);

@@ -1,7 +1,5 @@
 <template>
-  <el-card
-          class="box-card"
-  >
+  <el-card class="box-card">
     <p><strong>互动问答</strong></p>
     <el-input
             type="textarea"
@@ -10,19 +8,20 @@
             placeholder="请输入您要编辑的问题"
             v-model="contentQuestion">
     </el-input>
-    <div v-for="(item, index) in contentAnswerList" :key="index">
-      <span class="choice-tag">{{ contentAnswerList[index].choice }}</span>
-      <el-input
-              placeholder="输入选项内容"
-              v-model="contentAnswerList[index].choiceContent"
-              class="option-box"
-              clearable>
-      </el-input>
-    </div>
+    <el-checkbox-group v-model="answer" size="medium">
+      <div v-for="(item, index) in contentAnswerList" :key="index">
+        <el-checkbox class="choice-tag" :label="answerChoices[index]"></el-checkbox>
+        <el-input
+                placeholder="输入选项内容"
+                v-model="contentAnswerList[index].choiceContent"
+                class="option-box"
+                clearable>
+        </el-input>
+      </div>
+    </el-checkbox-group>
     <el-button type="plain" size="medium" class="add-option" @click="addItems"><i class="el-icon-circle-plus-outline"></i>增加选项</el-button>
     <div class="edit-pane">
       <el-button type="primary" @click="saveActivity">保存</el-button>
-      <el-button type="danger" @click="deleteActivity">删除</el-button>
     </div>
   </el-card>
 </template>
@@ -30,35 +29,42 @@
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
-    const answerChioce=['E','F','G','H','I','J','K','L','M','N','o','P','Q','R','S','T'];
-    let choiceIndex=0;
 
     export default {
         name: "reactive-question",
         props: {
             exerciseId: Number,
-            pptId: Number,
-            pptPage: Number
         },
         data () {
             return {
+                answerChoices: ['A','B','C','D','E','F','G','H','I','J','K','O','P','Q','R','S'],
                 contentQuestion: '',
                 contentAnswerList: [],
-
+                answer: []
             }
         },
         methods: {
             saveActivity() {
-                alert('保存')
-            },
-            deleteActivity() {
-                alert('删除')
+                utils.request({
+                    invoke: api.requestEditExerciseQuestion,
+                    params: {
+                        exerciseId: this.exerciseId,
+                        contentQuestion: this.contentQuestion,
+                        contentAnswerList: this.contentAnswerList,
+                        answer: this.answer
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) this.$message.success('保存成功');
+                        else this.$message.error('保存失败')
+                    })
             },
             addItems(){
-                let that = this;
-                let obj = {choice: answerChioce[choiceIndex], choiceContent: 'sss'};
-                choiceIndex += 1;
-                that.contentAnswerList.push(obj);
+                this.contentAnswerList.push({
+                    choice: this.answerChoices[this.contentAnswerList.length],
+                    choiceContent: ''
+                })
             }
         },
         created() {
@@ -69,12 +75,13 @@
                 },
                 result: fakeData.EXERCISE_QUESTION
             })
-                .then((function (res) {
+                .then(function (res) {
                     this.contentQuestion = res.data.contentQuestion;
                     for(let i of res.data.contentAnswerList) {
                         this.contentAnswerList.push(i)
                     }
-                }).bind(this))
+                    if (res.data.answer.length > 0) this.answer.push(...res.data.answer)
+                }.bind(this))
         }
     }
 </script>

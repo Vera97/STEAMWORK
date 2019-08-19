@@ -6,7 +6,6 @@
     <div v-for="item in prog" :key="item.stuId">
       <div v-bind:style="miStatusColor(item.progress)" class="student-id-box">{{item.stuId}}</div>
     </div>
-    <div><p>编号为学生ID，黄色表示学习进度正常，颜色越深表示学习越落后。</p></div>
   </div>
 </template>
 
