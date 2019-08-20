@@ -25,6 +25,10 @@
 
     export default {
         name: 'show',
+        props: {
+            classroomId: Number,
+            courseSectionId: Number
+        },
         data () {
             return {
                 slideList: [],
@@ -32,48 +36,42 @@
             }
         },
         methods: {
-            getSlides(courseSectionId) {
+            getSlides() {
                 this.display = 0;
-                let that = this;
-
                 utils.request({
                     invoke: api.requestSlides,
                     params: {
-                        courseSectionId: courseSectionId
+                        courseSectionId: this.courseSectionId
                     },
                     result: fakeData.GET_SLIDES_RESPONSE
                 })
-                    .then(res => {
+                    .then(function(res) {
                         if(res.data.code === 1) {
-                            that.slideList.push(...res.data.pptImagesList)
+                            this.slideList.push(...res.data.pptImagesList);
+                            this.$emit('get-ppt', res.data.pptId)
                         }
-                        else that.$message.error('获取ppt失败');
-                    })
+                        else this.$message.error('获取ppt失败');
+                    }.bind(this))
             },
             next() {
-                console.log(`next with current ${this.display}`);
                 this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1;
-                this.getPage();
+                this.getPage()
             },
             previous() {
-                this.display = this.display === 0 ? 0 : this.display - 1
+                this.display = this.display === 0 ? 0 : this.display - 1;
+                this.getPage()
             },
             getPage() {
                 utils.request({
-                    invoke: api.requestUploadPPT,
+                    invoke: api.requestSubmitPPTPage,
                     params: {
                         classroomId: this.classroomId,
                         pptPage: this.display
                     },
                     result: fakeData.RETURN_PPTPAGE
-                })
-                    .then(()=> {
-                        alert("获取成功！");
-                    })
-            },
-        },
-        mounted() {
-            this.getSlides(0);
+                });
+                this.$emit('page-turning', this.display)
+            }
         }
     }
 </script>

@@ -86,7 +86,7 @@
                                 userName: this.form.userName
                             });
 
-                            this.$router.push({path: '/stuClass'})
+                            this.$router.push({path: '/mySuccess'})
                         } else {
                             this.$message.error('用户名或密码错误')
                         }

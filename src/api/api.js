@@ -4,7 +4,7 @@ let base = 'http://localhost:2333/api';
 
 export const DEVELOPMENT = true;
 
-export const WATCH_ALL = true;
+export const WATCH_ALL = false;
 
 //csrf验证
 export function setCookie(cname, cvalue, exdays) {
@@ -462,7 +462,7 @@ export const requestPPT = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/ppt`, params, options);
 };
-export const requestUploadPPT = params => {
+export const requestSubmitPPTPage = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/push_pptpage`, params, options);
 };

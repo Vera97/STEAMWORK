@@ -10,27 +10,28 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
         name: 'monitor',
-        props: {
-            prog: Array
+        computed: {
+            ...mapState({
+                prog: state => state.startClass.prog
+            })
         },
-        data() {
-            return {
-                miStatusColor:
-                    function (val) {
-                        if (val <= 0.25) {
-                            return 'background-color:#FFFF33;'
-                        } else if (val > 0.25 && val <= 0.5) {
-                            return 'background-color:#FFCC22;'
-                        } else if (val > 0.5 && val <= 0.75) {
-                            return 'background-color:#FFAA33;'
-                        } else if (val > 0.75 && val <= 1) {
-                            return 'background-color:#d58512;'
-                        } else {
-                            return 'background-color:#FFFF33;'
-                        }
-                    },
+        methods: {
+            miStatusColor (val) {
+                if (val <= 0.25) {
+                    return 'background-color:#FFFF33;'
+                } else if (val > 0.25 && val <= 0.5) {
+                    return 'background-color:#FFCC22;'
+                } else if (val > 0.5 && val <= 0.75) {
+                    return 'background-color:#FFAA33;'
+                } else if (val > 0.75 && val <= 1) {
+                    return 'background-color:#d58512;'
+                } else {
+                    return 'background-color:#FFFF33;'
+                }
             }
         }
     }
@@ -43,8 +44,7 @@
   }
 
   .student-id-box {
-    padding: 0px;
-    width: 24px;
+    padding: .5em;
     float: left;
     margin: 2px;
     text-align: center;

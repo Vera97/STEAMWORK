@@ -195,16 +195,8 @@ export const COURSE_DETAIL = {
     ]
 };
 
-export const SINGLE_CODE = {
-    code: '1'
-};
-
 export const SINGLE_NUMBER_CODE = {
     code: 1
-};
-
-export const SINGLE_RESPONSE_WORD = {
-    code: 'ok'
 };
 
 export const CLASSES = {
@@ -308,17 +300,8 @@ export const STEP_CONTENT = {
 };
 
 export const STU_QUESTION = {
-    code: '1',
-    questionList: [
-        {stuName: 'sfg', stuId: 1, question: 'sss'},
-        {stuName: 'sfg', stuId: 2, question: 'sss'},
-        {stuName: 'sfg', stuId: 3, question: 'sss'},
-        {stuName: 'sfg', stuId: 4, question: 'sss'},
-        {stuName: 'sfg', stuId: 5, question: 'sss'},
-        {stuName: 'sfg', stuId: 6, question: 'sss'},
-        {stuName: 'sfg', stuId: 7, question: 'sss'},
-        {stuName: 'sfg', stuId: 8, question: 'sss'},
-    ]
+    code: 1,
+    questionList: [123, 234, 567]
 };
 
 export const ADD_COURSE = [
@@ -333,24 +316,12 @@ export const ADD_COURSE = [
 export const UP_PROGRESS = {
     code: 1
 };
-export const PROGRESS_STU = [
-    {
-        stuId:'1',
-        progress:'0.1'
-    },
-    {
-        stuId:'2',
-        progress:'0.3'
-    },
-    {
-        stuId:'3',
-        progress:'0.6'
-    },
-    {
-        stuId:'4',
-        progress:'0.9'
-    }
-];
+
+export const PROGRESS_STU = {
+    code: 1,
+    progress: 0.1
+};
+
 export const COURSE_LIST =[
     {
         code:1,
@@ -557,9 +528,7 @@ export const NEW_QUESTIONS = {
     code: 1,
     questionId: 123456789,
 };
-export const EDIT_QUESTIONS = {
-    code: 1,
-};
+
 export const RETURN_PPTPAGE ={
     code: 1,
 };
@@ -695,9 +664,7 @@ export const GET_WEALTH = {
     code: 1,
     wealthAll:80
 };
-export const ACTIVITY_CODE = {
-    code:1,
-};
+
 export const GROUP_CODE = {
     code:1,
     discussionContent: 'html'

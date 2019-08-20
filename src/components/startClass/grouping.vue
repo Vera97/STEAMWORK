@@ -24,7 +24,7 @@
                   @remove-tag="remove"
           >
             <el-option
-                    v-for="(item, index) in stuList"
+                    v-for="(item, index) in studentsList"
                     :key="index"
                     :label="`${item.stuName}(${item.stuNumber})`"
                     :value="item"
@@ -43,7 +43,7 @@
                   @remove-tag="remove"
           >
             <el-option
-                    v-for="(item, index) in stuList"
+                    v-for="(item, index) in studentsList"
                     :key="index"
                     :label="`${item.stuName}(${item.stuNumber})`"
                     :value="item"
@@ -84,17 +84,13 @@
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
-    import store from '../../store'
-    import { mapState } from 'vuex'
 
     export default {
         name: "grouping",
-        computed: mapState({
-            stuList: state => state.startClass.stuList
-        }),
         props: {
             classroomId: Number,
-            classId: Number
+            classId: Number,
+            studentsList: Array
         },
         data () {
             return {
@@ -102,8 +98,8 @@
             }
         },
         async created () {
-            store.commit('startClass/SELECT_CLASS', this.classId);
-            await store.dispatch('startClass/getStuList');
+            // store.commit('startClass/SELECT_CLASS', this.classId);
+            // await store.dispatch('startClass/getStuList');
 
             utils.request({
                 invoke: api.requestStuGroup,
@@ -119,7 +115,7 @@
                         for(let j of i.members) this.setDisable(j.stuId, true);
 
                         let leader;
-                        for(let j of store.state.startClass.stuList) {
+                        for(let j of this.studentsList) {
                             if(j.stuId === i.leaderStuId) {
                                 leader = {
                                     stuId: j.stuId,
@@ -160,7 +156,7 @@
                                 groupId: this.groups[index].groupId
                             },
                             result: null
-                        })
+                        });
                         for(let i of this.groups[index].members) {
                             this.setDisable(parseInt(i.stuId), false);
                         }
@@ -183,9 +179,9 @@
                 this.setDisable(parseInt(e.stuId), false)
             },
             setDisable(stuId, selected) {
-                for(let i = 0; i < this.stuList.length; i++) {
-                    if(this.stuList[i].stuId === stuId) {
-                        this.stuList[i].selected = selected;
+                for(let i = 0; i < this.studentsList.length; i++) {
+                    if(this.studentsList[i].stuId === stuId) {
+                        this.studentsList[i].selected = selected;
                         break
                     }
                 }

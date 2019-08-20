@@ -4,10 +4,11 @@
       <i class="close el-icon-close" @click="open(current)"></i>
       <component
               v-bind:is="currentTabComponent"
-              :exerciseId="exercise.exerciseId"
+              :exercise="exercise"
               :classroom-id="classroomId"
               :ppt-index="pptIndex"
               :class-id="classId"
+              :students-list="studentsList"
       ></component>
     </el-card>
   </div>
@@ -25,41 +26,40 @@
         props: {
             classroomId: Number,
             pptIndex: Number,
-            classId: Number
+            classId: Number,
+            studentsList: Array
         },
         data() {
             return {
                 current: true,
                 currentTabComponent: '',
-                exercise: {
-                    exerciseId: 1,
-                    title: '文本播放',
-                    type: '文本播放'
-                }
+                exercise: null
             }
         },
         methods: {
             open(current) {
                 this.$emit('onEmmitCurrent', current)
             },
+            /**
+             * @param exercise the exercise object of the exercise
+             * clicked in the start activity component.
+             */
             getCurrentComponent(exercise) {
-                if(!this.classroomId) {
+                if (!this.classroomId) {
                     this.$message.error('请先选择上课的课时');
                     return
                 }
                 this.exercise = exercise;
                 if (this.exercise.type === '资源播放') {
                     this.currentTabComponent = 'resource-show';
-                    console.log(this.currentTabComponent);
                 } else if (this.exercise.type === '小组分组') {
                     this.currentTabComponent = 'grouping'
                 } else if (this.exercise.type === '人员统计') {
                     this.currentTabComponent = 'attendance'
-                } else if(this.exercise.type ==='文本播放') {
-                    this.currentTabComponent='text-play';
-                }
-                else if(this.exercise.type ==='互动问答') {
-                    this.currentTabComponent='question-answer';
+                } else if (this.exercise.type === '文本播放') {
+                    this.currentTabComponent = 'text-play';
+                } else if (this.exercise.type === '互动问答') {
+                    this.currentTabComponent = 'question-answer';
                 }
             }
         }

@@ -7,23 +7,35 @@
       <el-row :gutter="24">
         <el-col :span="5">
           <class-list :show-section="true" :show-options="false" @section-selected="loadMaterial"></class-list>
-          <askList></askList>
+          <askList ref="askList" :classroom-id="classroomId"></askList>
         </el-col>
         <el-col :span="14">
           <div class="banner" v-if="!selectedSectionId">请选择上课的课时</div>
-          <show ref="show" v-show="current" @page-turning="pageTurning"></show>
+          <show
+                  ref="show"
+                  :classroom-id="classroomId"
+                  v-show="current"
+                  @page-turning="pageTurning"
+                  @get-ppt="getPPTId"
+          ></show>
           <newComp
                   :class-id="classId"
                   :ppt-index="pptIndex"
                   :classroom-id="classroomId"
+                  :students-list="studentsList"
                   v-show="!current"
                   @onEmmitCurrent="onEmmitCurrent"
                   ref="newComp"
           ></newComp>
         </el-col>
         <el-col :span="5">
-          <startActivities @onEmitIndex="onEmitIndex"></startActivities>
-          <monitor :prog="prog"></monitor>
+          <start-activities
+                  :ppt-id="pptId"
+                  :ppt-page="pptIndex"
+                  @onEmitIndex="onEmitIndex"
+                  ref="activity"
+          ></start-activities>
+          <monitor></monitor>
         </el-col>
       </el-row>
     </el-main>
@@ -49,39 +61,38 @@
     export default {
         name: "startClass",
         components: {askList, monitor, show, newComp, startActivities, classList, Footer, Nav},
-        computed:
-            {
-                prog() {
-                    return store.state.startClass.prog;
-                }
-            },
-        data() {
+        data () {
             return {
                 current: true,
-                exercise: '',
                 selectedSectionId: null,
                 classId: null,
                 classroomId: null,
                 pptIndex: null,
-                studentsList: []
+                pptId: null,
+                studentsList: [],
+                callback: null
             }
         },
         methods: {
-            updateData() {
-                let that = this;
-                utils.request({
-                    invoke: api.requestPushProgressStu,
-                    params: {
-                        code: 'stu_push_progress',
-                        stuId: that.id,
-                        progress: that.progress
-                    },
-                    result: fakeData.UP_PROGRESS
-                })
-                    .then(res => {
-                        store.commit('startClass/UPDATE_PROG', res.data);
-                        alert("chenggong");
+            async getProgress() {
+                let progressList = [];
+                for (let student of this.studentsList) {
+                    await utils.request({
+                        invoke: api.requestGetProgressStu,
+                        params: {
+                            code: 'stu_get_progress',
+                            stuId: student.stuId
+                        },
+                        result: fakeData.PROGRESS_STU
                     })
+                        .then(function (res) {
+                            progressList.push({
+                                stuId: student.stuId,
+                                progress: res.data.progress
+                            })
+                        }.bind(this))
+                }
+                store.commit('startClass/GET_PROG', progressList)
             },
             // start the class, request the classroom, load the material
             loadMaterial(courseSectionId, classId) {
@@ -99,10 +110,9 @@
                         if(res.data.code === 1) {
                             this.classroomId = res.data.classroomId;
                             this.selectedSectionId = parseInt(courseSectionId);
-                            this.$refs.show.getSlides(parseInt(courseSectionId));
                             this.getStuList();
                             this.$message.success('成功开始上课！');
-                            // this.startClass()
+                            this.startClass()
                         }
                         else this.$message.error('开课失败')
                     }).bind(this))
@@ -117,23 +127,21 @@
                 })
                     .then((function (res) {
                         if(res.data.code === 1) {
-                            this.studentsList.push(res.data.stuList);
+                            for (let item of res.data.stuList) {
+                                this.studentsList.push({
+                                    stuId: item.stuId,
+                                    stuName: item.stuName,
+                                    stuNumber: item.stuNumber,
+                                    selected: false
+                                })
+                            }
                         } else this.$message.error('获取学生列表失败')
                     }).bind(this))
             },
             startClass () {
-                let that = this;
-                utils.request({
-                    invoke: api.requestGetProgressStu,
-                    params: {
-                        code: 'stu_get_progress',
-                        stuId: that.id
-                    },
-                    result: fakeData.PROGRESS_STU
-                })
-                    .then(res => {
-                        store.commit('startClass/GET_PROG', res.data)
-                    })
+                this.$refs.askList.getQueue();
+                this.$refs.show.getSlides();
+                this.callback = setInterval(() => this.getProgress(), 5000)
             },
             onEmitIndex(index) {
                 if(!this.selectedSectionId) {
@@ -141,18 +149,21 @@
                 } else {
                     this.current = false;
                     this.$refs.newComp.getCurrentComponent(index);
-                    console.log(index)
                 }
             },
             onEmmitCurrent(current) {
-                this.current = current;
+                this.current = current
             },
             pageTurning(index) {
                 this.pptIndex = index
+            },
+            getPPTId (pptId) {
+                this.pptId = pptId;
+                this.$refs.activity.getExercise()
             }
         },
-        destroyed(){
-            clearInterval(this.updateData);
+        destroyed () {
+            clearInterval(this.callback)
         }
     }
 </script>

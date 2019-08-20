@@ -107,8 +107,8 @@
                 }
             }
         },
-        async created() {
-            await utils.request({
+        created() {
+            utils.request({
                 invoke: api.requestStuCourseList,
                 params: {
                     stuId: store.state.stuId
