@@ -27,16 +27,17 @@
         name: 'show',
         props: {
             classroomId: Number,
-            courseSectionId: Number
         },
         data () {
             return {
                 slideList: [],
-                display: 0
+                display: 0,
+                courseSectionId: null
             }
         },
         methods: {
-            getSlides() {
+            getSlides(courseSectionId) {
+                this.courseSectionId = courseSectionId;
                 this.display = 0;
                 utils.request({
                     invoke: api.requestSlides,

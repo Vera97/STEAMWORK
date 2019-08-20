@@ -15,9 +15,11 @@
 
     export default {
         name: "start-activities",
-        props: {
-            pptId: Number,
-            pptPage: Number
+        data () {
+            return {
+                pptId: null,
+                pptPage: null
+            }
         },
         computed:
             {
@@ -29,7 +31,9 @@
             emitIndex(index) {
                 this.$emit('onEmitIndex', index)
             },
-            getExercise () {
+            getExercise (pptId, pptPage) {
+                this.pptId = pptId;
+                this.pptPage = pptPage;
                 utils.request({
                     invoke: api.requestExercise,
                     params: {

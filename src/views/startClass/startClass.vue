@@ -30,8 +30,6 @@
         </el-col>
         <el-col :span="5">
           <start-activities
-                  :ppt-id="pptId"
-                  :ppt-page="pptIndex"
                   @onEmitIndex="onEmitIndex"
                   ref="activity"
           ></start-activities>
@@ -67,7 +65,7 @@
                 selectedSectionId: null,
                 classId: null,
                 classroomId: null,
-                pptIndex: null,
+                pptIndex: 0,
                 pptId: null,
                 studentsList: [],
                 callback: null
@@ -140,15 +138,28 @@
             },
             startClass () {
                 this.$refs.askList.getQueue();
-                this.$refs.show.getSlides();
-                this.callback = setInterval(() => this.getProgress(), 5000)
+                this.$refs.show.getSlides(this.selectedSectionId);
+                // this.callback = setInterval(() => this.getProgress(), 5000)
             },
             onEmitIndex(index) {
                 if(!this.selectedSectionId) {
                     this.$message.warning('请先选择课时')
                 } else {
                     this.current = false;
-                    this.$refs.newComp.getCurrentComponent(index);
+                    utils.request({
+                        invoke: api.requestStartActivity,
+                        params: {
+                            exerciseId: index.exerciseId
+                        },
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    })
+                        .then(function (res) {
+                            if (res.data.code === 1) {
+                                this.$refs.newComp.getCurrentComponent(index);
+                            } else {
+                                this.$message.error('开户失败')
+                            }
+                        }.bind(this))
                 }
             },
             onEmmitCurrent(current) {
@@ -159,7 +170,7 @@
             },
             getPPTId (pptId) {
                 this.pptId = pptId;
-                this.$refs.activity.getExercise()
+                this.$refs.activity.getExercise(this.pptId, this.pptIndex)
             }
         },
         destroyed () {

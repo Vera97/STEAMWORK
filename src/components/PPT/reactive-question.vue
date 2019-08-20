@@ -51,14 +51,14 @@
                         exerciseId: this.exerciseId,
                         contentQuestion: this.contentQuestion,
                         contentAnswerList: this.contentAnswerList,
-                        answer: this.answer
+                        answerList: this.answer
                     },
                     result: fakeData.SINGLE_NUMBER_CODE
                 })
                     .then(function (res) {
                         if (res.data.code === 1) this.$message.success('保存成功');
                         else this.$message.error('保存失败')
-                    })
+                    }.bind(this))
             },
             addItems(){
                 this.contentAnswerList.push({

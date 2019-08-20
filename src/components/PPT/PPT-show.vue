@@ -23,7 +23,7 @@
               <component
                       :is="displayComponent"
                       :exercise-id="exerciseId"
-                      :ppt-id="pptId"
+                      :ppt-id="pptData.pptId"
                       :ppt-page="select"
                       @delete-activity="deleteHandler"
               ></component>
@@ -102,10 +102,9 @@
                     '设计方案',
                     '讨论记录',
                     '作品展示',
-                    '文本编辑'
+                    '文本播放'
                 ],
-                displayComponent: '',
-                pptId: 1234,                      /* not available yet. */
+                displayComponent: null,
                 exerciseId: null                  /* for the current editing exercise. */
             }
         },
@@ -221,6 +220,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+                    that.displayComponent = null;
                     utils.request({
                         invoke: api.requestDeleteExercise,
                         params: {
@@ -249,7 +249,7 @@
                     invoke: api.requestExercise,
                     params: {
                         pptId: this.pptData.pptId,
-                        page: index + 1
+                        page: index
                     },
                     result: fakeData.EXERCISE_LIST
                 })
@@ -264,7 +264,7 @@
                 utils.request({
                     invoke: api.requestNewExerciseText,
                     params: {
-                        pptId: this.pptId,
+                        pptId: this.pptData.pptId,
                         pptPage: this.select,
                         type: '文本播放',
                         content: ''
@@ -288,7 +288,7 @@
                 utils.request({
                     invoke: api.requestNewExerciseQuestion,
                     params: {
-                        pptId: this.pptId,            // TODO get the pptId for the exercises
+                        pptId: this.pptData.pptId,
                         pptPage: this.select,
                         type: '互动问答',
                         contentQuestion: '',
@@ -308,13 +308,13 @@
                         } else {
                             this.$message.error('添加失败')
                         }
-                    })
+                    }.bind(this))
             },
             addExercise (type) {
                 utils.request({
                     invoke: api.requestNewExercise,
                     params: {
-                        pptId: this.pptId,
+                        pptId: this.pptData.pptId,
                         pptPage: this.select,
                         type: type
                     },
@@ -331,7 +331,7 @@
                         } else {
                             this.$message.error('添加失败')
                         }
-                    })
+                    }.bind(this))
             },
             // this method is used to select the first slide and get its content
             init() {

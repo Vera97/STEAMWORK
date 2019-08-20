@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -470,11 +470,11 @@ export const requestPushPPTpage = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, options);
 };
-export const requestIsStartActivity = params => {
+export const requestStartActivity = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classroom/start_exercise`, params, options);
 };
-export const requestIsOver = params => {
+export const requestEndActivity = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classroom/close_exercise`, params, options);
 };

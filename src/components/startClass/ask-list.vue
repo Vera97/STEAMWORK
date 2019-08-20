@@ -39,7 +39,7 @@
                 }).then(function(res) {
                     this.questions = [];
                     this.questions.push(...res.data.questionList);
-                    this.callback = setInterval(() => this.getQueue(),5000);
+                    // this.callback = setInterval(() => this.getQueue(),5000);
                 }.bind(this))
             },
             solvePrompt () {

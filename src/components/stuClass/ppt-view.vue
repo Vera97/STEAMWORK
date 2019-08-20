@@ -140,7 +140,7 @@
                     invoke: api.requestExercise,
                     params: {
                         pptId: this.pptId,
-                        progress: this.display
+                        page: this.display
                     },
                     result: fakeData.STU_EXERCISE_LIST
                 })
@@ -197,6 +197,8 @@
                     .then(res => {
                         if(res.data.code === 1) {
                             store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
+                        } else {
+                            console.log(res.data)
                         }
                     })
             }
