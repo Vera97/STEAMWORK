@@ -1,8 +1,6 @@
 <template>
   <div>
     <p>{{text}}</p>
-    <div><p>nihao</p></div>
-
   </div>
 </template>
 
@@ -20,18 +18,18 @@
                 return store.state.stuClass.exerciseText.content
             }
         },
-        created(){
+        created() {
             // let that = this;
             utils.request({
                 invoke: api.requestGetCourseExerciseText,
                 params: {
                     stuId: this.stuId,
-                    exerciseId:this.currentExercise.exerciseId
+                    exerciseId: this.currentExercise.exerciseId
                 },
                 result: fakeData.EXERCISE_TEXT
             })
                 .then(res => {
-                    if(fakeData.EXERCISE_TEXT.code === 1){
+                    if (fakeData.EXERCISE_TEXT.code === 1) {
                         // console.log(res.data);
                         store.commit('stuClass/TEXT_RESOURCE', res.data);
                     }

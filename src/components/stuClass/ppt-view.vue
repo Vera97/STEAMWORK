@@ -140,7 +140,7 @@
                     invoke: api.requestExercise,
                     params: {
                         pptId: this.pptId,
-                        progress: this.display
+                        page: this.display
                     },
                     result: fakeData.STU_EXERCISE_LIST
                 })
@@ -197,6 +197,8 @@
                     .then(res => {
                         if(res.data.code === 1) {
                             store.commit('stuClass/ADD_WEALTH',res.data.wealthAll);
+                        } else {
+                            console.log(res.data)
                         }
                     })
             }
@@ -204,7 +206,7 @@
         mounted() {
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
-            this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
+            // this.callback = setInterval(this.getPage, 5000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
             clearInterval(this.callback);
@@ -212,7 +214,7 @@
     }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
   .time {
     margin-top: 10px;
     position: absolute;
