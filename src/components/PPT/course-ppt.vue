@@ -1,5 +1,6 @@
 <template>
   <el-card class="card" :body-style="{padding: '.5em'}">
+    <div class="el-icon-close" @click="removePPT"></div>
     <div class="text-center">
       <img class="image" :src="src" alt="you didn't see me">
     </div>
@@ -11,6 +12,11 @@
         name: "course-ppt",
         props: {
             src: String
+        },
+        methods:{
+            removePPT(){
+                this.$emit('deletePPT');
+            }
         }
     }
 </script>
@@ -28,6 +34,9 @@
       width: 100%;
       height: 100%;
     }
+  }
+  .el-icon-close{
+    float:right;
   }
 </style>
 

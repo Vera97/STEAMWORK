@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-upload
-            v-if="uploaded"
+            v-if="!uploaded"
             ref="upload"
             action="#"
             class="upload-demo"
@@ -14,7 +14,6 @@
     >
       <el-button slot="trigger" size="medium" type="">&emsp;选择&emsp;</el-button>
       <el-button class="upload-button" size="medium" type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button>
-      <el-button type="primary" class="upload-thing" style="float: right">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;</el-button>
       <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
     </el-upload>
     <div class="ppt-name" v-else>
@@ -29,7 +28,7 @@
     import {api, fakeData} from '../../api'
 
     export default {
-        name: "ppt-upload",
+        name: "ppt-deal",
         props: {
             courseSectionId: Number,
             courseSectionName: String
@@ -42,11 +41,11 @@
         },
         methods: {
             uploadPPT() {
-                this.$refs.upload.submit();
+                this.$refs.upload.submit()
             },
             pptUpload(e) {
                 let that = this;
-                if(!this.courseSectionId) {
+                if(this.courseSectionId===-1) {
                     this.$message.error('请先选择课时');
                     return
                 }
@@ -95,10 +94,11 @@
   .upload-demo {
     margin-bottom: 1em;
     float-offset: 2%;
-    width: 100%;
+    width: 30%;
   }
 
   .upload-button {
+    margin-top:2%;
     margin-left: 1em;
   }
 
@@ -108,11 +108,6 @@
     span {
       font-size: .8em;
       margin-right: 1em;
-    }
-    .upload-thing{
-      margin-bottom:2%;
-      margin-top:0px;
-      float: right;
     }
   }
 </style>

@@ -6,27 +6,25 @@
               class="el-menu-vertical-demo">
         <el-menu-item index="1" @click="changeCur1">
           <i class="el-icon-menu"></i>
-          <span slot="title">导航一</span>
+          <span slot="title">教师账号管理</span>
         </el-menu-item>
         <el-menu-item index="2" @click="changeCur2">
           <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
+          <span slot="title">标签管理</span>
         </el-menu-item>
         <el-menu-item index="3" @click="changeCur3">
           <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
+          <span slot="title">课程管理</span>
         </el-menu-item>
         <el-menu-item index="4" @click="changeCur4">
           <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
+          <span slot="title">课件管理</span>
         </el-menu-item>
       </el-menu>
   </div>
 </template>
 
 <script>
-    import utils from '../../utils'
-    import {api, fakeData} from '../../api'
     import store from '../../store'
 
     export default {
@@ -41,11 +39,11 @@
             },
             changeCur3(){
                 this.cur=3;
-                store.commit('admin/ADD_INDEX',3)
+                store.commit('admin/ADD_INDEX','try-1')
             },
             changeCur4(){
                 this.cur=4;
-                store.commit('admin/ADD_INDEX',4)
+                store.commit('admin/ADD_INDEX','ppt-list')
             }
         }
     }

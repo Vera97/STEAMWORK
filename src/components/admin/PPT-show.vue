@@ -2,10 +2,10 @@
   <el-card class="box-card">
     <el-row :gutter="0">
       <el-col :span="6" class="ppt-wrapper">
-        <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
-          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)"
-                      :class="{highlight: index === select}" @deletePPT="deletePPT(index)"></course-ppt>
-        </div>
+<!--        <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">-->
+<!--          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)"-->
+<!--                      :class="{highlight: index === select}" @deletePPT="deletePPT(index)"></course-ppt>-->
+<!--        </div>-->
         <el-button type="primary" @click="addPpt">新增PPT</el-button>
       </el-col>
       <el-col :span="17" style="float:right;">

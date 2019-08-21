@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = false;
+export const DEVELOPMENT = true;
 
 export const WATCH_ALL = false;
 
@@ -742,4 +742,115 @@ export const requestJoinClass = params => {
 export const requestStuDiscussion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/group/discussion_exercise/get_number`, params, options);
+};
+//admin页面--教师管理
+/**
+ * url: /admins/get_teacher_list
+ * @param {number} params.adminId
+ * @returns {Promise<{code: number,  teacherAccountList: Array<{ id: number,
+            name: string,
+            password: string,
+            sex: string,
+            introduceHtml: 'text/html'}>}>}
+ */
+export const requestGetTeacher = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/get_teacher_list`, params, options);
+};
+/**
+ * url: /admins/add_teacher
+ * @param {object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number, discussionList: Array<{discussionNumber: number, pptPage: number}>}>}
+ */
+export const requestAddTeacher = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/add_teacher`, params, options);
+};
+/**
+ * url: /admins/delete_teacher
+ * @param {object} params
+ * @param {number} params.teacherId
+ * @returns {Promise<{code: number}>}>}
+ */
+export const requestDeleteTeacher = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/delete_teacher`, params, options);
+};
+/**
+ * url: /admins/edit_teacher
+ * @param {object} params
+ * @param {number} params.teacherId
+ * @param {string} params.name
+ * @param {string} params.password
+ * @param {string} params.sex
+ * @param {text/html} params. introduceHtml
+ * @returns {Promise<{code: number}>}>}
+ */
+export const requestEditTeacher = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/edit_teacher`, params, options);
+};
+//admin标签管理
+/**
+ * url: /admins/label/get_list
+ * @param {object} params
+ * @param {number} params.adminId
+ * @returns {Promise<{code: number,labelList:string}>}>}
+ */
+export const requestGetLabelList = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/label/get_list`, params, options);
+};
+/**
+ * url: /admins/label/add
+ * @param {object} params
+ * @param {number} params.labelName
+ * @returns {Promise<{code: number,labelId:number}>}>}
+ */
+export const requestAddLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/label/add`, params, options);
+};
+//admin资源管理
+/**
+ * url: /admins/courses/label/get
+ * @param {object} params
+ * @param {number} params.courseId
+ * @returns {Promise<{code: number,labelList:Array}>}>}
+ */
+export const requestAssignedGet= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/get`, params, options);
+};
+export const requestGetLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/label/get`, params, options);
+};
+export const requestAssignLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/assign_course`, params, options);
+};
+/**
+ * url:/courses_prepare/new_course_section_step
+ * @param {object} params
+ * @param {number} params.labelName
+ * @returns {Promise<{code: number,labelId:number}>}>}
+ * add
+ */
+export const requestNewCourseSectionStep = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_course_section_step`, params, options);
+};
+
+/**
+ * url:/courses_prepare/edit_course_section_name
+ * @param {object} params
+ * @param {number} params.labelName
+ * @returns {Promise<{code: number,labelId:number}>}>}
+ * add
+ */
+export const requestEditCourseSectionName = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_course_section_name`, params, options);
 };

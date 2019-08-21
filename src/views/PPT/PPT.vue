@@ -9,27 +9,31 @@
           <course-directory @section-selected="sectionSelect"></course-directory>
         </el-col>
         <el-col :span="18" style="float:right;">
-          <ppt-upload
-                  ref="pptUpload"
-                  :course-section-id="courseSectionId"
-                  :course-section-name="courseSectionName"
-                  @upload="handleUpload"
-          ></ppt-upload>
-          <PPTshow ref="PPTshow" :ppt-data="pptData"></PPTshow>
-          <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;
-          </el-button>
-          <a href="#" class="ll">导出内容</a>
-          <el-upload
-                  class="upload-demo"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  :before-remove="beforeRemove"
-                  multiple
-                  :limit="3"
-                  :on-exceed="handleExceed"
-                  :file-list="fileList">
-          </el-upload>
+          <el-card v-if="isSelect" class="tip">
+             请先选择课时
+          </el-card>
+            <ppt-upload
+                    ref="pptUpload"
+                    :course-section-id="courseSectionId"
+                    :course-section-name="courseSectionName"
+                    @upload="handleUpload"
+                    class="upload"
+                    v-else
+            ></ppt-upload>
+          <div v-show="isShow">
+            <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
+            <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :before-remove="beforeRemove"
+                    multiple
+                    :limit="3"
+                    :on-exceed="handleExceed"
+                    :file-list="fileList">
+            </el-upload>
+          </div>
         </el-col>
       </el-row>
     </el-main>
@@ -60,7 +64,9 @@
                 },
                 courseSectionId: null,
                 courseSectionName: null,
-                fileList:[]
+                fileList:[],
+                isSelect:true,
+                isShow:false
             }
         },
         methods: {
@@ -77,10 +83,12 @@
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
             handleUpload(url, pptImagesList) {
+                this.isShow=true;
                 this.pptData.url = url;
                 this.pptData.pptImagesList.push(...pptImagesList)
             },
             sectionSelect({courseSectionId, courseSectionName}) {
+                this.isSelect=false;
                 this.courseSectionId = courseSectionId;
                 this.courseSectionName = courseSectionName;
                 utils.request({
@@ -98,6 +106,10 @@
                             this.$refs.PPTshow.init()
                         }
                     }).bind(this))
+            },
+            addPPT(){
+                this.pptData.pptImagesList.push("");
+                this.select=this.pptData.pptImagesList.length-1;
             }
         }
     }
@@ -121,5 +133,9 @@
     margin-left: 10px;
     margin-right: 10px;
     min-height: 505px;
+  }
+  .tip{
+    text-align:center;
+    padding:12em;
   }
 </style>
