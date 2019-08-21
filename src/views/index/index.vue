@@ -3,6 +3,7 @@
     <el-tabs v-model="active">
       <el-tab-pane label="教师登陆" name="teacher"></el-tab-pane>
       <el-tab-pane label="学生登陆" name="student"></el-tab-pane>
+      <el-tab-pane label="管理员登陆" name="administrator"></el-tab-pane>
     </el-tabs>
     <el-form :model="form">
       <el-form-item label="用户名">
@@ -37,51 +38,66 @@
         methods: {
             login() {
                 if(this.active === 'teacher') {
-                    utils.request({
-                        invoke: api.loginTeacher,
-                        params: {
-                            userName: this.form.userName,
-                            passWord: this.form.password
-                        },
-                        result: fakeData.LOGIN_RESPONSE
-                    })
-                        .then((function (res) {
-                            if (res.data.code === 1) {
-                                store.commit('LOG_IN_TEACHER', {
-                                    ...res.data.userData,
-                                    teacherId: res.data.teacherId,
-                                    userName: this.form.userName
-                                });
-                                store.dispatch('home/get_fav_courses').then();
-
-                                this.$router.push({path: '/home'})
-                            } else {
-                                this.$message.error('用户名或密码错误')
-                            }
-                        }).bind(this));
+                    this.loginTeacher()
+                } else if (this.active === 'student') {
+                    this.loginStudent()
                 } else {
-                    utils.request({
-                        invoke: api.loginStudent,
-                        params: {
-                            userName: this.userName,
-                            passWord: this.password
-                        },
-                        result: fakeData.LOGIN_STU_RESPONSE
-                    })
-                        .then((function (res) {
-                            if(res.data.code === 1) {
-                                store.commit('LOG_IN_STUDENT', {
-                                    ...res.data.userData,
-                                    stuId: res.data.stuId,
-                                    userName: this.form.userName
-                                });
-
-                                this.$router.push({path: 'stuClass'})
-                            } else {
-                                this.$message.error('用户名或密码错误')
-                            }
-                        }).bind(this))
+                    this.loginAdmin()
                 }
+            },
+            loginTeacher () {
+                utils.request({
+                    invoke: api.loginTeacher,
+                    params: {
+                        userName: this.form.userName,
+                        passWord: this.form.password
+                    },
+                    result: fakeData.LOGIN_RESPONSE
+                })
+                    .then((function (res) {
+                        if (res.data.code === 1) {
+                            store.commit('LOG_IN_TEACHER', {
+                                ...res.data.userData,
+                                teacherId: res.data.teacherId,
+                                userName: this.form.userName
+                            });
+                            store.dispatch('home/get_fav_courses').then();
+
+                            this.$router.push({path: '/home'})
+                        } else {
+                            this.$message.error('用户名或密码错误')
+                        }
+                    }).bind(this));
+            },
+            loginStudent () {
+                utils.request({
+                    invoke: api.loginStudent,
+                    params: {
+                        userName: this.form.userName,
+                        passWord: this.form.password
+                    },
+                    result: fakeData.LOGIN_STU_RESPONSE
+                })
+                    .then((function (res) {
+                        if(res.data.code === 1) {
+                            store.commit('LOG_IN_STUDENT', {
+                                ...res.data.userData,
+                                stuId: res.data.stuId,
+                                userName: this.form.userName
+                            });
+
+                            this.$router.push({path: '/mySuccess'})
+                        } else {
+                            this.$message.error('用户名或密码错误')
+                        }
+                    }).bind(this))
+            },
+            loginAdmin () {
+                store.commit('LOG_IN_ADMIN', {
+                    adminId: 3322,
+                    userName: this.form.userName
+                });
+                this.$router.push({path: '/admin'})
             }
         }
     }

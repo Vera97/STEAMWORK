@@ -1,12 +1,12 @@
 <template>
   <el-container>
     <el-header>
-      <NavStu active-index="2"></NavStu>
+      <nav-stu active-index="2"></nav-stu>
     </el-header>
     <el-main class="main-box">
       <el-row :gutter="24">
         <el-col :span="5">
-          <stuClassList></stuClassList>
+          <stu-class-list></stu-class-list>
         </el-col>
         <el-col :span="18">
           <diary></diary>

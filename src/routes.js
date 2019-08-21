@@ -17,19 +17,21 @@ import store from './store'
 const Home = () => import('./views/home/home.vue');
 
 const teacherGuard = function(to, form, next) {
-    if(!store.state.teacherId || store.state.teacherId === '') {
-        store.commit('PROBE');
-        if(!store.state.teacherId || store.state.teacherId === '') {
-            alert('请先登陆');
-            next({path: '/'})
-        } else next()
-    } else next()
+    routeBase('teacherId', next)
 };
 
 const studentGuard = function(to, from, next) {
-    if(!store.state.stuId || store.state.stuId === '') {
+    routeBase('stuId', next)
+};
+
+const adminGuard = function (to, from, next) {
+    routeBase('adminId', next)
+};
+
+const routeBase = (identity, next) => {
+    if(!store.state[identity] || store.state[identity] === '') {
         store.commit('PROBE');
-        if(!store.state.stuId || store.state.stuId === '') {
+        if(!store.state[identity] || store.state[identity] === '') {
             alert('请先登陆');
             next({path: '/'})
         } else next()
@@ -118,7 +120,8 @@ let routes = [
     {
         path: '/admin',
         component: admin,
-        props: true
+        props: true,
+        beforeEnter: adminGuard
     },
     {
         path: '*',

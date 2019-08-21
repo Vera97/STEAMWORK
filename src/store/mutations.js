@@ -30,17 +30,27 @@ const mutations = {
         state.introduce = userData.introduce
     },
 
+    LOG_IN_ADMIN (state, { adminId, userName }) {
+        api.setCookie('adminId', adminId);
+        api.setCookie('userName', userName);
+
+        state.adminId = adminId;
+        state.userName = userName
+    },
+
     LOG_OUT(state) {
         api.setCookie('userName', '');
         api.setCookie('avatar', '');
         api.setCookie('introduce', '');
         api.setCookie('teacherId', '');
         api.setCookie('stuId', '');
+        api.setCookie('adminId', '');
 
         state.teacherId = '';
         state.userName = '';
         state.avatar = '';
         state.introduce = '';
+        state.adminId = '';
         this.commit('home/CLEAR_COURSES')
     },
 
@@ -52,7 +62,9 @@ const mutations = {
         let tmp = api.getCookie('teacherId');
         state.teacherId = tmp === '' ? '' : parseInt(tmp);
         tmp = api.getCookie('stuId');
-        state.stuId = tmp === '' ? '' : parseInt(tmp)
+        state.stuId = tmp === '' ? '' : parseInt(tmp);
+        tmp = api.getCookie('adminId');
+        state.adminId = tmp === '' ? '' : parseInt(tmp)
     },
 
     CACHE_ID(state, courseId) {

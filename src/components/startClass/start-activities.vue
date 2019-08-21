@@ -15,6 +15,12 @@
 
     export default {
         name: "start-activities",
+        data () {
+            return {
+                pptId: null,
+                pptPage: null
+            }
+        },
         computed:
             {
                 exercise() {
@@ -24,20 +30,22 @@
         methods: {
             emitIndex(index) {
                 this.$emit('onEmitIndex', index)
+            },
+            getExercise (pptId, pptPage) {
+                this.pptId = pptId;
+                this.pptPage = pptPage;
+                utils.request({
+                    invoke: api.requestExercise,
+                    params: {
+                        pptId: this.pptId,
+                        page: this.pptPage
+                    },
+                    result: fakeData.EXERCISE_LIST
+                }).then(res => {
+                    store.commit('startClass/ADD_EXERCISE', res.data.exerciseList)
+                });
             }
-        },
-        created() {
-            utils.request({
-                invoke: api.requestExercise,
-                params: {
-                    pptId: this.pptId,
-                    page: this.page
-                },
-                result: fakeData.EXERCISE_LIST
-            }).then(res => {
-                store.commit('startClass/ADD_EXERCISE', res.data.exerciseList)
-            });
-        },
+        }
     }
 </script>
 
