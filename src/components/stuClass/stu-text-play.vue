@@ -19,7 +19,6 @@
             }
         },
         created() {
-            // let that = this;
             utils.request({
                 invoke: api.requestGetCourseExerciseText,
                 params: {

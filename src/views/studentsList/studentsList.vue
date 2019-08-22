@@ -3,15 +3,15 @@
     <el-header>
       <Nav active-index="3"></Nav>
     </el-header>
-    <el-main>
+    <el-main class="panel">
       <el-row :gutter="0">
         <!--,对应图片左侧classList为左侧班级列表 -->
-        <el-col :span="4" class="class-list">
+        <el-col :span="5" class="class-list">
           <el-button type="primary" class="button" @click="open"> + 创建班级</el-button>
           <class-list :show-section="false" :show-options="true" @course-selected="render" ref="classList"></class-list>
         </el-col>
         <!-- 对应图片右侧，rstulist为右侧学生列表 -->
-        <el-col :span="19" style="float:right;">
+        <el-col :span="18" style="float:right;">
           <rStuList ref="rStuList" @change-class-list="updateClassList"></rStuList>
         </el-col>
       </el-row>
@@ -84,16 +84,24 @@
 <style scoped>
   * {
     margin-left: 0;
+    margin-right: 0;
     padding-left: 0;
+    padding-right: 0;
   }
-  .class-list {
-    margin-left: 20px;
-  }
+
   .button {
     margin-bottom: 10px;
     width: 100%;
   }
+
   .el-footer {
     padding: 0;
+  }
+
+  .panel {
+    min-height: 30em;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: block;
   }
 </style>

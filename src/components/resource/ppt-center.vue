@@ -54,12 +54,11 @@
         components: {actListResource},
         data() {
             return {
-                name: 'stuClass',
                 slideList: [],
                 isCollapse: true,
                 display: 0,
                 cur: true,
-                callback: null,
+                callback: null
             }
         },
         computed: {
@@ -82,7 +81,7 @@
                     invoke: api.requestQueueStu,
                     params: {
                         code: 'get_stuQueue',
-                        classroomId: this.Id
+                        classroomId: store.state.classroomId
                     },
                     result: fakeData.STU_QUESTION
                 })
@@ -95,26 +94,25 @@
                     });
             },
             getSlides(courseSectionId) {
-                let that = this;
                 utils.request({
-                    invoke: api.requestPPT,
+                    invoke: api.requestPPT,               // TODO need a way to obtain the ppt in the resource page.
                     params: {
                         courseSectionId: courseSectionId
                     },
                     result: fakeData.GET_SLIDES_RESPONSE
                 })
-                    .then(res => {
+                    .then(function(res) {
                         if (res.data.code === 1) {
-                            that.slideList.push(...res.data.pptImagesList)
-                        } else that.$message.error('获取ppt失败');
-                        store.commit('resource/SHOW_PPT', res.data.pptId)
-                    })
+                            this.slideList.push(...res.data.pptImagesList);
+                            store.commit('resource/SHOW_PPT', res.data.pptId);
+                            this.getAct()
+                        } else this.$message.error('获取ppt失败');
+                    }.bind(this))
             },
             previous() {//向前翻页
                 this.display = this.display === 0 ? 0 : this.display - 1
             },
             next() {//向后翻页
-                console.log(`next with current ${this.display}`);
                 this.display = this.display === this.slideList.length - 1 ? this.display : this.display + 1;
             },
             openAct(item) {//点击活动按钮
@@ -133,10 +131,10 @@
             },
             getAct() {
                 utils.request({//向后端请求活动列表及状态
-                    invoke: api.requestGetExerciseState,
+                    invoke: api.requestExercise,
                     params: {
-                        stuId: this.stuId,
-                        courseSectionId: this.courseSectionId
+                        pptId: store.state.resource.pptId,
+                        page: this.display
                     },
                     result: fakeData.GET_STATE_EXERCISE
                 })
@@ -165,12 +163,11 @@
                 utils.request({
                     invoke: api.requestClassStuQuestion,
                     params: {
-                        stuId: this.stuId,
-                        courseId: this.courseId,
-                        courseSectionId: '',
+                        pptId: store.state.resource.pptId,
+                        pptPage: this.display
                     },
-                    result: fakeData.STU_QUESTIONS,
-                }).then(res => {
+                    result: fakeData.STU_QUESTIONS,         // this fakeData may not be correct, check it.
+                }).then(function(res) {
                     let template = '';
                     for (let i of res.data.question) {
                         let tmp = `<div>问题：${i.question}<br>解答：${i.answer}<br></div>`;
@@ -186,13 +183,13 @@
                             });
                         }
                     });
-                })
+                }.bind(this))
             },
             getWealth() {//获取财富值
                 utils.request({
                     invoke: api.requestGetCourseWealth,
                     params: {
-                        stuId: this.stuId,
+                        stuId: store.state.stuId,
                         courseSectionId: this.courseSectionId
                     },
                     result: fakeData.GET_WEALTH
@@ -206,7 +203,6 @@
         },
         mounted() {
             this.getSlides(0);//获取并显示ppt
-            this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
         }
     }

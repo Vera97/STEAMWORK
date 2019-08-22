@@ -139,7 +139,7 @@
             startClass () {
                 this.$refs.askList.getQueue();
                 this.$refs.show.getSlides(this.selectedSectionId);
-                // this.callback = setInterval(() => this.getProgress(), 5000)
+                // this.callback = setTimeout(() => this.getProgress(), 5000)
             },
             onEmitIndex(index) {
                 if(!this.selectedSectionId) {
@@ -157,7 +157,7 @@
                             if (res.data.code === 1) {
                                 this.$refs.newComp.getCurrentComponent(index);
                             } else {
-                                this.$message.error('开户失败')
+                                this.$message.error('开启失败')
                             }
                         }.bind(this))
                 }

@@ -90,7 +90,7 @@
                             }
                         },
                         style: {
-                            'margin-right': '20%'
+                            'margin-right': '8px'
                         },
                     },
                     [' ']
@@ -109,7 +109,7 @@
                             }
                         },
                         style: {
-                            'margin-right': '20%'
+                            'margin-right': '8px'
                         },
                     },
                     ['']
@@ -129,7 +129,7 @@
                             }
                         },
                         style: {
-                            'margin-right': '20px'
+                            'margin-right': '0'
                         },
                     },
                     [' ']

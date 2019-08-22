@@ -58,4 +58,8 @@
   .main-box {
     margin-left: 10px;
   }
+
+  .el-footer {
+    padding-right: 0;
+  }
 </style>

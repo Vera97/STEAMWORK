@@ -43,7 +43,7 @@
             <el-button type="primary" size="small" class="select-confirm" @click="addRelated(node)">确定</el-button>
           </el-popover>
           <i class="node-icon el-icon-edit" @click="editPrompt(node)" v-if="node.level === 1"></i>
-          <i class="node-icon el-icon-delete" @click="deletePrompt(node)"></i>
+          <i class="el-icon-delete" @click="deletePrompt(node)"></i>
         </span>
       </span>
     </el-tree>
@@ -313,6 +313,10 @@
     width: 5em;
     margin: 0 auto;
     display: block;
+  }
+
+  .node-icon {
+    margin-right: 8px;
   }
 </style>
 
