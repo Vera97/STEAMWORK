@@ -39,7 +39,7 @@
             },
             changeCur3(){
                 this.cur=3;
-                store.commit('admin/ADD_INDEX','try-1')
+                store.commit('admin/ADD_INDEX','resource-manage')
             },
             changeCur4(){
                 this.cur=4;

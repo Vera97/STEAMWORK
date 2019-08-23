@@ -1,136 +1,133 @@
 <template>
-  <div class="content">
-    <div>
-      <el-card class="card-box">
-        <h3>课程列表</h3>
-        <el-tree
-                :data="courseData"
-                :props="defaultProps"
-                :expand-on-click-node="true"
-                accordion
-                @node-click="handleNodeClick">
-        </el-tree>
-      </el-card>
-      <PPTshow></PPTshow>
-      <pptDeal :courseSectionId="courseSectionId" :courseSectionName="courseSectionName" class="upload"></pptDeal>
-    </div>
-  </div>
+  <el-container>
+    <el-main class="w">
+      <el-row :gutter="0">
+        <el-col :span="4">
+          <course-directory @section-selected="sectionSelect"></course-directory>
+        </el-col>
+        <el-col :span="19" style="float:right;">
+          <el-card v-if="isSelect" class="tip">
+            请先选择课时
+          </el-card>
+          <ppt-upload
+                  ref="pptUpload"
+                  :course-section-id="courseSectionId"
+                  :course-section-name="courseSectionName"
+                  @upload="handleUpload"
+                  class="upload"
+                  v-else
+          ></ppt-upload>
+          <div v-show="isShow">
+            <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
+            <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :before-remove="beforeRemove"
+                    multiple
+                    :limit="3"
+                    :on-exceed="handleExceed"
+                    :file-list="fileList">
+            </el-upload>
+          </div>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
-    import {api, fakeData} from '../../api'
+    import courseDirectory from "./course-directory";
+    import PPTshow from "./PPT-show";
+    import PptUpload from "./ppt-upload";
+
     import utils from '../../utils'
-    import store from '../../store'
-    import pptDeal from '../admin/ppt-deal'
-    // import coursePpt from '../PPT/course-ppt'
-    import PPTshow from '../admin/PPT-show'
+    import {api, fakeData} from '../../api'
 
     export default {
         name: "ppt-list",
-        components:{pptDeal,PPTshow},
+        components: {PptUpload, PPTshow ,courseDirectory},
         data() {
             return {
-                defaultProps: {
-                    children: 'courseSection',
-                    label: function(data, node) {
-                        if(node.level === 1) return data.title;
-                        else return data.courseSectionName
-                    }
-                },
-                pptList:[],
-                courseSectionId:-1,
-                courseSectionName:'',
                 pptData: {
                     pptImagesList: [],
                     pptId: null
-                }
-            };
-        },
-        computed:{
-            courseData() {
-                return store.state.admin.courseData;
-            }
-        },
-        methods:{
-            handleNodeClick(data,node){
-                if(node.level===2){
-                    this.courseSectionId=data.courseSectionId;
-                    this.courseSectionName=data.courseSectionName;
-                    utils.request({
-                        invoke: api.requestSlides,
-                        params: {
-                            courseSectionId: parseInt(data.courseSectionId)
-                        },
-                        result: fakeData.UPLOAD_RESPONSE
-                    })
-                        .then((function(res) {
-                            if(res.data.code === 1) {
-                                this.pptData.pptId = res.data.pptId;
-                                this.pptData.pptImagesList.push(...res.data.pptImagesList);
-                            }
-                        }).bind(this))
-                }
-            }
-        },
-        mounted() {
-            utils.request({//请求数据库中已有课程并渲染到表格中
-                invoke: api.getCourseChunk,
-                params: {
-                    code: 'course_all',
-                    gotten: 0,
-                    length: 0
                 },
-                result: fakeData.SEARCH_COURSE
-            }).then(res => {
+                courseSectionId: null,
+                courseSectionName: null,
+                fileList:[],
+                isSelect:true,
+                isShow:false
+            }
+        },
+        methods: {
+            handleExceed() {
+                this.$message.info("只能上传一个文件")
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            beforeRemove(file) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            handleUpload(url, pptImagesList) {
+                this.isShow=true;
+                this.pptData.url = url;
+                this.pptData.pptImagesList.push(...pptImagesList)
+            },
+            sectionSelect({courseSectionId, courseSectionName}) {
+                this.isSelect=false;
+                this.courseSectionId = courseSectionId;
+                this.courseSectionName = courseSectionName;
                 utils.request({
-                    invoke: api.getCourseChunk,
+                    invoke: api.requestSlides,
                     params: {
-                        code: 'course_all',
-                        gotten: 0,
-                        length: res.data.totalCount
+                        courseSectionId: parseInt(courseSectionId)
                     },
-                    result: fakeData.SEARCH_COURSE
-                }).then(res => {
-                    this.pptList= res.data.chunks;
-                    for(let i=0;i<this.pptList.length;i++){
-                        utils.request({
-                            invoke: api.requestCourseDetail,
-                            params: {
-                                courseId:this.pptList[i].courseId
-                            },
-                            result: fakeData.COURSE_DETAIL
-                        }).then(res=>{
-                            this.$set(this.pptList[i],'courseSection',res.data.courseSection);
-                        });
-                    }
-                    store.commit('admin/ADD_COURSE_DATA', this.pptList);
-                });
-            });
+                    result: fakeData.UPLOAD_RESPONSE
+                })
+                    .then((function(res) {
+                        if(res.data.code === 1) {
+                            this.pptData.pptId = res.data.pptId;
+                            this.pptData.pptImagesList.push(...res.data.pptImagesList);
+                            this.$refs.pptUpload.inject();
+                            this.$refs.PPTshow.init()
+                        }
+                    }).bind(this))
+            },
+            addPPT(){
+                this.pptData.pptImagesList.push("");
+                this.select=this.pptData.pptImagesList.length-1;
+            }
         }
     }
+
 </script>
 
 <style scoped>
-  .card-box{
-    float:left;
-    width:25%;
+  * {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
-  .box-card2 {
-    width: 98%;
-    margin-bottom: 10px;
-    float:right;
+
+  .ll {
+    float: right;
+    margin-top: 20px;
+  }
+
+  .w {
+    margin-left: 10px;
+    margin-right: 10px;
+    min-height: 715px;
+  }
+  .tip{
     text-align:center;
-  }
-  .pptTable{
-    max-height: 30em;
-    overflow-y: scroll;
-  }
-  .slide-cell{
-    cursor: pointer;
-    height:30em;
-  }
-  .slide-cell:hover {
-    border: #6495ED90 solid .1em;
-    border-radius: .5em;
+    padding:12em;
   }
 </style>

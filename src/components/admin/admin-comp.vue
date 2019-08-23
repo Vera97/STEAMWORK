@@ -1,5 +1,5 @@
 <template>
-  <component v-bind:is="currentTabComponent" class="component"></component>
+  <component v-bind:is="currentTabComponent" class="component" id="id"></component>
 </template>
 
 <script>
@@ -12,12 +12,12 @@
     import resourceList from '../admin/resource-list'
     import pptList from '../admin/ppt-list'
     import editCourse from '../admin/edit-course'
-    import try1 from '../admin/try-1'
+    import resourceManage from '../admin/resource-manage'
 
 
     export default {
         name: "admin-comp",
-        components: {teacherList,tagList,resourceList,pptList,editCourse,try1},
+        components: {teacherList,tagList,resourceList,pptList,editCourse,resourceManage},
         computed:{
             currentTabComponent(){
                 return store.state.admin.index||'teacher-list';
@@ -25,14 +25,15 @@
         },
         data(){
             return{
-                name: "admin-comp"
+                name: "admin-comp",
             }
-        }
+        },
     }
 </script>
 
 <style scoped>
   .component{
     margin-top:2%;
+    min-height:550px;
   }
 </style>
