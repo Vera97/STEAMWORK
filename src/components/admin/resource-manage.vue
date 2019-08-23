@@ -1,0 +1,54 @@
+<template>
+  <el-row :gutter="20">
+    <el-col :span="6">
+     <resourceList @course-selected="selectedCourse" @section-selected="selectedSection" @step-selected="selectedStep" ></resourceList>
+    </el-col>
+    <el-col :span="18">
+      <resourceContent ref="child" :isSelect="isSelect" :courseId="courseId" :courseName="courseName" :courseSectionId="courseSectionId" :courseSectionName="courseSectionName" :stepId="stepId" :stepName="stepName"></resourceContent>
+    </el-col>
+  </el-row>
+</template>
+
+<script>
+    import resourceList from '../admin/resource-list'
+    import resourceContent from '../admin/resource-content'
+    export default {
+        name: "resource-manage",
+        components:{resourceList,resourceContent},
+        data(){
+            return{
+                courseId:-1,
+                courseName: '',
+                courseSectionId: -1,
+                courseSectionName: '',
+                stepId: -1,
+                stepName:'',
+                isSelect:true,
+                isUpload:false
+            }
+        },
+        methods:{
+            selectedCourse(data){
+                this.isSelect=false;
+                this.courseId=data.courseId;
+                this.courseName=data.title;
+                this.$refs.child.getLabel();
+            },
+            selectedSection(data){
+                this.isSelect=false;
+                this.courseSectionId=data.courseSectionId;
+                this.courseSectionName=data.title;
+            },
+            selectedStep(data){
+                this.isSelect=false;
+                this.stepId=data.stepId;
+                this.stepName=data.title;
+                this.$refs.child.getStep();
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

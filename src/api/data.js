@@ -859,3 +859,83 @@ export const NEW_EXERCISE_RESPONSE = {
     code: 1,
     exercise: 3324
 };
+//admin页面--教师管理
+export const GET_TEACHER  = {
+    code: 1,
+    teacherAccountList: [
+        {
+            id: 1,
+            name: 's1',
+            password: 'ss',
+            sex: '男',
+            introduceHtml: 'text/html'
+        },
+        {
+            id: 2,
+            name: 's2',
+            password: 'ss',
+            sex: '男',
+            introduceHtml: 'text/html'
+        },
+        {
+            id: 3,
+            name: 's3',
+            password: 'ss',
+            sex: '女',
+            introduceHtml: 'text/html'
+        }
+    ]
+};
+export const DELETE_TEACHER  = {
+    code: 1
+};
+export const EDIT_TEACHER  = {
+    code: 1
+};
+//admin标签管理
+export const GET_LABEL_LIST  = {
+    code: 1,
+    labelList: [
+        {
+            labelId: 1,
+            labelName: 's1'
+        },
+        {
+            labelId: 2,
+            labelName: 's2'
+        },
+        {
+            labelId: 3,
+            labelName: 's3'
+        },
+    ]
+};
+export const ADD_LABEL = {
+    code: 1,
+    labelId: 12
+};
+export const ADD_TEACHER = {
+    code: 1,
+    teacherId: 10
+};
+export const RESPONSE_PPT = {
+    code: 1,
+    pptUrl:'media/example.pptx'
+};
+export const GET_LABEL_HAVE = {
+    code: 1,
+    labelList: [
+        {
+            labelId: 1,
+            labelName: 's1'
+        }
+    ]
+};
+export const GET_LABEL_CHECKED = {
+    code: 1,
+    labelName: 's2'
+};
+export const SECTION_STEP={
+    code:1,
+    courseStepId:12
+};

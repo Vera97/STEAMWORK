@@ -68,6 +68,7 @@
   .main-box {
     margin-left: 10px;
     margin-top: 0;
+    min-height: 715px;
   }
 
   .el-footer {
