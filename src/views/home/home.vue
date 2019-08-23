@@ -3,7 +3,7 @@
     <el-header>
       <Nav active-index="1"></Nav>
     </el-header>
-    <el-main>
+    <el-main class="main-box">
       <Search></Search>
       <Carousel></Carousel>
       <ClassList></ClassList>
@@ -43,5 +43,8 @@
 
   .el-footer {
     padding: 0;
+  }
+  .main-box{
+    min-height: 715px;
   }
 </style>

@@ -54,7 +54,7 @@
                           type="textarea"
                           :autosize="{ minRows:4, maxRows:12}"
                           :rows="2"
-                          placeholder="请输入问题内容及解答"
+                          placeholder="输入问题解答"
                           v-model=item.questionContent>
                   </el-input>
               </div>
@@ -409,8 +409,9 @@
   }
 
   .box-card {
-    width: 100%;
+    width: 73%;
     margin-bottom: 2%;
+    float: right;
   }
 
   .ali {

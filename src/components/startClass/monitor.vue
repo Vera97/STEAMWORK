@@ -1,7 +1,7 @@
 <template>
   <div class="student-box">
     <div>
-      <el-button type="success" class="button-box" style="width: 100%">学生学习进度监控</el-button>
+      <el-button type="primary" class="button-box" style="width: 100%">学生学习进度监控</el-button>
     </div>
     <div v-for="item in prog" :key="item.stuId">
       <div v-bind:style="miStatusColor(item.progress)" class="student-id-box">{{item.stuId}}</div>

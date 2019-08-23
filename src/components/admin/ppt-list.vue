@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div>
-      <el-card class="box-card">
+      <el-card class="card-box">
         <h3>课程列表</h3>
         <el-tree
                 :data="courseData"
@@ -23,11 +23,11 @@
     import store from '../../store'
     import pptDeal from '../admin/ppt-deal'
     // import coursePpt from '../PPT/course-ppt'
-    // import PPTshow from '../admin/PPT-show'
+    import PPTshow from '../admin/PPT-show'
 
     export default {
         name: "ppt-list",
-        components:{pptDeal},
+        components:{pptDeal,PPTshow},
         data() {
             return {
                 defaultProps: {
@@ -111,9 +111,9 @@
 </script>
 
 <style scoped>
-  .box-card{
+  .card-box{
     float:left;
-    width:30%;
+    width:25%;
   }
   .box-card2 {
     width: 98%;

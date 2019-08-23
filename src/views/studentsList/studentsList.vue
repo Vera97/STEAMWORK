@@ -3,7 +3,7 @@
     <el-header>
       <Nav active-index="3"></Nav>
     </el-header>
-    <el-main>
+    <el-main class="main-box">
       <el-row :gutter="0">
         <!--,对应图片左侧classList为左侧班级列表 -->
         <el-col :span="4" class="class-list">
@@ -95,5 +95,8 @@
   }
   .el-footer {
     padding: 0;
+  }
+  .main-box{
+    min-height: 715px;
   }
 </style>

@@ -10,7 +10,6 @@
           <askList ref="askList" :classroom-id="classroomId"></askList>
         </el-col>
         <el-col :span="14">
-          <div class="banner" v-if="!selectedSectionId">请选择上课的课时</div>
           <show
                   ref="show"
                   :classroom-id="classroomId"
@@ -187,6 +186,7 @@
 
   .main-box {
     margin-left: 10px;
+    min-height: 715px;
   }
 
   .el-footer {
