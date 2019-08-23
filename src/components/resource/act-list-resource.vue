@@ -24,9 +24,8 @@
         components: {stuResourceShow, stuDesign, stuTextPlay,answer, display},
         data() {
             return {
-                name: "act-list-resource",
                 currentTabComponent: '',
-                isNeed:true
+                isNeed: true
             }
         },
         computed: {

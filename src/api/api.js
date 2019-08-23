@@ -470,6 +470,19 @@ export const requestPushPPTpage = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, options);
 };
+
+/**
+ * url: /stu/classroom/get_teacher_pptpage
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @param {number} params.stuId
+ * @returns {Promise<{code: number, pptPage: number}>}
+ */
+export const requestGetPPTPage = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/get_teacher_pptpage`, params, options);
+};
+
 export const requestStartActivity = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classroom/start_exercise`, params, options);
@@ -484,7 +497,7 @@ export const requestEndActivity = params => {
  * @param {Object} params
  * @param {number} params.pptId
  * @param {number} params.pptPage
- * @returns {Promise<{code: number, questionName: String, content: String}>}
+ * @returns {Promise<{code: number, question: Array<{question: String, answer: String}>}>}
  */
 export const requestClassStuQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());

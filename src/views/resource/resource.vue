@@ -4,7 +4,7 @@
       <NavStu active-index="1"></NavStu>
     </el-header>
     <el-main class="main-box">
-          <pptCenter></pptCenter>
+      <pptCenter></pptCenter>
     </el-main>
     <el-footer>
       <Footer></Footer>

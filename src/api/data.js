@@ -532,7 +532,7 @@ export const NEW_QUESTIONS = {
 export const RETURN_PPTPAGE ={
     code: 1,
 };
-export const PUSH_PPT ={
+export const GET_PPT_PAGE ={
     code: 1,
     pptPage:3
 };

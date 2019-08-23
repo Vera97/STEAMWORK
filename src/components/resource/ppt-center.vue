@@ -49,6 +49,8 @@
     import store from '../../store'
     import actListResource from '../resource/act-list-resource'
 
+    import { mapState } from 'vuex'
+
     export default {
         name: "ppt-center",
         components: {actListResource},
@@ -62,18 +64,13 @@
             }
         },
         computed: {
-            number() {
-                return store.state.resource.number;
-            },
-            pptId() {
-                return store.state.resource.pptId;
-            },
-            exerciseList() {
-                return store.state.resource.exerciseList;
-            },
-            wealthAllStu() {
-                return store.state.resource.wealthAllStu;
-            }
+            ...mapState({
+                courseSectionId: state => state.courseSectionId,
+                number: state => state.resource.number,
+                pptId: state => state.resource.pptId,
+                exerciseList: state => state.resource.exerciseList,
+                wealthAllStu: state => state.resource.wealthAllStu
+            })
         },
         methods: {
             open() {
@@ -133,7 +130,7 @@
                 utils.request({//向后端请求活动列表及状态
                     invoke: api.requestExercise,
                     params: {
-                        pptId: store.state.resource.pptId,
+                        pptId: this.pptId,
                         page: this.display
                     },
                     result: fakeData.GET_STATE_EXERCISE
@@ -163,7 +160,7 @@
                 utils.request({
                     invoke: api.requestClassStuQuestion,
                     params: {
-                        pptId: store.state.resource.pptId,
+                        pptId: this.pptId,
                         pptPage: this.display
                     },
                     result: fakeData.STU_QUESTIONS,         // this fakeData may not be correct, check it.
@@ -202,7 +199,7 @@
             }
         },
         mounted() {
-            this.getSlides(0);//获取并显示ppt
+            this.getSlides(this.courseSectionId);//获取并显示ppt
             this.getWealth();//获取财富值
         }
     }
