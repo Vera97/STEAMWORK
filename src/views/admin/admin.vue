@@ -43,4 +43,7 @@
       width:75%;
       margin-right:3%
     }
+  .main-box{
+    min-height: 710px;
+  }
 </style>

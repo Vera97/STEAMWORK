@@ -1,25 +1,22 @@
 <template>
   <el-container>
-    <el-header>
-      <Nav active-index="2"></Nav>
-    </el-header>
     <el-main class="w">
       <el-row :gutter="0">
-        <el-col :span="5">
+        <el-col :span="4">
           <course-directory @section-selected="sectionSelect"></course-directory>
         </el-col>
-        <el-col :span="18" style="float:right;">
+        <el-col :span="19" style="float:right;">
           <el-card v-if="isSelect" class="tip">
-             请先选择课时
+            请先选择课时
           </el-card>
-            <ppt-upload
-                    ref="pptUpload"
-                    :course-section-id="courseSectionId"
-                    :course-section-name="courseSectionName"
-                    @upload="handleUpload"
-                    class="upload"
-                    v-else
-            ></ppt-upload>
+          <ppt-upload
+                  ref="pptUpload"
+                  :course-section-id="courseSectionId"
+                  :course-section-name="courseSectionName"
+                  @upload="handleUpload"
+                  class="upload"
+                  v-else
+          ></ppt-upload>
           <div v-show="isShow">
             <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
             <el-upload
@@ -37,25 +34,20 @@
         </el-col>
       </el-row>
     </el-main>
-    <el-footer>
-      <Footer></Footer>
-    </el-footer>
   </el-container>
 </template>
 
 <script>
-    import Nav from "../../components/hd-nav";
-    import courseDirectory from "../../components/course-directory";
-    import PPTshow from "../../components/PPT/PPT-show";
-    import Footer from "../../components/hd-footer";
-    import PptUpload from "../../components/PPT/ppt-upload";
+    import courseDirectory from "./course-directory";
+    import PPTshow from "./PPT-show";
+    import PptUpload from "./ppt-upload";
 
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
 
     export default {
-        name: "PPT",
-        components: {PptUpload, PPTshow ,courseDirectory, Nav, Footer},
+        name: "ppt-list",
+        components: {PptUpload, PPTshow ,courseDirectory},
         data() {
             return {
                 pptData: {

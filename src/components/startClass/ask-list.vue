@@ -1,12 +1,10 @@
 <template>
   <div class="box-card">
-    <div class="students-ask-box">
-      学生提问队列
-    </div>
+    <el-button type="primary" class="ask-box">学生提问队列</el-button>
     <div v-for="item in questions" :key="item" class="students-list-box">
-      <el-tag type="warning" style="color: black;background-color: #d58512" @click="solvePrompt" ref={{item.stuId}}>
+      <el-button type="primary" @click="solvePrompt" size="mini">
         {{item}}
-      </el-tag>
+      </el-button>
     </div>
   </div>
 </template>
@@ -27,6 +25,9 @@
                 callback: null
             }
         },
+        created(){
+            this.getQueue();
+        },
         methods: {
             getQueue () {
                 utils.request({
@@ -39,6 +40,7 @@
                 }).then(function(res) {
                     this.questions = [];
                     this.questions.push(...res.data.questionList);
+                    console.log(this.questions);
                     // this.callback = setInterval(() => this.getQueue(),5000);
                 }.bind(this))
             },
@@ -79,21 +81,17 @@
             },
             destroyed () {
                 clearInterval(this.callback)
-            }
+            },
         }
     }
 </script>
 
 <style scoped>
-  .students-ask-box {
+  .ask-box {
     text-align: center;
-    background-color: #d58512;
-    color: white;
-    border-radius: 2px;
-    font-size: 18px;
     margin-top: 30px;
     margin-bottom: 10px;
-    padding: 5px;
+    width: 100%;
   }
 
   .students-list-box {

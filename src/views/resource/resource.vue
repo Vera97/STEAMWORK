@@ -57,5 +57,6 @@
 
   .main-box {
     margin-left: 10px;
+    min-height: 715px;
   }
 </style>

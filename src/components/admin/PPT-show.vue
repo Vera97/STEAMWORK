@@ -41,22 +41,22 @@
             </el-tab-pane>
             <el-tab-pane label="+ 编辑当页常见问题及解答" class="border-card">
               <div v-for="(item,index) in commonQuestion" :key="index" class="ali">
-                  <el-input
-                          class="text"
-                          type="textarea"
-                          autosize
-                          :rows="2"
-                          placeholder="请输入问题"
-                          v-model=item.questionName>
-                  </el-input>
-                  <el-input
-                          class="text"
-                          type="textarea"
-                          :autosize="{ minRows:4, maxRows:12}"
-                          :rows="2"
-                          placeholder="输入问题解答"
-                          v-model=item.questionContent>
-                  </el-input>
+                <el-input
+                        class="text"
+                        type="textarea"
+                        autosize
+                        :rows="2"
+                        placeholder="请输入问题"
+                        v-model=item.questionName>
+                </el-input>
+                <el-input
+                        class="text"
+                        type="textarea"
+                        :autosize="{ minRows:4, maxRows:12}"
+                        :rows="2"
+                        placeholder="输入问题解答"
+                        v-model=item.questionContent>
+                </el-input>
               </div>
               <el-button type="plain" size="medium" class="add-option" @click="addItems"><i
                       class="el-icon-circle-plus-outline"></i>新增常见问题

@@ -3,7 +3,7 @@
     <el-header>
       <nav-stu active-index="3"></nav-stu>
     </el-header>
-    <el-main>
+    <el-main class="main-box">
       <el-row :gutter="0">
         <!-- 这里是小组列表栏，应该展示小组创建按钮及小组列表，对应图左边部分 -->
         <el-col :span="7">
@@ -94,12 +94,8 @@
 </script>
 
 <style scoped>
-  .el-header {
-    padding: 0;
-  }
-
-  .el-footer {
-    padding: 0;
+  .main-box{
+    min-height: 715px;
   }
 </style>
 

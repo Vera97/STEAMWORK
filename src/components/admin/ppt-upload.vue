@@ -11,7 +11,7 @@
               :on-exceed="handleExceed"
               :on-remove="beforeRemove"
               :file-list="fileList">
-          <div class="select-button"><el-button slot="trigger" type="">&emsp;选择&emsp;</el-button></div>
+        <div class="select-button"><el-button slot="trigger" type="">&emsp;选择&emsp;</el-button></div>
       </el-upload>
       <div class="change1">
         <div class="upload-button"><el-button type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button></div>
@@ -106,9 +106,9 @@
   .upload-demo {
     height: 40px;
   }
-.select-button{
+  .select-button{
 
-}
+  }
   .upload-button {
     margin-left: 1%;
   }
@@ -116,14 +116,14 @@
   .ppt-name {
     margin: 1em;
   }
-    span {
-      font-size: .8em;
-      margin-right: 1em;
-    }
-    .upload-thing{
-    }
-    .upload-tip{
-      font-size: .8em;
-    }
+  span {
+    font-size: .8em;
+    margin-right: 1em;
+  }
+  .upload-thing{
+  }
+  .upload-tip{
+    font-size: .8em;
+  }
 
 </style>

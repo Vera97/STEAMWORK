@@ -8,16 +8,16 @@
             placeholder="请输入您要编辑的问题"
             v-model="contentQuestion">
     </el-input>
-      <div v-for="(item, index) in contentAnswerList" :key="index">
-        <el-checkbox class="choice-tag" :label="answerChoices[index]" v-model="answer" size="medium"></el-checkbox>
-        <el-input
-                placeholder="输入选项内容"
-                v-model="contentAnswerList[index].choiceContent"
-                class="option-box"
-                clearable>
-        </el-input>
-        <i class="el-icon-delete" @click="deleteChoice(index)"></i>
-      </div>
+    <div v-for="(item, index) in contentAnswerList" :key="index">
+      <el-checkbox class="choice-tag" :label="answerChoices[index]" v-model="answer" size="medium"></el-checkbox>
+      <el-input
+              placeholder="输入选项内容"
+              v-model="contentAnswerList[index].choiceContent"
+              class="option-box"
+              clearable>
+      </el-input>
+      <i class="el-icon-delete" @click="deleteChoice(index)"></i>
+    </div>
     <el-button type="plain" size="medium" class="add-option" @click="addItems"><i class="el-icon-circle-plus-outline"></i>增加选项</el-button>
     <div class="edit-pane">
       <el-button type="primary" @click="saveActivity">保存</el-button>
@@ -45,15 +45,15 @@
         methods: {
             saveActivity() {
                 utils.request({
-                    invoke: api.requestEditExerciseQuestion,
-                    params: {
-                        exerciseId: this.exerciseId,
-                        contentQuestion: this.contentQuestion,
-                        contentAnswerList: this.contentAnswerList,
-                        answerList: this.answer
-                    },
-                    result: fakeData.SINGLE_NUMBER_CODE
-                })
+                        invoke: api.requestEditExerciseQuestion,
+                        params: {
+                            exerciseId: this.exerciseId,
+                            contentQuestion: this.contentQuestion,
+                            contentAnswerList: this.contentAnswerList,
+                            answerList: this.answer
+                        },
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    })
                     .then(function (res) {
                         if (res.data.code === 1) this.$message.success('保存成功');
                         else this.$message.error('保存失败')
@@ -87,12 +87,12 @@
         },
         created() {
             utils.request({
-                invoke: api.requestExerciseQuestion,
-                params: {
-                    exerciseId: this.exerciseId
-                },
-                result: fakeData.EXERCISE_QUESTION
-            })
+                    invoke: api.requestExerciseQuestion,
+                    params: {
+                        exerciseId: this.exerciseId
+                    },
+                    result: fakeData.EXERCISE_QUESTION
+                })
                 .then(function (res) {
                     this.contentQuestion = res.data.contentQuestion;
                     for(let i of res.data.contentAnswerList) {

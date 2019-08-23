@@ -1,86 +1,146 @@
 <template>
   <div>
-    <el-table
-            :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-            class="table-box">
-      <el-table-column
-              label="Date"
-              prop="date">
-      </el-table-column>
-      <el-table-column
-              label="Name"
-              prop="name">
-      </el-table-column>
-      <el-table-column
-              align="right">
-        <template slot="header">
-          <el-input
-                  v-model="search"
-                  size="mini"
-                  placeholder="输入关键字搜索"/>
-        </template>
-        <template slot-scope="scope">
-          <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-          <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="button-box-father"><el-button class="button-box" type="primary" round>增添用户</el-button></div>
+    <div class="table" v-if="isActive">
+      <el-table
+              :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())||
+              data.sex.toLowerCase().includes(search.toLowerCase())||data.introduceHtml.toLowerCase().includes(search.toLowerCase()))"
+              class="table-box">
+        <el-table-column
+                label="Id"
+                prop="id">
+        </el-table-column>
+        <el-table-column
+                label="Name"
+                prop="name">
+        </el-table-column>
+        <el-table-column
+                label="Password"
+                prop="password">
+        </el-table-column>
+        <el-table-column
+                label="Sex"
+                prop="sex">
+        </el-table-column>
+        <el-table-column
+                label="Introduce"
+                prop="introduceHtml">
+        </el-table-column>
+        <el-table-column
+                align="right">
+          <template slot="header" slot-scope="scope">
+            <el-input
+                    v-model="search"
+                    size="mini"
+                    placeholder="输入关键字搜索"/>
+          </template>
+          <template slot-scope="scope">
+            <el-button
+                    size="mini"
+                    @click="handleEdit(scope.$index, scope.row)">Edit
+            </el-button>
+            <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="button-box-father">
+        <el-button class="button-box" type="primary" round @click="add">增添用户</el-button>
+      </div>
+    </div>
+      <model :list="selectedList" :type="type" v-else v-cloak @modify="modify" @changeOverlay="changeOverlay"></model>
   </div>
 </template>
 
 <script>
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
+    import model from '../admin/model'
+
     export default {
-        name:'teacher-list',
+        name: 'teacher-list',
+        components: {model},
         data() {
             return {
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王大虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王大虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王大虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    date: '2016-05-03',
-                    name: '王大虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
-                }],
-                search: ''
+                tableData: [],
+                search: '',
+                selectedList: {}, // 选中的信息
+                selected: -1,
+                isActive: true,
+                type:''
             }
         },
         methods: {
+            modify(list) {
+                if (this.selected > -1) {
+                    this.$set(this.tableData, this.selected, list);
+                    this.selected = -1;
+                } else {
+                    this.tableData.push(list);
+                }
+                this.changeOverlay();
+            },
+            changeOverlay() {
+                this.isActive = !this.isActive;
+            },
             handleEdit(index, row) {
                 console.log(index, row);
+                this.type='Edit';
+                this.selected = index;
+                this.selectedList = JSON.parse(JSON.stringify(this.tableData[index]));
+                this.changeOverlay();
             },
             handleDelete(index, row) {
-                row.splice(index, 1);
+                console.log(index, row);
+                utils.request({
+                    invoke: api.requestDeleteTeacher,
+                    params: {
+                        teacherId: row.id
+                    },
+                    result: fakeData.DELETE_TEACHER
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.$delete(this.tableData, index);
+                        this.$message('删除成功！');
+                    }
+                });
+            },
+            add(){
+                this.type='Add';
+                this.changeOverlay();
             }
         },
+        mounted() {
+            utils.request({
+                invoke: api.requestGetTeacher,
+                params: {
+                    adminId: 10
+                },
+                result: fakeData.GET_TEACHER
+            }).then(res => {
+                if (res.data.code === 1) {
+                    this.tableData = res.data.teacherAccountList;
+                }
+            })
+        }
     }
 </script>
 
 <style scoped>
-  .table-box{
+  .table-box {
     width: 100%;
     height: 500px;
     overflow: auto;
   }
-  .button-box{
+
+  .button-box {
     margin-top: 1%;
     width: 50%;
   }
-  .button-box-father{
+
+  .button-box-father {
     text-align: center;
   }
 

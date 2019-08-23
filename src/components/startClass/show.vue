@@ -11,8 +11,9 @@
       >
       <div class="col-box">
         <el-button-group>
-          <el-button type="plain" plain icon="el-icon-arrow-left" @click="previous"></el-button>
-          <el-button type="plain" plain @click="next"><i class="el-icon-arrow-right el-icon--right"></i></el-button>
+          <div class="banner" v-if="!classroomId"><strong>请先选择上课的课时</strong></div>
+          <el-button type="plain" plain icon="el-icon-arrow-left" @click="previous" v-if="classroomId"></el-button>
+          <el-button type="plain" plain icon="el-icon-arrow-right" @click="next" v-if="classroomId"></el-button>
         </el-button-group>
       </div>
     </el-card>
@@ -27,6 +28,7 @@
         name: 'show',
         props: {
             classroomId: Number,
+            // selectedSectionId:null
         },
         data () {
             return {
@@ -81,14 +83,17 @@
   .wrapper {
     position: relative;
     width: 100%;
-
-    .ppt-box {
-      text-align: center;
-
-      .display {
+  }
+  .ppt-box {
+    text-align: center;
+  }
+  .display {
         width: 100%;
-      }
-    }
+  }
+  .banner {
+    text-align: center;
+    margin-bottom: 180%;
+    margin-top: 180%;
   }
 
   .button-box {
