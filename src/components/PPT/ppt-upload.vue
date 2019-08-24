@@ -94,21 +94,26 @@
 </script>
 
 <style scoped lang="scss">
-  .change{
+  .change {
     display: flex;
     width: 100%;
   }
-  .change1{
+
+  .change1 {
     display: flex;
   }
-  .change1:last-child{
+
+  .change1:last-child {
   }
+
   .upload-demo {
     height: 40px;
   }
-.select-button{
 
-}
+  .select-button {
+
+  }
+
   .upload-button {
     margin-left: 1%;
   }
@@ -116,14 +121,17 @@
   .ppt-name {
     margin: 1em;
   }
-    span {
-      font-size: .8em;
-      margin-right: 1em;
-    }
-    .upload-thing{
-    }
-    .upload-tip{
-      font-size: .8em;
-    }
+
+  span {
+    font-size: .8em;
+    margin-right: 1em;
+  }
+
+  .upload-thing {
+  }
+
+  .upload-tip {
+    font-size: .8em;
+  }
 
 </style>

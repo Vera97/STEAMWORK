@@ -24,9 +24,7 @@
             }
         },
         data(){
-            return{
-                name: "admin-comp",
-            }
+            return {}
         },
     }
 </script>

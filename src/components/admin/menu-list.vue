@@ -50,16 +50,17 @@
 </script>
 
 <style scoped>
-    .title{
-      margin-bottom:5px;
-      text-align:center;
-      border:1px solid  #DCDFE6;
-      padding-top:10px;
-      padding-bottom:10px;
-      font-size:20px;
-      color:#409EFF;
-    }
-    .el-menu-vertical-demo{
-      margin-top:10%;
-    }
+  .title {
+    margin-bottom: 5px;
+    text-align: center;
+    border: 1px solid #DCDFE6;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    color: #409EFF;
+  }
+
+  .el-menu-vertical-demo {
+    margin-top: 10%;
+  }
 </style>
