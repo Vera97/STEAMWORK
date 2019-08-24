@@ -34,7 +34,7 @@
                 store.commit('admin/ADD_INDEX','teacher-list')
             },
             changeCur2(){
-                this.cur=2;
+                // this.cur=2;
                 store.commit('admin/ADD_INDEX','tag-list')
             },
             changeCur3(){
