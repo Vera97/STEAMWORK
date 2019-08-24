@@ -4,6 +4,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import Vue from 'vue'
 import App from './App.vue'
 import VueDrawing from 'vue-drawing'
+import echarts from 'echarts'
 //Vuex
 import store from './store';
 //Vue-router
@@ -15,6 +16,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(VueDrawing);
+Vue.prototype.$echarts = echarts;
 
 const router = new VueRouter({
     mode: 'history',

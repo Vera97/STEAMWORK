@@ -45,6 +45,6 @@
     padding: 0;
   }
   .main-box{
-    min-height: 715px;
+    min-height: 715em;
   }
 </style>
