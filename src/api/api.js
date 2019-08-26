@@ -343,7 +343,7 @@ export const requestEditCourseName = params => {
 };
 
 /**
- * url: /courses_prepare/new_exercise
+ * url: /courses_prepare/new_exercise/else
  * @param {Object} params
  * @param {number} params.pptId
  * @param {number} params.pptPage
@@ -353,7 +353,7 @@ export const requestEditCourseName = params => {
  */
 export const requestNewExercise = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses_prepare/new_exercise`, params, options);
+    return axios.post(`${base}/courses_prepare/new_exercise/else`, params, options);
 };
 
 /**

@@ -2,7 +2,11 @@
   <div>
     <el-card class="ppt-box">
       <i class="el-icon-close" @click="open"></i>
-      <component :complete="complete" v-bind:is="currentTabComponent" :currentExercise="currentExercise"></component>
+      <component
+              :complete="complete"
+              v-bind:is="currentTabComponent"
+              :exercise-body="exerciseBody"
+      ></component>
       <el-button type="primary" class="button" @click="complete" v-if="isNeed">确认完成</el-button>
     </el-card>
   </div>
@@ -12,6 +16,7 @@
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
     import store from '../../store'
+    import { mapState } from 'vuex'
 
     import stuResourceShow from "../../components/stuClass/stu-resource-show"
     import stuDesign from "../../components/stuClass/stu-design"
@@ -24,34 +29,39 @@
         components: {stuResourceShow, stuDesign, stuTextPlay, answer, display},
         data() {
             return {
-                name: "act-list",
                 currentTabComponent: '',
-                isNeed: true
+                isNeed: true,
+                exerciseBody: null
             }
         },
         computed: {
-            currentExercise() {
-                return store.state.stuClass.currentExercise;
-            }
+            ...mapState({
+                currentExercise: state => state.stuClass.currentExercise
+            })
         },
         methods: {
+            load (exerciseBody) {
+                this.exerciseBody = exerciseBody;
+                switch (exerciseBody.exerciseType) {
+                case '文本播放':
+                    this.currentTabComponent = 'stu-text-play';
+                    break;
+                case '资源播放':
+                    this.currentTabComponent = 'stu-resource-show';
+                    break;
+                case '互动问答':
+                    this.currentTabComponent = 'answer';
+                    break;
+                case '方案设计':
+                    this.currentTabComponent = 'stu-design';
+                    break;
+                case '作品展示':
+                    this.currentTabComponent = 'display';
+                    break;
+                }
+            },
             open() {
                 this.$parent.onEmmitCur();
-            },
-            getCurrentComponent() {
-                if (store.state.stuClass.currentExercise.type === '资源播放') {
-                    this.currentTabComponent = 'stu-resource-show';
-                } else if (store.state.stuClass.currentExercise.type === '文本播放') {
-                    this.currentTabComponent = 'stu-text-play';
-                } else if (store.state.stuClass.currentExercise.type === '方案设计') {
-                    this.currentTabComponent = 'stu-design';
-                    this.isNeed=false;
-                } else if (store.state.stuClass.currentExercise.type === '互动问答') {
-                    this.currentTabComponent = 'answer';
-                    this.isNeed=false;
-                } else if (store.state.stuClass.currentExercise.type === '作品展示') {
-                    this.currentTabComponent = 'display'
-                }
             },
             complete() {
                 utils.request({
@@ -81,9 +91,6 @@
                     }
                 }
             }
-        },
-        mounted() {
-            this.getCurrentComponent();
         }
     }
 </script>

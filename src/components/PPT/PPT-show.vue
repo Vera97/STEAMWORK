@@ -3,68 +3,55 @@
     <el-row :gutter="0">
       <el-col :span="6" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
-          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)"
-                      :class="{highlight: index === select}" @deletePPT="deletePPT(index)"></course-ppt>
+          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)" :class="{highlight: index === select}"></course-ppt>
         </div>
-        <el-button type="primary" @click="addPpt">新增PPT</el-button>
       </el-col>
       <el-col :span="17" style="float:right;">
         <div style="margin-bottom:5px;">
-          <el-tabs type="border-card">
-            <el-tab-pane label="+ 添加教学活动">
-
-              <el-row type="flex" class="border-card">
-                <el-col :span="6">
-                  <el-tree
-                          class="activities-tree"
-                          :expand-on-click-node="false"
-                          :data="listData"
-                          :props="defaultProps"
-                          default-expand-all
-                          :render-content="renderContent"
-                          @node-click="handleNodeClick">
-                  </el-tree>
-                </el-col>
-                <el-col :span="20">
-                  <div id="menu3" style="z-index:1;float:right;width:100%;" class="box-card3 text-center">
-                    <component
-                            :is="displayComponent"
-                            :exercise-id="exerciseId"
-                            :ppt-id="pptId"
-                            :ppt-page="select"
-                            @delete-activity="deleteHandler"
-                    ></component>
-                  </div>
-                </el-col>
-              </el-row>
-
-            </el-tab-pane>
-            <el-tab-pane label="+ 编辑当页常见问题及解答" class="border-card">
-              <div v-for="(item,index) in commonQuestion" :key="index" class="ali">
-                  <el-input
-                          class="text"
-                          type="textarea"
-                          autosize
-                          :rows="2"
-                          placeholder="请输入问题"
-                          v-model=item.questionName>
-                  </el-input>
-                  <el-input
-                          class="text"
-                          type="textarea"
-                          :autosize="{ minRows:4, maxRows:12}"
-                          :rows="2"
-                          placeholder="输入问题解答"
-                          v-model=item.questionContent>
-                  </el-input>
+          <el-tabs type="border-card" class="border-card">
+            <el-tab-pane label="+ 添加教学活动" class="pane">
+              <el-tree
+                      class="activities-tree"
+                      :expand-on-click-node="false"
+                      :data="listData"
+                      :props="defaultProps"
+                      default-expand-all
+                      :render-content="renderContent"
+                      @node-click="handleNodeClick">
+              </el-tree>
+              <div id="menu3" style="z-index:1;float:right;width:100%;" class="box-card3 text-center">
+                <component
+                        :is="displayComponent"
+                        :exercise-id="exerciseId"
+                        :ppt-id="pptData.pptId"
+                        :ppt-page="select"
+                        @delete-activity="deleteHandler"
+                ></component>
               </div>
-              <el-button type="plain" size="medium" class="add-option" @click="addItems"><i
-                      class="el-icon-circle-plus-outline"></i>新增常见问题
-              </el-button>
+            </el-tab-pane>
+            <el-tab-pane label="+ 编辑当页常见问题及解答">
+              <div class="ali">
+                <el-input
+                        class="text"
+                        type="textarea"
+                        autosize
+                        :rows="2"
+                        placeholder="请输入问题名称"
+                        v-model="textarea1">
+                </el-input>
+                <el-input
+                        class="text"
+                        type="textarea"
+                        :autosize="{ minRows:6, maxRows:12}"
+                        :rows="2"
+                        placeholder="请输入问题内容及解答"
+                        v-model="textarea2">
+                </el-input>
+              </div>
               <div class="buttonlist" style="float:right;margin-bottom:5%;">
                 <el-button type="primary" @click="save">保存</el-button>
-                <el-button type="warning">修改</el-button>
-                <el-button type="danger">删除</el-button>
+                <el-button type="primary">修改</el-button>
+                <el-button type="primary">删除</el-button>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -78,11 +65,9 @@
     import coursePpt from "./course-ppt";
     import reactiveQuestion from './reactive-question'
     import textDisplay from './text-display'
-
     import utils from '../../utils';
     import {api, fakeData} from '../../api';
     import store from '../../store';
-
     export default {
         name: "PPT",
         components: {coursePpt, reactiveQuestion, textDisplay},
@@ -118,11 +103,7 @@
                     '文本播放'
                 ],
                 displayComponent: null,
-                exerciseId: null,                /* for the current editing exercise. */
-                commonQuestion: [{
-                    questionName:'',
-                    questionContent:''
-                }]
+                exerciseId: null                  /* for the current editing exercise. */
             }
         },
         computed: {
@@ -135,25 +116,23 @@
                 let children, that = this;
                 if (node.level === 1) {
                     children = ['活动列表', h('span', {}, [
-                        h('i', {
-                            'class': 'el-icon-plus',
-                            props: {size: 'mini', type: 'button'}, on: {
+                        h('el-button', {
+                            props: {size: 'mini', type: 'text'}, on: {
                                 click() {
                                     that.addActivity()
                                 }
                             }
-                        }, [''])
+                        }, ['新增活动'])
                     ])]
                 } else {
                     children = [data.type, h('span', {}, [
-                        h('i', {
-                            'class': 'el-icon-delete',
+                        h('el-button', {
                             props: {size: 'mini', type: 'text'}, on: {
                                 click() {
                                     that.deleteActivity(data)
                                 }
                             }
-                        }, [''])
+                        }, ['删除活动'])
                     ])]
                 }
                 return h('span', {
@@ -168,7 +147,7 @@
                 }, children)
             },
             handleNodeClick(data, node) {
-                if (node.isLeaf) {
+                if(node.isLeaf) {
                     switch (data.type) {
                     case '互动问答':
                         this.exerciseId = data.exerciseId;
@@ -190,26 +169,18 @@
             addActivity() {
                 const h = this.$createElement;
                 let that = this;
-
                 let optionList = [];
                 for (let i of this.options) {
                     optionList.push(h('el-option', {props: {key: i, label: i, value: i}, attrs: {value: i}}))
                 }
-
                 let vnode = h('el-select', {
-                    attrs: {placeholder: '请选择种类', value: that.type},
+                    attrs: {placeholder: '请选择种类'},
                     props: {
                         value: that.type
                     },
                     on: {
                         change(e) {
-                            that.type = e;
-                            if(e === "互动问答"){
-                                that.displayComponent = 'reactiveQuestion';
-                            }
-                            else if(e === "文本播放"){
-                                that.displayComponent = 'textDisplay';
-                            }
+                            that.type = e
                         }
                     }
                 }, optionList);
@@ -219,25 +190,23 @@
                     showCancelButton: true,
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then(function () {
-                    switch (this.type) {
-                    case '文本播放': {
-                        this.addTextDisplay();
-                        break;
-                    }
-                    case '互动问答': {
-                        this.addReactiveQuestion();
-                        break;
-                    }
-                    case '视频播放': {
-                        alert('not supported yet ');
-                        break;
-                    }
-                    default:
-                        this.addExercise(this.type)
-                    }
-                    this.type = ''
-                }.bind(this)).catch()
+                })
+                    .then(function () {
+                        switch (this.type) {
+                        case '文本播放':
+                            this.addTextDisplay();
+                            break;
+                        case '互动问答':
+                            this.addReactiveQuestion();
+                            break;
+                        case '视频播放':
+                            alert('not supported yet ');
+                            break;
+                        default:
+                            this.addExercise(this.type)
+                        }
+                        this.type = ''
+                    }.bind(this)).catch()
             },
             deleteActivity(data) {
                 let that = this;
@@ -281,12 +250,12 @@
                 })
                     .then((function (res) {
                         this.listData[0].activities = [];
-                        for (let i of res.data.exerciseList) {
+                        for(let i of res.data.exerciseList) {
                             this.listData[0].activities.push(i)
                         }
                     }).bind(this))
             },
-            addTextDisplay() {
+            addTextDisplay () {
                 utils.request({
                     invoke: api.requestNewExerciseText,
                     params: {
@@ -310,7 +279,7 @@
                         }
                     }.bind(this))
             },
-            addReactiveQuestion() {
+            addReactiveQuestion () {
                 utils.request({
                     invoke: api.requestNewExerciseQuestion,
                     params: {
@@ -336,7 +305,7 @@
                         }
                     }.bind(this))
             },
-            addExercise(type) {
+            addExercise (type) {
                 utils.request({
                     invoke: api.requestNewExercise,
                     params: {
@@ -363,40 +332,25 @@
             init() {
                 this.selectSlide(0)
             },
-            save() {//添加常见问题
+            save() {
                 let that = this;
-                for(let i=0;i<that.commonQuestion.length;i++){
-                    utils.request({
-                        invoke: api.requestNewQuestion,
-                        params: {
-                            pptId: that.pptId,
-                            pptPage: that.pptPage,
-                            name: that.commonQuestion[i].questionName,
-                            content: that.commonQuestion[i].questionContent
-                        },
-                        result: fakeData.NEW_QUESTIONS
-                    }).then(res => {
-                        if (res.data.code === 1)
-                            console.log(that.commonQuestion[i].questionName)
-                    });
-                }
-                alert("保存成功!");
+                utils.request({
+                    invoke: api.requestNewQuestion,
+                    params: {
+                        pptId: that.pptId,
+                        pptPage: that.pptPage,
+                        name: that.textarea1,
+                        content: that.textarea2
+                    },
+                    result: fakeData.NEW_QUESTIONS
+                }).then(res => {
+                    if(res.data.code===1)
+                        alert("保存成功!");
+                });
             },
             // this function is to handle the delete request emitted by the sub component
             deleteHandler({exerciseId}) {
                 this.deleteActivity({exerciseId})
-            },
-            addPpt() {
-                this.$emit('addPPT');
-            },
-            deletePPT(index) {
-                this.pptData.pptImagesList.splice(index, 1);
-            },
-            addItems() {
-                this.commonQuestion.push({
-                    questionName:'',
-                    questionContent:''
-                })
             }
         }
     }
@@ -407,16 +361,14 @@
     max-height: 30em;
     overflow-y: scroll;
   }
-
   .box-card {
     width: 100%;
+    height: 100%;
     margin-bottom: 2%;
   }
-
   .ali {
     margin-top: 20px;
   }
-
   .text {
     display: inline-block;
     vertical-align: top;
@@ -424,27 +376,19 @@
     padding: 0;
     margin-bottom: 5px;
   }
-
   .activities-tree {
-    width: 91%;
+    width: 30%;
   }
-
   .highlight {
     border: #6495ED solid .1em;
     border-radius: .5em;
   }
-
   .slide-cell {
     cursor: pointer;
   }
-
   .slide-cell:hover {
     border: #6495ED90 solid .1em;
     border-radius: .5em;
-  }
-  .border-card{
-    max-height: 480px;
-    overflow: auto;
   }
   p{
     margin-top: 0;

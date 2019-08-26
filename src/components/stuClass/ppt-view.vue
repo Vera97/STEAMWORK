@@ -35,7 +35,7 @@
               alt="there is some error in the slides"
       >
     </div>
-    <actList v-else :exercise="exercise" @onEmmitCur="onEmmitCur" class="list"></actList>
+    <actList ref="actList" v-else @onEmmitCur="onEmmitCur" class="list"></actList>
   </div>
 </template>
 
@@ -66,9 +66,6 @@
             },
             exerciseList() {
                 return store.state.stuClass.exerciseList;
-            },
-            exercise() {
-                return store.state.stuClass.exercise;
             },
             wealthAll() {
                 return store.state.stuClass.wealthAll;
@@ -113,18 +110,41 @@
                     }.bind(this))
             },
             openAct(item) {//点击活动按钮
+                let requestMethod;
+                switch (item.type) {
+                case '文本播放':
+                    requestMethod = api.requestGetCourseExerciseText;
+                    break;
+                case '资源播放':
+                    requestMethod = api.requestGetCourseExerciseMedia;
+                    break;
+                case '互动问答':
+                    requestMethod = api.requestGetCourseExerciseQuestion;
+                    break;
+                case '其它':
+                    requestMethod = api.requestCourseExerciseElse;
+                    break;
+                }
                 utils.request({//向后端请求当前活动是否被开启
-                    invoke: api.requestIsStartActivity,
+                    invoke: requestMethod,
                     params: {
                         classroomId: store.state.classroomId,
-                        exerciseId: item.exerciseId,
+                        exerciseId: item.exerciseId
                     },
                     result: fakeData.IS_START
                 })
                     .then(function(res) {
+                        console.log(res.data);
                         if (res.data.code === 1) {
-                            this.cur = false;//打开活动组件
-                            store.commit('stuClass/ADD_CURRENT_EXERCISE',item);//传递当前点击的活动内容
+                            this.$refs.actList.load({
+                                exerciseType: item.type,
+                                ...res.data
+                            });
+                            store.commit('stuClass/ADD_CURRENT_EXERCISE', {
+                                exerciseType: item.type,
+                                ...res.data
+                            });//传递当前点击的活动内容
+                            this.cur = false;
                         } else {
                             this.$alert('该活动尚未开启', '提示', {
                                 confirmButtonText: '确定',
