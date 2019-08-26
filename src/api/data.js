@@ -319,7 +319,7 @@ export const UP_PROGRESS = {
 
 export const PROGRESS_STU = {
     code: 1,
-    progress: 0.1
+    progress: [['王二蛋','李狗蛋'],['张三','李四','刘武','老六'],['田七','八哥'],['久帝']],
 };
 
 export const COURSE_LIST =[

@@ -33,6 +33,7 @@
                   ref="activity"
           ></start-activities>
           <monitor @progress-get="getProgress"></monitor>
+          <chart></chart>
         </el-col>
       </el-row>
     </el-main>
@@ -50,6 +51,7 @@
     import show from "../../components/startClass/show";
     import newComp from "../../components/startClass/new-comp";
     import startActivities from "../../components/startClass/start-activities";
+    import chart from '../../components/startClass/chart'
 
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
@@ -57,7 +59,7 @@
 
     export default {
         name: "startClass",
-        components: {askList, monitor, show, newComp, startActivities, classList, Footer, Nav},
+        components: {askList, monitor, show, newComp, startActivities, classList, Footer, Nav, chart},
         data () {
             return {
                 current: true,
