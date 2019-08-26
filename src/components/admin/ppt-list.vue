@@ -1,40 +1,38 @@
 <template>
-  <el-container>
-    <el-main class="w">
-      <el-row :gutter="0">
-        <el-col :span="4">
-          <course-directory @section-selected="sectionSelect"></course-directory>
-        </el-col>
-        <el-col :span="19" style="float:right;">
-          <el-card v-if="isSelect" class="tip">
-            请先选择课时
-          </el-card>
-          <ppt-upload
-                  ref="pptUpload"
-                  :course-section-id="courseSectionId"
-                  :course-section-name="courseSectionName"
-                  @upload="handleUpload"
-                  class="upload"
-                  v-else
-          ></ppt-upload>
-          <div v-show="isShow">
-            <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
-            <el-upload
-                    class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :before-remove="beforeRemove"
-                    multiple
-                    :limit="3"
-                    :on-exceed="handleExceed"
-                    :file-list="fileList">
-            </el-upload>
-          </div>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+  <el-main class="w">
+    <el-row :gutter="20" class="row">
+      <el-col :span="5">
+        <course-directory @section-selected="sectionSelect"></course-directory>
+        <ppt-upload
+                ref="pptUpload"
+                :course-section-id="courseSectionId"
+                :course-section-name="courseSectionName"
+                @upload="handleUpload"
+                class="upload"
+                v-if="!isSelect"
+        ></ppt-upload>
+      </el-col>
+      <el-col :span="19">
+        <el-card v-if="isSelect" class="tip">
+          请先选择课时
+        </el-card>
+        <div v-show="isShow">
+          <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
+          <el-upload
+                  class="upload-demo"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :before-remove="beforeRemove"
+                  multiple
+                  :limit="3"
+                  :on-exceed="handleExceed"
+                  :file-list="fileList">
+          </el-upload>
+        </div>
+      </el-col>
+    </el-row>
+  </el-main>
 </template>
 
 <script>
@@ -122,12 +120,19 @@
   }
 
   .w {
-    margin-left: 10px;
-    margin-right: 10px;
     min-height: 715px;
   }
-  .tip{
-    text-align:center;
-    padding:12em;
+
+  .tip {
+    text-align: center;
+    padding: 12em;
+  }
+
+  .row {
+    width: 100%;
+  }
+
+  .up-load {
+    width: 100%;
   }
 </style>

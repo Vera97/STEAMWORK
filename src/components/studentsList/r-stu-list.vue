@@ -1,10 +1,6 @@
 <template>
   <div class="content">
-    <div class="top">
-      <a href="#"><h5 class="export" @click="rate">导出成绩</h5></a>
-      <a href="#"><h5 class="export" @click="addStudent">添加学生</h5></a>
-    </div>
-    <div class="center">
+    <div class="center" v-if="classId !== null">
       <el-table
               class="table"
               :data="listData"
@@ -53,15 +49,20 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="bottom">
-      <el-button type="primary" class="save" @click="savePrompt">保存</el-button>
+    <div class="bottom" v-if="classId !== null">
+      <el-button type="plain" class="save" @click="rate" size="medium">导出</el-button>
+      <el-button type="plain" class="save" @click="savePrompt" size="medium">保存</el-button>
+      <el-button type="primary" class="save" @click="addStudent" size="medium">添加学生</el-button>
     </div>
+    <div v-else class="absent"><h1>&hearts;&emsp;请选择一个班级&emsp;&hearts;</h1></div>
   </div>
 </template>
 
 <script>
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
+
+    const iconv = require('iconv-lite');
 
     export default {
         name: "r-stu-list",
@@ -144,7 +145,28 @@
                 }
             },
             rate() {
-                console.log(this.listData)
+                let buffer = '学生姓名,学生学号,';
+                for (let item of this.periodsList) {
+                    buffer += item.courseSectionName + ','
+                }
+                buffer += '\n';
+                for (let item of this.listData) {
+                    buffer += item.stuName + ',' + item.stuNumber.toString() + ',';
+                    for (let period of this.periodsList) {
+                        buffer += item.scoreList[period.courseSectionName] + ','
+                    }
+                    buffer += '\n'
+                }
+                if (/[Ww]in/.exec(navigator.platform)) {
+                    buffer = iconv.encode(buffer, 'GBK')
+                }
+                let downloadBlobURL = URL.createObjectURL(new Blob([buffer], {
+                    type: 'text/csv'
+                }));
+                let tmpNode = document.createElement('a');
+                tmpNode.setAttribute('href', downloadBlobURL);
+                tmpNode.setAttribute('download', '学生成绩.csv');
+                tmpNode.click();
             },
 
             // note that only fields in the first layer will be responsive under directly assignment
@@ -233,31 +255,14 @@
 </script>
 
 <style scoped>
-  .top {
-    margin-bottom: 10px;
-  }
-
   .bottom {
     margin-top: 10px;
-  }
-
-  .export {
-    float: right;
-    margin-left: 2em;
-  }
-
-  .relative {
-    width: 10%;
-    float: left;
-  }
-
-  .select {
-    width: 70%;
   }
 
   .save {
     float: right;
     width: 10%;
+    margin-left: 1em;
   }
 
   .input {
@@ -265,5 +270,10 @@
     width: 60%;
     padding-top: 0;
     padding-bottom: 0;
+  }
+
+  .absent {
+    text-align: center;
+    margin-top: 3em;
   }
 </style>

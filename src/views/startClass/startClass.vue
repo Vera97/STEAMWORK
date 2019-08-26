@@ -32,6 +32,7 @@
                   @onEmitIndex="onEmitIndex"
                   ref="activity"
           ></start-activities>
+          <monitor @progress-get="getProgress"></monitor>
           <chart></chart>
         </el-col>
       </el-row>
@@ -67,8 +68,7 @@
                 classroomId: null,
                 pptIndex: 0,
                 pptId: null,
-                studentsList: [],
-                callback: null
+                studentsList: []
             }
         },
         methods: {
@@ -86,11 +86,15 @@
                         .then(function (res) {
                             progressList.push({
                                 stuId: student.stuId,
-                                progress: res.data.progress
+                                progress: res.data.progress,
+                                stuName: student.stuName
                             })
                         }.bind(this))
                 }
-                store.commit('startClass/GET_PROG', progressList)
+                store.commit('startClass/GET_PROG', progressList);
+                // the progress list is submitted above.
+                console.log(progressList);
+                console.log(store.state.startClass.prog)
             },
             // start the class, request the classroom, load the material
             loadMaterial(courseSectionId, classId) {
@@ -139,7 +143,6 @@
             startClass () {
                 this.$refs.askList.getQueue();
                 this.$refs.show.getSlides(this.selectedSectionId);
-                // this.callback = setInterval(() => this.getProgress(), 5000)
             },
             onEmitIndex(index) {
                 if(!this.selectedSectionId) {
@@ -157,7 +160,7 @@
                             if (res.data.code === 1) {
                                 this.$refs.newComp.getCurrentComponent(index);
                             } else {
-                                this.$message.error('开户失败')
+                                this.$message.error('开启失败')
                             }
                         }.bind(this))
                 }
@@ -172,9 +175,6 @@
                 this.pptId = pptId;
                 this.$refs.activity.getExercise(this.pptId, this.pptIndex)
             }
-        },
-        destroyed () {
-            clearInterval(this.callback)
         }
     }
 </script>

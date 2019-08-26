@@ -1,24 +1,21 @@
 <template>
   <div>
-    <div v-if="uploaded" class="change">
-      <el-upload
-              ref="upload"
-              action="#"
-              class="upload-demo"
-              :http-request="pptUpload"
-              :auto-upload="false"
-              :limit="1"
-              :on-exceed="handleExceed"
-              :on-remove="beforeRemove"
-              :file-list="fileList">
-          <div class="select-button"><el-button slot="trigger" type="">&emsp;选择&emsp;</el-button></div>
-      </el-upload>
-      <div class="change1">
-        <div class="upload-button"><el-button type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button></div>
-        <div class="upload-tip">只能上传ppt/pptx文件</div>
-        <el-button type="primary" class="upload-thing">上传相关学习资源(上传后将出现在学生端“课程资源”处)</el-button>
-      </div>
-    </div>
+    <el-upload
+            v-if="!uploaded"
+            ref="upload"
+            action="#"
+            class="upload-demo"
+            :http-request="pptUpload"
+            :auto-upload="false"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :on-remove="beforeRemove"
+            :file-list="fileList"
+    >
+      <el-button slot="trigger" size="medium" type="">&emsp;选择&emsp;</el-button>
+      <el-button class="upload-button" size="medium" type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button>
+      <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
+    </el-upload>
     <div class="ppt-name" v-else>
       <span>{{ courseSectionName + '的ppt' }}</span>
       <el-button type="danger" @click="deletePPT" size="mini">删除</el-button>
@@ -29,7 +26,6 @@
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
-
     export default {
         name: "ppt-upload",
         props: {
@@ -44,7 +40,7 @@
         },
         methods: {
             uploadPPT() {
-                this.$refs.upload.submit();
+                this.$refs.upload.submit()
             },
             pptUpload(e) {
                 let that = this;
@@ -94,36 +90,19 @@
 </script>
 
 <style scoped lang="scss">
-  .change{
-    display: flex;
-    width: 100%;
-  }
-  .change1{
-    display: flex;
-  }
-  .change1:last-child{
-  }
   .upload-demo {
-    height: 40px;
+    margin-bottom: 1em;
+    float-offset: 2%;
+    width: 50%;
   }
-.select-button{
-
-}
   .upload-button {
-    margin-left: 1%;
+    margin-left: 1em;
   }
-
   .ppt-name {
     margin: 1em;
-  }
     span {
       font-size: .8em;
       margin-right: 1em;
     }
-    .upload-thing{
-    }
-    .upload-tip{
-      font-size: .8em;
-    }
-
+  }
 </style>

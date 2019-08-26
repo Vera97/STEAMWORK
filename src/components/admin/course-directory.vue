@@ -84,12 +84,14 @@
     font-size: 14px;
     padding-right: 8px;
   }
-  .box-card{
-    max-height:30em;
-    overflow:auto;
-    margin-left: 0px;
+
+  .box-card {
+    max-height: 30em;
+    overflow: auto;
+    margin-left: 0;
   }
-  h3{
-    margin-top: 0px;
+
+  h3 {
+    margin-top: 0;
   }
 </style>

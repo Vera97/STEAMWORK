@@ -4,7 +4,7 @@
       <NavStu active-index="1"></NavStu>
     </el-header>
     <el-main class="main-box">
-          <pptCenter></pptCenter>
+      <pptCenter></pptCenter>
     </el-main>
     <el-footer>
       <Footer></Footer>
@@ -58,5 +58,9 @@
   .main-box {
     margin-left: 10px;
     min-height: 715px;
+  }
+
+  .el-footer {
+    padding-right: 0;
   }
 </style>

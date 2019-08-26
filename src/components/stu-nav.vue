@@ -20,7 +20,7 @@
                 :content="introduction"
                 trigger="hover"
                 v-if="stuId !== ''">
-          <el-avatar :src="require('../assets/avatar.png')"
+          <el-avatar :src="avatar"
                      slot='reference'></el-avatar>
         </el-popover>
         <el-popover placement="left" trigger="click" v-else>

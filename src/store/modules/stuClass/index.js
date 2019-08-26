@@ -47,7 +47,7 @@ const mutations = {
     TEXT_DESIGN(state,exerciseDesign){
         state.exerciseDesign = exerciseDesign;
     },
-    ADD_CURRENT_EXERCISE(state,currentExercise){
+    ADD_CURRENT_EXERCISE(state, currentExercise) {
         state.currentExercise = currentExercise;
     },
     ADD_WEALTH(state, wealthAll) {
