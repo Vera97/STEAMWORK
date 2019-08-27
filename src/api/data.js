@@ -319,7 +319,7 @@ export const UP_PROGRESS = {
 
 export const PROGRESS_STU = {
     code: 1,
-    progress: [['王二蛋','李狗蛋'],['张三','李四','刘武','老六'],['田七','八哥'],['久帝']],
+    progress: 0.1,
 };
 
 export const COURSE_LIST =[
@@ -938,4 +938,7 @@ export const GET_LABEL_CHECKED = {
 export const SECTION_STEP={
     code:1,
     courseStepId:12
+};
+export const PUSH_PROGRESS={//判断是否上传进度
+    code:1,
 };
