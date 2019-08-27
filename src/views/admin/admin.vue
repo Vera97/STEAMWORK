@@ -27,23 +27,26 @@
   * {
     margin-left: 0;
     padding-left: 0;
-    margin-right:0;
-    padding-right:0;
-    margin-top:0;
-    padding-top:0;
+    margin-right: 0;
+    padding-right: 0;
+    margin-top: 0;
+    padding-top: 0;
   }
-  .leader-box{
-      float:left;
-      margin-left:1%;
-      width:15%;
-      margin-right:2%;
-    }
-  .table-box{
-      float:right;
-      width:75%;
-      margin-right:3%
-    }
-  .main-box{
+
+  .leader-box {
+    position: absolute;
+    margin-left: 1%;
+    width: 15%;
+    margin-right: 2%;
+  }
+
+  .table-box {
+    width: 80%;
+    left: 20%;
+    position: relative;
+  }
+
+  .main-box {
     min-height: 710px;
   }
 </style>

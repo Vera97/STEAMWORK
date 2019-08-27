@@ -1,6 +1,6 @@
 <template>
   <el-card class="box-card">
-    <el-row :gutter="0">
+    <el-row :gutter="5">
       <el-col :span="6" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
           <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)"
@@ -8,13 +8,13 @@
         </div>
         <el-button type="primary" @click="addPpt">新增PPT</el-button>
       </el-col>
-      <el-col :span="17" style="float:right;">
+      <el-col :span="18" style="float:right;">
         <div style="margin-bottom:5px;">
           <el-tabs type="border-card">
             <el-tab-pane label="+ 添加教学活动">
 
               <el-row type="flex" class="border-card">
-                <el-col :span="6">
+                <el-col :span="8">
                   <el-tree
                           class="activities-tree"
                           :expand-on-click-node="false"
@@ -426,7 +426,7 @@
   }
 
   .activities-tree {
-    width: 91%;
+    width: 95%;
   }
 
   .highlight {

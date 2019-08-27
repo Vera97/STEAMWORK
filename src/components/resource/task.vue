@@ -17,20 +17,15 @@
 </template>
 
 <script>
-
     export default {
         name: "task",
         props: {
             id: String,
         },
         data() {
-            return{
-
-        }
+            return {}
         }
     }
-
-
 </script>
 
 <style scoped>

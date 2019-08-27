@@ -12,8 +12,9 @@
       <el-form-item label="密码">
         <el-input type="password" v-model="form.password" placeholder="请输入密码"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="login">登陆</el-button>
+      <el-form-item class="login-register">
+        <el-button type="primary" @click="login" size="medium">登陆</el-button>
+        <el-button type="plain" @click="register" size="medium">注册</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -98,6 +99,9 @@
                     userName: this.form.userName
                 });
                 this.$router.push({path: '/admin'})
+            },
+            register () {
+                this.$message.info('register')
             }
         }
     }
@@ -108,5 +112,9 @@
     position: relative;
     margin: 1em auto;
     width: 30%;
+  }
+
+  .login-register {
+    text-align: center;
   }
 </style>

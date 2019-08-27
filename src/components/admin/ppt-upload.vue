@@ -11,12 +11,12 @@
               :on-exceed="handleExceed"
               :on-remove="beforeRemove"
               :file-list="fileList">
-        <div class="select-button"><el-button slot="trigger" type="">&emsp;选择&emsp;</el-button></div>
+        <el-button slot="trigger" size="small" type="plain">&emsp;选择&emsp;</el-button>
+        <el-button class="upload-button" type="primary" size="small" @click="uploadPPT">&emsp;上传&emsp;</el-button>
+        <div class="el-upload__tip">只能上传ppt/pptx文件</div>
       </el-upload>
-      <div class="change1">
-        <div class="upload-button"><el-button type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button></div>
-        <div class="upload-tip">只能上传ppt/pptx文件</div>
-        <el-button type="primary" class="upload-thing">上传相关学习资源(上传后将出现在学生端“课程资源”处)</el-button>
+      <div class="relative-resources">
+        <el-button type="primary" class="upload-thing" size="medium">上传相关学习资源</el-button>
       </div>
     </div>
     <div class="ppt-name" v-else>
@@ -94,36 +94,26 @@
 </script>
 
 <style scoped lang="scss">
-  .change{
-    display: flex;
+  .upload-demo {
+    margin: 1em 0;
+    float-offset: 2%;
     width: 100%;
   }
-  .change1{
-    display: flex;
-  }
-  .change1:last-child{
-  }
-  .upload-demo {
-    height: 40px;
-  }
-  .select-button{
 
-  }
   .upload-button {
-    margin-left: 1%;
+    margin-left: 1em;
   }
 
   .ppt-name {
     margin: 1em;
-  }
-  span {
-    font-size: .8em;
-    margin-right: 1em;
-  }
-  .upload-thing{
-  }
-  .upload-tip{
-    font-size: .8em;
+
+    span {
+      font-size: .8em;
+      margin-right: 1em;
+    }
   }
 
+  .relative-resources {
+    margin-top: 2em;
+  }
 </style>
