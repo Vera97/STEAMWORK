@@ -59,10 +59,26 @@
                 temp:[],
                 dialogVisible:false,
                 isHave:-1,
-                upLoad:false
+                upLoad:false,
+                stepContent:''
             }
         },
         methods:{
+            conserve(){
+                utils.request({
+                    invoke: api.requestNewCourseSectionStep,
+                    params: {
+                        courseSectionId: this.courseSectionId,
+                        stepName: this.stepName,
+                        stepContent:this.stepContent
+                    },
+                    result: fakeData.SECTION_STEP
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        alert("新建步骤完成！");
+                    }
+                });
+            },
             getLabel() {
                 utils.request({
                     invoke: api.requestAssignedGet,

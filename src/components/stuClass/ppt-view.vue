@@ -103,6 +103,21 @@
                     result: fakeData.GET_PPT_PAGE
                 })
                     .then(function(res) {
+                        let progress=this.display/res.data.pptPage;
+                        console.log(progress);
+                        utils.request({
+                            invoke: api.requestPushProgressStu,
+                            params: {
+                                code:'stu_push_progress',
+                                stuId: store.state.stuId,
+                                progress:progress
+                            },
+                            result: fakeData.PUSH_PROGRESS
+                        }).then(res=>{
+                            if(res.data.code===1){
+                                alert("上传进度成功！");
+                            }
+                        });
                         if (res.data.pptPage !== this.display) {
                             this.display = res.data.pptPage;
                             store.commit('STU_PPT_PAGE', {currentPage: this.display})
@@ -233,7 +248,7 @@
         mounted() {
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
-            // this.callback = setInterval(this.getPage, 10000);//定时向后端请求教师端当前ppt页数
+            //this.callback = setInterval(this.getPage, 10000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
             clearInterval(this.callback);

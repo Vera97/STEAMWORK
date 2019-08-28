@@ -898,3 +898,16 @@ export const requestEditCourseSectionName = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_course_section_name`, params, options);
 };
+/**
+ * url:/login/admin
+ * @param {object} params
+ * @param {String} params.userName
+ * @param {String} params.passWord
+ * @returns {Promise<any> | {code: number, adminId: number}}
+ * add
+ */
+export const loginAdmin = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/login/admin`, params, options);
+};
+

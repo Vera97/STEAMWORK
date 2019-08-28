@@ -56,11 +56,11 @@
             };
         },
         methods: {
-            async filterNode(value,data,node) {
-                if(!value) return true;
-                return data.label.indexOf(value)!==-1;
-                let answer=false;
-                if(node.level===1){
+            async filterNode(value, data, node) {
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
+                let answer = false;
+                if (node.level === 1) {
                     for (let i = 0; i < value.length; i++) {
                         await utils.request({
                             invoke: api.requestLabelFilter,
@@ -72,7 +72,7 @@
                             if (res.data.code === 1) {
                                 for (let j = 0; j < res.data.courseList.length; j++) {
                                     if (res.data.courseList[j].courseId === data.courseId) {
-                                        answer=true;
+                                        answer = true;
                                     }
                                 }
                             }
@@ -472,22 +472,9 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
-                    utils.request({
-                        invoke: api.requestNewCourseSectionStep,
-                        params: {
-                            courseSectionId: sectionId,
-                            stepName: value,
-                            stepContent: ''
-                        },
-                        result: fakeData.SECTION_STEP
-                    }).then(res => {
-                        console.log(node.data);
-                        if (res.data.code === 1) {
-                            node.data.child.push({
-                                title: value,
-                                courseStepId: res.data.stepId
-                            });
-                        }
+                    this.$emit('addStep',value);
+                    node.data.child.push({
+                        title: value
                     });
                     this.$message({
                         type: 'success',
@@ -574,10 +561,11 @@
     width: 100%;
     margin-bottom: 3%;
   }
-  .box-card{
-    overflow:auto;
-    min-height:30em;
-    max-height:30em
+
+  .box-card {
+    overflow: auto;
+    min-height: 30em;
+    max-height: 30em
   }
 </style>
 
