@@ -1,9 +1,15 @@
 <template>
   <div>
     <p>问题：{{question.contentQuestion}}</p>
-    <div v-for="(item,index) in question.contentAnswerList" :key="index"><p>{{item.choice}}:{{item.choiceContent}}</p>
+    <div v-for="(item,index) in question.contentAnswerList" :key="index"><p>{{item.choice}}:{{item.choiceContent}}&emsp;{{item.select}}</p>
     </div>
     <div>答案：<span v-for="item in question.answer" :key="item">{{item}}</span></div>
+    <el-button type="primary" @click="stop" v-if="isStop">停止作答，查看结果</el-button>
+    <div v-else>
+         <p>答对：{{right}}</p>
+         <p>答错：{{wrong}}</p>
+         <p>未完成：{{unComplete}}</p>
+    </div>
   </div>
 </template>
 
@@ -16,6 +22,14 @@
         name: "question-answer",
         props: {
             exercise: Object
+        },
+        data(){
+            return{
+                isStop:true,
+                right:15,
+                wrong:12,
+                unComplete:10
+            }
         },
         computed:{
             question(){
@@ -33,6 +47,14 @@
                 .then(res => {
                     store.commit('startClass/QUESTION_RESOURCE', res.data);
                 })
+        },
+        methods:{
+            stop(){
+                this.isStop=true;
+                for(let i=0;i<this.question.contentAnswerList.length;i++){
+                    this.$set(this.question.contentAnswerList[i],'select',15);
+                }
+            }
         }
     }
 </script>

@@ -942,3 +942,7 @@ export const SECTION_STEP={
 export const PUSH_PROGRESS={//判断是否上传进度
     code:1,
 };
+export const LOGIN_ADMIN_RESPONSE={
+    code:1,
+    adminId:123
+};
