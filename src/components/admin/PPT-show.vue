@@ -12,7 +12,6 @@
         <div style="margin-bottom:5px;">
           <el-tabs type="border-card">
             <el-tab-pane label="+ 添加教学活动">
-
               <el-row type="flex" class="border-card">
                 <el-col :span="8">
                   <el-tree
@@ -30,14 +29,13 @@
                     <component
                             :is="displayComponent"
                             :exercise-id="exerciseId"
-                            :ppt-id="pptId"
+                            :ppt-id="pptData.pptId"
                             :ppt-page="select"
                             @delete-activity="deleteHandler"
                     ></component>
                   </div>
                 </el-col>
               </el-row>
-
             </el-tab-pane>
             <el-tab-pane label="+ 编辑当页常见问题及解答" class="border-card">
               <div v-for="(item,index) in commonQuestion" :key="index" class="ali">
@@ -86,12 +84,12 @@
     export default {
         name: "PPT",
         components: {coursePpt, reactiveQuestion, textDisplay},
-        props: {
-            pptData: Object,
-            courseSectionId: Number
-        },
         data() {
             return {
+                pptData: {
+                    pptId: null,
+                    pptImagesList: []
+                },
                 flag: 0,
                 input: '',
                 textarea1: '',
@@ -360,7 +358,10 @@
                     }.bind(this))
             },
             // this method is used to select the first slide and get its content
-            init() {
+            init(pptData) {
+                this.pptData.pptId = pptData.pptId;
+                this.pptData.pptImagesList = [];
+                this.pptData.pptImagesList.push(...pptData.pptImagesList);
                 this.selectSlide(0)
             },
             save() {//添加常见问题

@@ -1,10 +1,8 @@
 <template>
   <el-container>
     <el-main class="main-box">
-      <div class="main-box">
-        <div class="leader-box"><menuList></menuList></div>
-        <div class="table-box"><adminComp></adminComp></div>
-      </div>
+      <div class="leader-box"><menuList></menuList></div>
+      <div class="table-box"><adminComp></adminComp></div>
     </el-main>
     <el-footer>
       <Footer></Footer>
@@ -37,7 +35,6 @@
     position: absolute;
     margin-left: 1%;
     width: 15%;
-    margin-right: 2%;
   }
 
   .table-box {

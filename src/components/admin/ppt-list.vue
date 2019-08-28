@@ -17,7 +17,7 @@
           请先选择课时
         </el-card>
         <div v-show="isShow">
-          <PPTshow ref="PPTshow" :ppt-data="pptData" @addPPT="addPPT"></PPTshow>
+          <PPTshow ref="PPTshow" @addPPT="addPPT"></PPTshow>
           <el-upload
                   class="upload-demo"
                   action="https://jsonplaceholder.typicode.com/posts/"
@@ -84,7 +84,7 @@
                 utils.request({
                     invoke: api.requestSlides,
                     params: {
-                        courseSectionId: parseInt(courseSectionId)
+                        courseSectionId: courseSectionId
                     },
                     result: fakeData.UPLOAD_RESPONSE
                 })
@@ -93,7 +93,8 @@
                             this.pptData.pptId = res.data.pptId;
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
                             this.$refs.pptUpload.inject();
-                            this.$refs.PPTshow.init()
+                            this.$refs.PPTshow.init(this.pptData);
+                            this.isShow = true
                         }
                     }).bind(this))
             },

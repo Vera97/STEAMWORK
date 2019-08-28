@@ -504,10 +504,17 @@ export const requestClassStuQuestion = params => {
     return axios.post(`${base}/stu/classroom/get_ppt_question`, params, options);
 };
 
+/**
+ * url: /classroom/stu_online
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number, stuReadyList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
+ */
 export const requestAttendance = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_statics`, params, options);
+    return axios.post(`${base}/classroom/stu_online`, params, options);
 };
+
 export const requestExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/exercise/text`, params, options);
@@ -520,6 +527,30 @@ export const requestNewQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/edit_question
+ * @param {Object} params
+ * @param {number} params.questionId
+ * @param {String} params.content
+ * @returns {Promise<{code: number}>}
+ */
+export const requestEditCommonQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_question`, params, options);
+};
+
+/**
+ * url: /courses_prepare/delete_question
+ * @param {Object} params
+ * @param {number} params.questionId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestDeleteCommonQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/delete_question`, params, options);
+};
+
 export const requestGetCourseWealth = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/course/course_section_wealth/get`, params, options);

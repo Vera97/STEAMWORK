@@ -17,7 +17,7 @@
       </el-input>
     </div>
     <div>
-      <pptUpload></pptUpload>
+      <media-uploader class="uploader"></media-uploader>
     </div>
     <div>
       <el-button class="button" type="primary" round @click="conserve">保存</el-button><el-button  class="button" type="primary" round>取消</el-button>
@@ -38,10 +38,11 @@
 <script>
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
-    import pptUpload from '../PPT/ppt-upload'
+    import mediaUploader from '../../upload/media-uploader'
+
     export default {
-        name: "try-2",
-        components:{pptUpload},
+        name: "resource-content",
+        components: { mediaUploader },
         props:{
             courseId:Number,
             courseName:String,
@@ -176,5 +177,9 @@
   }
   .content{
     margin-top:1%;
+  }
+
+  .uploader {
+    width: 100%;
   }
 </style>
