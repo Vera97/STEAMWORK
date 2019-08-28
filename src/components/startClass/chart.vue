@@ -1,6 +1,5 @@
 <template>
   <div>
-    <el-button type="primary" class="button-box">学生学习进度监控</el-button>
     <div class="pie">
       <div id="pie1">
         <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
@@ -13,6 +12,7 @@
 <script>
     import {api, fakeData} from '../../api';
     import utils from '../../utils';
+    import store from '../../store';
 
     let echarts = require('echarts/lib/echarts');
     // 引入饼状图组件
@@ -23,24 +23,31 @@
 
 
     export default {
-        created(){
+        data(){
+            return{
+                aheadList:[],
+                commonList:[],
+                fallList:[],
+                worstList:[]
+            }
         },
         mounted(){
+            console.log(store.state.startClass.prog);
+            for(let i=0;i<store.state.startClass.prog.length;i++){
+                let  value=store.state.startClass.prog[i].progress;
+                if (value<= 0.25) {
+                    this.worstList.push(store.state.startClass.prog[i]);
+                } else if (value> 0.25 && value<= 0.5) {
+                    this.fallList.push(store.state.startClass.prog[i]);
+                } else if (value > 0.5 &&value <= 0.75) {
+                    this.commonList.push(store.state.startClass.prog[i]);
+                } else if ( value > 0.75&& value<= 1) {
+                    this.aheadList.push(store.state.startClass.prog[i]);
+                }
+            }
             this.initData();
         },
         methods:{
-            openChao:function(){//超前弹出
-                alert('nihao');
-                // this.$alert('这是一段内容', '标题名称', {
-                //     confirmButtonText: '确定',
-                //     callback: action => {
-                //         this.$message({
-                //             type: 'info',
-                //             message: `action: ${ action }`
-                //         });
-                //     }
-                // });
-            },
             //初始化数据
             initData() {
                 // 基于准备好的dom，初始化echarts实例
@@ -82,10 +89,10 @@
                                     radius : '55%',
                                     center: ['50%', '60%'],
                                     data:[
-                                        {value:res.data.progress[0].length, name:'超前',stu:res.data.progress[0]},
-                                        {value:res.data.progress[1].length, name:'正常',stu:res.data.progress[1]},
-                                        {value:res.data.progress[2].length, name:'滞后',stu:res.data.progress[2]},
-                                        {value:res.data.progress[3].length, name:'严重滞后',stu:res.data.progress[3]},
+                                        {value:this.aheadList.length, name:'超前',stu:this.aheadList},
+                                        {value:this.commonList.length, name:'正常',stu:this.commonList},
+                                        {value:this.fallList.length, name:'滞后',stu:this.fallList},
+                                        {value:this.worstList.length, name:'严重滞后',stu:this.worstList},
                                     ],
                                     itemStyle: {
                                         emphasis: {
@@ -99,7 +106,7 @@
                             color: ['#FFFF33','#FFCC22','#FFAA33','#d58512']
                         });
                     }
-                })
+                });
 
                 myChart.on('click',  (param) => {//饼状图点击函数
                     // let that = this;
@@ -170,47 +177,9 @@
                     }
 
                 });
-            },
-
-            openZhi() {//滞后弹出
-                this.$alert('这是一段内容', '标题名称', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                        this.$message({
-                            type: 'info',
-                            message: `action: ${ action }`
-                        });
-                    }
-                });
-            },
-            openZheng() {//正常弹出
-                this.$alert('这是一段内容', '标题名称', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                        this.$message({
-                            type: 'info',
-                            message: `action: ${ action }`
-                        });
-                    }
-                });
-            },
-            openStrong() {//严重滞后弹出
-                this.$alert('这是一段内容', '标题名称', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                        this.$message({
-                            type: 'info',
-                            message: `action: ${ action }`
-                        });
-                    }
-                });
             }
         }
     }
 </script>
 <style>
-  .button-box{
-    width: 100%;
-    margin-bottom: 0px;
-  }
 </style>

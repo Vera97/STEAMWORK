@@ -1,10 +1,10 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="6">
-     <resourceList @course-selected="selectedCourse" @section-selected="selectedSection" @step-selected="selectedStep" ></resourceList>
+     <resourceList @course-selected="selectedCourse" @section-selected="selectedSection" @step-selected="selectedStep"></resourceList>
     </el-col>
     <el-col :span="18">
-      <resourceContent ref="child" :isSelect="isSelect" :courseId="courseId" :courseName="courseName" :courseSectionId="courseSectionId" :courseSectionName="courseSectionName" :stepId="stepId" :stepName="stepName"></resourceContent>
+      <resourceContent ref="child" :isSelect="isSelect" :courseId="courseId" :courseName="courseName" :courseSectionId="courseSectionId" :courseSectionName="courseSectionName" :stepId="stepId" :stepName="stepName" @addStep="addStep"></resourceContent>
     </el-col>
   </el-row>
 </template>
@@ -23,6 +23,7 @@
                 courseSectionName: '',
                 stepId: -1,
                 stepName:'',
+                newStepId:-1,
                 isSelect:true,
                 isUpload:false
             }
@@ -44,6 +45,9 @@
                 this.stepId=data.stepId;
                 this.stepName=data.title;
                 this.$refs.child.getStep();
+            },
+            addStep(value){
+                this.stepName=value;
             }
         }
     }

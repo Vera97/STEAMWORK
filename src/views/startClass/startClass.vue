@@ -33,7 +33,6 @@
                   ref="activity"
           ></start-activities>
           <monitor @progress-get="getProgress"></monitor>
-          <chart></chart>
         </el-col>
       </el-row>
     </el-main>
@@ -94,7 +93,7 @@
                 store.commit('startClass/GET_PROG', progressList);
                 // the progress list is submitted above.
                 console.log(progressList);
-                console.log(store.state.startClass.prog)
+                // console.log(store.state.startClass.prog);
             },
             // start the class, request the classroom, load the material
             loadMaterial(courseSectionId, classId) {
