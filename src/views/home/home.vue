@@ -44,7 +44,8 @@
   .el-footer {
     padding: 0;
   }
-  .main-box{
-    min-height: 715em;
+
+  .main-box {
+    min-height: 30em;
   }
 </style>

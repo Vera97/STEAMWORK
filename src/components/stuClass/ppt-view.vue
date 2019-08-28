@@ -24,7 +24,7 @@
     </div>
     <div class="right-box" v-if="cur">
       <div class="time">
-        <p>·10:12(倒计时）</p>
+        <p>·10:12（倒计时）</p>
       </div>
       <img
               v-for="(item, index) in pptImagesList"
@@ -35,7 +35,7 @@
               alt="there is some error in the slides"
       >
     </div>
-    <actList ref="actList" v-else @onEmmitCur="onEmmitCur" class="list"></actList>
+    <actList ref="actList" v-show="!cur" @onEmmitCur="onEmmitCur" class="list"></actList>
   </div>
 </template>
 
@@ -110,6 +110,28 @@
                     }.bind(this))
             },
             openAct(item) {//点击活动按钮
+                this.requestActivityStatus(item)
+                    .then(function(data) {
+                        console.log(data);
+                        if (data.code === 1) {
+                            this.cur = false;
+                            console.log(this.$refs);
+                            this.$refs.actList.load({
+                                exerciseType: item.type,
+                                ...data
+                            });
+                            store.commit('stuClass/ADD_CURRENT_EXERCISE', {
+                                exerciseType: item.type,
+                                ...data
+                            });//传递当前点击的活动内容
+                        } else {
+                            this.$alert('该活动尚未开启', '提示', {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }.bind(this));
+            },
+            async requestActivityStatus (item) {
                 let requestMethod;
                 switch (item.type) {
                 case '文本播放':
@@ -125,7 +147,7 @@
                     requestMethod = api.requestCourseExerciseElse;
                     break;
                 }
-                utils.request({//向后端请求当前活动是否被开启
+                return utils.request({//向后端请求当前活动是否被开启
                     invoke: requestMethod,
                     params: {
                         classroomId: store.state.classroomId,
@@ -133,24 +155,9 @@
                     },
                     result: fakeData.IS_START
                 })
-                    .then(function(res) {
-                        console.log(res.data);
-                        if (res.data.code === 1) {
-                            this.$refs.actList.load({
-                                exerciseType: item.type,
-                                ...res.data
-                            });
-                            store.commit('stuClass/ADD_CURRENT_EXERCISE', {
-                                exerciseType: item.type,
-                                ...res.data
-                            });//传递当前点击的活动内容
-                            this.cur = false;
-                        } else {
-                            this.$alert('该活动尚未开启', '提示', {
-                                confirmButtonText: '确定',
-                            });
-                        }
-                    }.bind(this));
+                    .then(function (res) {
+                        return Promise.resolve(res.data)
+                    })
             },
             onEmmitCur() {//接受从act-list关闭按钮传值，以关闭活动组件
                 this.cur = true;

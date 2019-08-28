@@ -1,6 +1,8 @@
 <template>
   <el-card class="card" :body-style="{padding: '.5em'}">
-    <div class="el-icon-close" @click="removePPT"></div>
+    <div class="close">
+      <i class="el-icon-error" @click="removePPT"></i>
+    </div>
     <div class="text-center">
       <img class="image" :src="src" alt="you didn't see me">
     </div>
@@ -15,7 +17,7 @@
         },
         methods:{
             removePPT(){
-                this.$emit('deletePPT');
+                this.$emit('delete-ppt');
             }
         }
     }
@@ -35,8 +37,19 @@
       height: 100%;
     }
   }
-  .el-icon-close{
-    float:right;
+
+  .close {
+    position: relative;
+    width: 0;
+    height: 0;
+    left: -.5em;
+    top: -.5em;
+  }
+
+  .close i {
+    position: absolute;
+    cursor: pointer;
+    color: #ff0747;
   }
 </style>
 

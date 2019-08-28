@@ -64,16 +64,9 @@
                 this.$parent.onEmmitCur();
             },
             complete() {
-                utils.request({
-                    invoke: api.requestIsOver,
-                    params: {
-                        classroomId: store.state.classroomId,
-                        exerciseId: store.state.resource.currentExercise.exerciseId,
-                    },
-                    result: fakeData.IS_OVER,
-                })
-                    .then(res => {
-                        if (res.data.code === 1)//教师端未关闭此活动
+                this.$parent.requestActivityStatus(this.exerciseBody)
+                    .then(function (data) {
+                        if (data.code === 1)//教师端未关闭此活动
                         {
                             this.$parent.onEmmitCur();
                             this.$parent.addWealth();
@@ -83,7 +76,8 @@
                                 confirmButtonText: '确定',
                             });
                         }
-                    });
+                    }.bind(this));
+
                 //向后端请求更改活动状态，
                 for(let i = 0;i < store.state.stuClass.exerciseList.length; i++){
                     if(store.state.stuClass.exerciseList[i].exerciseId === store.state.stuClass.currentExercise.exerciseId){
