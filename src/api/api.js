@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -523,6 +523,15 @@ export const requestExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/exercise/question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/new_question
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {Array<{questionName: String, question: String}>} params.questionList
+ * @returns {Promise<{code: number, questionList: Array<{questionId: number, questionName: String, question: String}>}>}
+ */
 export const requestNewQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_question`, params, options);
@@ -911,3 +920,15 @@ export const loginAdmin = params => {
     return axios.post(`${base}/login/admin`, params, options);
 };
 
+/**
+ * url: /stu/classroom/confirm_task
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @param {number} params.exerciseId
+ * @param {number} params.courseSectionId
+ * @returns {Promise<{code: number}>}
+ */
+export const requireConfirmTask = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/confirm_task`, params, options);
+};

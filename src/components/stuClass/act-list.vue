@@ -68,8 +68,23 @@
                     .then(function (data) {
                         if (data.code === 1)//教师端未关闭此活动
                         {
-                            this.$parent.onEmmitCur();
-                            this.$parent.addWealth();
+                            utils.request({
+                                invoke: api.requireConfirmTask,
+                                params: {
+                                    stuId: store.state.stuId,
+                                    exerciseId: this.exerciseBody.exerciseId,
+                                    courseSectionId: store.state.courseSectionId
+                                },
+                                result: fakeData.SINGLE_NUMBER_CODE
+                            })
+                                .then(function (res) {
+                                    if (res.data.code === 1) {
+                                        this.$parent.onEmmitCur();
+                                        this.$parent.addWealth();
+                                    } else {
+                                        this.$message.error('请求完成失败')
+                                    }
+                                }.bind(this))
                         } else {//教师端关闭此活动
                             this.$parent.onEmmitCur();
                             this.$alert('本活动完成时间已超时', '提示', {
