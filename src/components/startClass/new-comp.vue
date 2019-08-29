@@ -19,13 +19,14 @@
     import attendance from "../../components/startClass/attendance";
     import questionAnswer from "../../components/startClass/question-answer";
     import textPlay from "../../components/startClass/text-play";
+    import ElseActivity from './else-activity'
 
     import utils from '../../utils'
     import { api, fakeData } from '../../api'
 
     export default {
         name: 'new-comp',
-        components: {resourceShow, grouping, attendance, questionAnswer, textPlay},
+        components: {resourceShow, grouping, attendance, questionAnswer, textPlay, ElseActivity},
         props: {
             classroomId: Number,
             pptIndex: Number,
@@ -81,6 +82,8 @@
                     this.currentTabComponent = 'text-play';
                 } else if (this.exercise.type === '互动问答') {
                     this.currentTabComponent = 'question-answer';
+                } else {
+                    this.currentTabComponent = 'else-activity';
                 }
             }
         }
