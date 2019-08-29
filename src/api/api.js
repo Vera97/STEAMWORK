@@ -932,3 +932,23 @@ export const requireConfirmTask = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/classroom/confirm_task`, params, options);
 };
+
+/**
+ * url: /teacher/classroom/ppt_append
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestAddPage = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/ppt_append`, params, options);
+};
+
+/**
+ * url: /stu/course/course_section_exercise_photo/upload
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestUploadCourseExercisePhoto = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_photo/upload`, params, options);
+};

@@ -3,6 +3,7 @@
     <el-card class="ppt-box">
       <i class="el-icon-close" @click="open"></i>
       <component
+              ref="exerciseComp"
               :complete="complete"
               v-bind:is="currentTabComponent"
               :exercise-body="exerciseBody"
@@ -52,7 +53,7 @@
                 case '互动问答':
                     this.currentTabComponent = 'answer';
                     break;
-                case '方案设计':
+                case '设计方案':
                     this.currentTabComponent = 'stu-design';
                     break;
                 case '作品展示':
@@ -64,6 +65,9 @@
                 this.$parent.onEmmitCur();
             },
             complete() {
+                if (this.$refs.exerciseComp.complete) {
+                    this.$refs.exerciseComp.complete()
+                }
                 this.$parent.requestActivityStatus(this.exerciseBody)
                     .then(function (data) {
                         if (data.code === 1)//教师端未关闭此活动

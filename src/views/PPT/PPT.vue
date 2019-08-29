@@ -79,8 +79,11 @@
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
-            handleUpload(url, pptImagesList) {
-                this.pptData.url = url;
+            handleUpload(pptId, pptImagesList) {
+                console.log(pptId);
+                console.log(pptImagesList);
+                this.pptData.pptId = pptId;
+                this.pptData.pptImagesList = [];
                 this.pptData.pptImagesList.push(...pptImagesList)
             },
             sectionSelect({courseSectionId, courseSectionName}) {
@@ -96,6 +99,7 @@
                     .then((function(res) {
                         if(res.data.code === 1) {
                             this.pptData.pptId = res.data.pptId;
+                            this.pptData.pptImagesList = [];
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
                             this.$refs.pptUpload.inject();
                             this.$refs.PPTshow.init()

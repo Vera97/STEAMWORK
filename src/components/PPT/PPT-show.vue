@@ -12,7 +12,7 @@
           ></course-ppt>
         </div>
         <div class="add-ppt">
-          <el-button class="add-ppt" size="small" round><i class="el-icon-circle-plus-outline"></i>添加ppt</el-button>
+          <el-button class="add-ppt" size="small" @click="addPage" round><i class="el-icon-circle-plus-outline"></i>添加ppt</el-button>
         </div>
       </el-col>
       <el-col :span="17" style="float:right;">
@@ -368,6 +368,24 @@
                     .then(function () {
                         this.$emit('remove-page', index)
                     }.bind(this)).catch()
+            },
+            addPage () {
+                utils.request({
+                    invoke: api.requestAddPage,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        page: this.pptData.pptImagesList.length
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('添加成功');
+                            this.pptData.pptImagesList.push('#')
+                        } else {
+                            this.$message.error('添加失败')
+                        }
+                    }.bind(this))
             },
             addItems() {
                 utils.request({

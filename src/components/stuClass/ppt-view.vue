@@ -136,10 +136,12 @@
                             this.cur = false;
                             this.$refs.actList.load({
                                 exerciseType: item.type,
+                                exerciseId: item.exerciseId,
                                 ...data
                             });
                             store.commit('stuClass/ADD_CURRENT_EXERCISE', {
                                 exerciseType: item.type,
+                                exerciseId: item.exerciseId,
                                 ...data
                             });//传递当前点击的活动内容
                         } else {
@@ -161,7 +163,7 @@
                 case '互动问答':
                     requestMethod = api.requestGetCourseExerciseQuestion;
                     break;
-                case '其它':
+                default:
                     requestMethod = api.requestCourseExerciseElse;
                     break;
                 }
@@ -210,7 +212,11 @@
                         return Promise.resolve(res.data.exerciseList)
                     });
                 list = list.filter(item => {
-                    return item.type === '文本播放' || item.type === '互动问答' || item.type === '资源播放';
+                    return item.type === '文本播放' ||
+                        item.type === '互动问答' ||
+                        item.type === '资源播放' ||
+                        item.type === '设计方案' ||
+                        item.type === '作品展示';
                 });
                 for (let i = 0; i < list.length; i++) {
                     for (let j of status) {
