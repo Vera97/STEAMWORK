@@ -17,7 +17,6 @@
               :expand-on-click-node="true"
               :render-after-expand="false"
               :render-content="renderContent"
-              :filter-node-method="filterNode"
               @node-click="handleNodeClick"
               accordion
               ref="tree"
@@ -36,8 +35,9 @@
     export default {
         name: "resource-list",
         watch: {
-            selectArray(val) {
-                this.$refs.tree.filter(val);
+            selectArray(newValue) {
+                this.getCourseList(newValue)
+                // this.$refs.tree.filter(val);
             },
         },
         data() {
@@ -56,32 +56,6 @@
             };
         },
         methods: {
-            async filterNode(value, data, node) {
-                if (!value) return true;
-                return data.label.indexOf(value) !== -1;
-                let answer = false;
-                if (node.level === 1) {
-                    for (let i = 0; i < value.length; i++) {
-                        await utils.request({
-                            invoke: api.requestLabelFilter,
-                            params: {
-                                labelId: value[i].labelId
-                            },
-                            result: fakeData.FILTER_LABEL
-                        }).then(res => {
-                            if (res.data.code === 1) {
-                                for (let j = 0; j < res.data.courseList.length; j++) {
-                                    if (res.data.courseList[j].courseId === data.courseId) {
-                                        answer = true;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    console.log(answer);
-                    return answer;
-                }
-            },
             select() {
                 utils.request({
                     invoke: api.requestGetLabelList,
@@ -486,72 +460,96 @@
                         message: '取消输入'
                     })
                 });
+            },
+            async getCourseList (tagList) {
+                this.listData = [];
+                if (tagList.length === 0) {
+                    let count = await utils.request({//请求数据库中已有课程并渲染到树形控件中
+                        invoke: api.getCourseChunk,
+                        params: {
+                            code: 'course_all',
+                        },
+                        result: fakeData.COURSE_COUNT
+                    })
+                        .then(function (res) {
+                            return Promise.resolve(res.data.totalCount)
+                        }.bind(this));
+
+                    await utils.request({
+                        invoke: api.getCourseChunk,
+                        params: {
+                            code: 'course_chunk',
+                            gotten: 0,
+                            length: count
+                        },
+                        result: fakeData.COURSE_CHUNK
+                    }).then(function(res) {
+                        this.listData = res.data.chunks.map(item => {
+                            return {
+                                courseId: item.courseId,
+                                title: item.title,
+                                child: []
+                            }
+                        })
+                    }.bind(this))
+                } else {
+                    await utils.request({
+                        invoke: api.requestFilterCourseByTag,
+                        params: {
+                            labelId: tagList
+                        },
+                        result: fakeData.FILTER_COURSE_TAG
+                    })
+                        .then(function (res) {
+                            this.listData = res.data.courseList.map(item => {
+                                return {
+                                    courseId: item.courseId,
+                                    title: item.courseName,
+                                    child: []
+                                }
+                            })
+                        }.bind(this))
+                }
             }
         },
-        created() {
+        async created() {
             this.select();
-            utils.request({//请求数据库中已有课程并渲染到树形控件中
-                invoke: api.getCourseChunk,
-                params: {
-                    code: 'course_all',
-                    gotten: 0,
-                    length: 0
-                },
-                result: fakeData.SEARCH_COURSE
-            }).then(res => {
+            await this.getCourseList([]);
+            for (let i = 0; i < this.listData.length; i++) {
                 utils.request({
-                    invoke: api.getCourseChunk,
+                    invoke: api.requestCourseDetail,
                     params: {
-                        code: 'course_all',
-                        gotten: 0,
-                        length: res.data.totalCount
+                        courseId: this.listData[i].courseId
                     },
-                    result: fakeData.SEARCH_COURSE
+                    result: fakeData.COURSE_DETAIL
                 }).then(res => {
-                    this.listData = res.data.chunks.map(item => {
+                    this.listData[i].child = res.data.courseSection.map(item => {
                         return {
-                            courseId: item.courseId,
-                            title: item.title,
+                            courseSectionId: item.courseSectionId,
+                            title: item.courseSectionName,
                             child: []
                         }
                     });
-                    for (let i = 0; i < this.listData.length; i++) {
+                    for (let j = 0; j < this.listData[i].child.length; j++) {
                         utils.request({
-                            invoke: api.requestCourseDetail,
+                            invoke: api.requestCourseSteps,
                             params: {
-                                courseId: this.listData[i].courseId
+                                code: 'step_contents',
+                                stepId: ''
                             },
-                            result: fakeData.COURSE_DETAIL
-                        }).then(res => {
-                            this.listData[i].child = res.data.courseSection.map(item => {
-                                return {
-                                    courseSectionId: item.courseSectionId,
-                                    title: item.courseSectionName,
-                                    child: []
-                                }
-                            });
-                            for (let j = 0; j < this.listData[i].child.length; j++) {
-                                utils.request({
-                                    invoke: api.requestCourseSteps,
-                                    params: {
-                                        code: 'step_contents',
-                                        stepId: ''
-                                    },
-                                    result: fakeData.PERIOD_STEPS
-                                })
-                                    .then(res => {
-                                        this.listData[i].child[j].child = res.data.map(item => {
-                                            return {
-                                                stepId: item.stepId,
-                                                title: item.title
-                                            }
-                                        });
-                                    })
-                            }
-                        });
+                            result: fakeData.PERIOD_STEPS
+                        })
+                            .then(res => {
+                                this.listData[i].child[j].child = res.data.map(item => {
+                                    return {
+                                        stepId: item.stepId,
+                                        title: item.title
+                                    }
+                                });
+                            })
                     }
                 });
-            });
+            }
         }
     }
 </script>

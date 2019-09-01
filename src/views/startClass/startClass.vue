@@ -32,7 +32,7 @@
                   @onEmitIndex="onEmitIndex"
                   ref="activity"
           ></start-activities>
-          <monitor @progress-get="getProgress"></monitor>
+          <monitor ref="monitor" @progress-get="getProgress"></monitor>
         </el-col>
       </el-row>
     </el-main>
@@ -93,6 +93,7 @@
                 store.commit('startClass/GET_PROG', progressList);
                 // the progress list is submitted above.
                 console.log(progressList);
+                this.$refs.monitor.initData()
                 // console.log(store.state.startClass.prog);
             },
             // start the class, request the classroom, load the material

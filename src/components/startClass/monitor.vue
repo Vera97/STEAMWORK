@@ -1,7 +1,7 @@
 <template>
   <div class="student-box">
     <div>
-      <el-button type="primary" class="button-box" @click="initData" style="width: 100%">学生学习进度监控</el-button>
+      <el-button type="primary" class="button-box" @click="$emit('progress-get')" style="width: 100%">学生学习进度监控</el-button>
     </div>
     <div class="pie">
       <div id="pie1">
@@ -25,13 +25,13 @@
     export default {
         name: 'monitor',
         data(){
-          return{
-              aheadList:[],
-              commonList:[],
-              fallList:[],
-              worstList:[],
-              allData:[]
-          }
+            return{
+                aheadList:[],
+                commonList:[],
+                fallList:[],
+                worstList:[],
+                allData:[]
+            }
         },
         computed: {
             ...mapState({
@@ -40,7 +40,6 @@
         },
         methods: {
             initData() {
-                this.$emit('progress-get');
                 for(let i=0;i<this.prog.length;i++){
                     let  value=this.prog[i].progress;
                     if (value<= 0.25) {
@@ -56,48 +55,48 @@
                 // 基于准备好的dom，初始化echarts实例
                 const myChart = echarts.init(document.getElementById('main1'));//var -> let 8.24
                 // 绘制图表
-                        myChart.setOption({
-                            // title : {
-                            //     // text: '某站点用户访问来源',//主标题
-                            //     // subtext: '纯属虚构',//副标题
-                            //     //以上两行需要的时候再说 8.24
-                            //     x:'center',//x轴方向对齐方式
-                            //     y:'100%'
-                            // },
-                            // tooltip : {
-                            //     trigger: 'item',
-                            //     formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            // },
-                            legend: {
-                                x:'center',
-                                y:'bottom',
-                                orient: 'horizontal',
-                                left:'0',
-                                bottom: '100%',
-                                data: ['超前', '正常', '滞后' ,'严重滞后']
-                            },
-                            series : [
-                                {
-                                    name: '进度监控',
-                                    type: 'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:[
-                                        {value:this.aheadList.length, name:'超前',stu:this.aheadList},
-                                        {value:this.commonList.length, name:'正常',stu:this.commonList},
-                                        {value:this.fallList.length, name:'滞后',stu:this.fallList},
-                                        {value:this.worstList.length, name:'严重滞后',stu:this.worstList},
-                                    ],
-                                    itemStyle: {
-                                        emphasis: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)',
-                                        }
-                                    }
-                                }
+                myChart.setOption({
+                    // title : {
+                    //     // text: '某站点用户访问来源',//主标题
+                    //     // subtext: '纯属虚构',//副标题
+                    //     //以上两行需要的时候再说 8.24
+                    //     x:'center',//x轴方向对齐方式
+                    //     y:'100%'
+                    // },
+                    // tooltip : {
+                    //     trigger: 'item',
+                    //     formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    // },
+                    legend: {
+                        x:'center',
+                        y:'bottom',
+                        orient: 'horizontal',
+                        left:'0',
+                        bottom: '100%',
+                        data: ['超前', '正常', '滞后' ,'严重滞后']
+                    },
+                    series : [
+                        {
+                            name: '进度监控',
+                            type: 'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:[
+                                {value:this.aheadList.length, name:'超前',stu:this.aheadList},
+                                {value:this.commonList.length, name:'正常',stu:this.commonList},
+                                {value:this.fallList.length, name:'滞后',stu:this.fallList},
+                                {value:this.worstList.length, name:'严重滞后',stu:this.worstList},
                             ],
-                            color: ['#FFFF33','#FFCC22','#FFAA33','#d58512']
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                }
+                            }
+                        }
+                    ],
+                    color: ['#FFFF33','#FFCC22','#FFAA33','#d58512']
                 });
                 myChart.on('click',  (param) => {//饼状图点击函数
                     // let that = this;

@@ -2,6 +2,7 @@
   <el-card class="card" :body-style="{padding: '.5em'}">
     <div class="close">
       <i class="el-icon-error" @click="removePPT"></i>
+      <a :href="src" target="_blank"><i class="el-icon-zoom-in next" title="点击查看原图"></i></a>
     </div>
     <div class="text-center">
       <img class="image" :src="src" alt="you didn't see me">
@@ -44,12 +45,21 @@
     height: 0;
     left: -.5em;
     top: -.5em;
-  }
 
-  .close i {
-    position: absolute;
-    cursor: pointer;
-    color: #ff0747;
+    i {
+      position: absolute;
+      cursor: pointer;
+    }
+
+    &:nth-child(1) {
+      color: #ff0747;
+    }
+
+    .next {
+      color: #000;
+      left: 1em;
+      font-weight: bolder;
+    }
   }
 </style>
 
