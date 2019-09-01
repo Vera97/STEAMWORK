@@ -1,6 +1,9 @@
 <template>
   <el-card class="card" :body-style="{padding: '.5em'}">
-    <div class="el-icon-close" @click="removePPT"></div>
+    <div class="close">
+      <i class="el-icon-error" @click="removePPT"></i>
+      <a :href="src" target="_blank"><i class="el-icon-zoom-in next" title="点击查看原图"></i></a>
+    </div>
     <div class="text-center">
       <img class="image" :src="src" alt="you didn't see me">
     </div>
@@ -15,7 +18,7 @@
         },
         methods:{
             removePPT(){
-                this.$emit('deletePPT');
+                this.$emit('delete-ppt');
             }
         }
     }
@@ -35,8 +38,28 @@
       height: 100%;
     }
   }
-  .el-icon-close{
-    float:right;
+
+  .close {
+    position: relative;
+    width: 0;
+    height: 0;
+    left: -.5em;
+    top: -.5em;
+
+    i {
+      position: absolute;
+      cursor: pointer;
+    }
+
+    &:nth-child(1) {
+      color: #ff0747;
+    }
+
+    .next {
+      color: #000;
+      left: 1em;
+      font-weight: bolder;
+    }
   }
 </style>
 

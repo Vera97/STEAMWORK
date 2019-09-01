@@ -17,7 +17,7 @@
       </el-input>
     </div>
     <div>
-      <pptUpload></pptUpload>
+      <media-uploader class="uploader"></media-uploader>
     </div>
     <div>
       <el-button class="button" type="primary" round @click="conserve">保存</el-button><el-button  class="button" type="primary" round>取消</el-button>
@@ -38,10 +38,11 @@
 <script>
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
-    import pptUpload from '../PPT/ppt-upload'
+    import mediaUploader from '../../upload/media-uploader'
+
     export default {
-        name: "try-2",
-        components:{pptUpload},
+        name: "resource-content",
+        components: { mediaUploader },
         props:{
             courseId:Number,
             courseName:String,
@@ -58,10 +59,26 @@
                 temp:[],
                 dialogVisible:false,
                 isHave:-1,
-                upLoad:false
+                upLoad:false,
+                stepContent:''
             }
         },
         methods:{
+            conserve(){
+                utils.request({
+                    invoke: api.requestNewCourseSectionStep,
+                    params: {
+                        courseSectionId: this.courseSectionId,
+                        stepName: this.stepName,
+                        stepContent:this.stepContent
+                    },
+                    result: fakeData.SECTION_STEP
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        alert("新建步骤完成！");
+                    }
+                });
+            },
             getLabel() {
                 utils.request({
                     invoke: api.requestAssignedGet,
@@ -160,5 +177,9 @@
   }
   .content{
     margin-top:1%;
+  }
+
+  .uploader {
+    width: 100%;
   }
 </style>

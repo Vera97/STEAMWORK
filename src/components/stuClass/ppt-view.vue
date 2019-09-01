@@ -24,7 +24,7 @@
     </div>
     <div class="right-box" v-if="cur">
       <div class="time">
-        <p>·10:12(倒计时）</p>
+        <p>·10:12（倒计时）</p>
       </div>
       <img
               v-for="(item, index) in pptImagesList"
@@ -35,7 +35,7 @@
               alt="there is some error in the slides"
       >
     </div>
-    <actList ref="actList" v-else @onEmmitCur="onEmmitCur" class="list"></actList>
+    <actList ref="actList" v-show="!cur" @onEmmitCur="onEmmitCur" class="list"></actList>
   </div>
 </template>
 
@@ -103,6 +103,21 @@
                     result: fakeData.GET_PPT_PAGE
                 })
                     .then(function(res) {
+                        let progress=this.display/res.data.pptPage;
+                        console.log(progress);
+                        utils.request({
+                            invoke: api.requestPushProgressStu,
+                            params: {
+                                code:'stu_push_progress',
+                                stuId: store.state.stuId,
+                                progress:progress
+                            },
+                            result: fakeData.PUSH_PROGRESS
+                        }).then(res=>{
+                            if(res.data.code===1){
+                                alert("上传进度成功！");
+                            }
+                        });
                         if (res.data.pptPage !== this.display) {
                             this.display = res.data.pptPage;
                             store.commit('STU_PPT_PAGE', {currentPage: this.display})
@@ -110,6 +125,33 @@
                     }.bind(this))
             },
             openAct(item) {//点击活动按钮
+                if (item.state === 1) {
+                    console.log(item);
+                    this.$message.success('此活动已完成');
+                    return
+                }
+                this.requestActivityStatus(item)
+                    .then(function(data) {
+                        if (data.code === 1) {
+                            this.cur = false;
+                            this.$refs.actList.load({
+                                exerciseType: item.type,
+                                exerciseId: item.exerciseId,
+                                ...data
+                            });
+                            store.commit('stuClass/ADD_CURRENT_EXERCISE', {
+                                exerciseType: item.type,
+                                exerciseId: item.exerciseId,
+                                ...data
+                            });//传递当前点击的活动内容
+                        } else {
+                            this.$alert('该活动尚未开启', '提示', {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }.bind(this));
+            },
+            async requestActivityStatus (item) {
                 let requestMethod;
                 switch (item.type) {
                 case '文本播放':
@@ -121,11 +163,11 @@
                 case '互动问答':
                     requestMethod = api.requestGetCourseExerciseQuestion;
                     break;
-                case '其它':
+                default:
                     requestMethod = api.requestCourseExerciseElse;
                     break;
                 }
-                utils.request({//向后端请求当前活动是否被开启
+                return utils.request({//向后端请求当前活动是否被开启
                     invoke: requestMethod,
                     params: {
                         classroomId: store.state.classroomId,
@@ -133,30 +175,32 @@
                     },
                     result: fakeData.IS_START
                 })
-                    .then(function(res) {
-                        console.log(res.data);
-                        if (res.data.code === 1) {
-                            this.$refs.actList.load({
-                                exerciseType: item.type,
-                                ...res.data
-                            });
-                            store.commit('stuClass/ADD_CURRENT_EXERCISE', {
-                                exerciseType: item.type,
-                                ...res.data
-                            });//传递当前点击的活动内容
-                            this.cur = false;
-                        } else {
-                            this.$alert('该活动尚未开启', '提示', {
-                                confirmButtonText: '确定',
-                            });
-                        }
-                    }.bind(this));
+                    .then(function (res) {
+                        console.log(`not null: ${item.title}`);
+                        return Promise.resolve({
+                            ...res.data,
+                            exerciseId: item.exerciseId,
+                            type: item.type,
+                            title: item.title
+                        })
+                    })
             },
             onEmmitCur() {//接受从act-list关闭按钮传值，以关闭活动组件
                 this.cur = true;
             },
-            getAct() {//向后端请求活动列表
-                utils.request({
+            async getAct() {//向后端请求活动列表
+                let status = await utils.request({
+                    invoke: api.requestExerciseState,
+                    params: {
+                        stuId: store.state.stuId,
+                        courseSectionId: store.state.courseSectionId
+                    },
+                    result: fakeData.GET_EXERCISE_STATE_COMPLETED
+                })
+                    .then(function (res) {
+                        return Promise.resolve(res.data.exerciseStateList)
+                    }.bind(this));
+                let list = await utils.request({
                     invoke: api.requestExercise,
                     params: {
                         pptId: this.pptId,
@@ -164,9 +208,24 @@
                     },
                     result: fakeData.STU_EXERCISE_LIST
                 })
-                    .then(res => {
-                        store.commit('stuClass/ADD_EXERCISE', res.data.exerciseList);
-                    })
+                    .then(function (res) {
+                        return Promise.resolve(res.data.exerciseList)
+                    });
+                list = list.filter(item => {
+                    return item.type === '文本播放' ||
+                        item.type === '互动问答' ||
+                        item.type === '资源播放' ||
+                        item.type === '设计方案' ||
+                        item.type === '作品展示';
+                });
+                for (let i = 0; i < list.length; i++) {
+                    for (let j of status) {
+                        if (j.exerciseId === list[i].exerciseId) {
+                            list[i].state = j.state ? 1 : 0
+                        }
+                    }
+                }
+                store.commit('stuClass/ADD_EXERCISE', list);
             },
             addWealth() {//修改财富值
                 utils.request({
@@ -226,7 +285,7 @@
         mounted() {
             this.getAct();//向后端请求活动列表
             this.getWealth();//获取财富值
-            // this.callback = setInterval(this.getPage, 10000);//定时向后端请求教师端当前ppt页数
+            //this.callback = setInterval(this.getPage, 10000);//定时向后端请求教师端当前ppt页数
         },
         destroyed() {
             clearInterval(this.callback);

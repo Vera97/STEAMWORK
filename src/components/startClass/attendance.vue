@@ -7,6 +7,7 @@
             v-for="item in absentList"
             :key="item.stuId"
             size="medium"
+            class="absent"
     >
       {{ `${item.stuName}(${item.stuNumber})` }}
     </el-button>
@@ -20,7 +21,8 @@
     export default {
         name: "attendance",
         props: {
-            classroomId: Number
+            classroomId: Number,
+            studentsList: Array
         },
         data() {
             return {
@@ -38,8 +40,9 @@
                     result: fakeData.REQUEST_ATTENDANCE_RESPONSE
                 })
                     .then((function(res) {
+                        console.log(this.studentsList);
                         this.arrivedNumber = res.data.stuReadyList.length;
-                        this.absentList = res.data.stuList.filter(item => {
+                        this.absentList = this.studentsList.filter(item => {
                             for(let i of res.data.stuReadyList) {
                                 if(i.stuId === item.stuId) return false
                             }
@@ -61,5 +64,9 @@
     div {
       margin: 1em 0;
     }
+  }
+
+  .absent {
+    margin-bottom: 1em;
   }
 </style>

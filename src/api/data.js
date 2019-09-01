@@ -319,7 +319,7 @@ export const UP_PROGRESS = {
 
 export const PROGRESS_STU = {
     code: 1,
-    progress: [['王二蛋','李狗蛋'],['张三','李四','刘武','老六'],['田七','八哥'],['久帝']],
+    progress: 0.1,
 };
 
 export const COURSE_LIST =[
@@ -362,6 +362,7 @@ export const COURSE_SECTION =[
 export const UPLOAD_RESPONSE = {
     code: 1,
     url: '/media/ppt/example.ppt',
+    pptId: 123,
     pptImagesList: [
         'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
         'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
@@ -456,33 +457,6 @@ export const EXERCISE_RESOURCE={
 
 export const REQUEST_ATTENDANCE_RESPONSE = {
     code: 1,
-    stuList: [
-        {
-            stuId: 123645,
-            stuName: '张全蛋',
-            stuNumber: 8888888
-        },
-        {
-            stuId: 123345,
-            stuName: '李钢蛋',
-            stuNumber: 8888899
-        },
-        {
-            stuId: 333333,
-            stuName: '赵铁柱',
-            stuNumber: 8884342
-        },
-        {
-            stuId: 555555,
-            stuName: '王翠花',
-            stuNumber: 84355677
-        },
-        {
-            stuId: 99999,
-            stuName: '王二狗',
-            stuNumber: 89999393
-        }
-    ],
     stuReadyList: [
         {
             stuId: 333333,
@@ -599,16 +573,9 @@ export const LOGIN_STU_RESPONSE = {
 export const STU_QUESTIONS = {
     code: 1,  //如果是修改的话，scoreList就为0
     question: [
-        {question:'ssss1',answer:'ssss1'},
-        {question:'ssss2',answer:'ssss2'},
-        {question:'ssss3',answer:'ssss3'},
-        {question:'ssss4',answer:'ssss4'},
-        {question:'ssss5',answer:'ssss5'},
-        {question:'ssss6',answer:'ssss6'},
-        {question:'ssss7',answer:'ssss7'},
-        {question:'ssss8',answer:'ssss8'},
-        {question:'ssss9',answer:'ssss9'},
-        {question:'ssss10',answer:'ssss10'},
+        {questionId: 1, question: 'ssss1', answer: 'ssss1'},
+        {questionId: 2, question: 'ssss2', answer: 'ssss2'},
+        {questionId: 3, question: 'ssss3', answer: 'ssss3'}
     ]
 };
 
@@ -616,6 +583,11 @@ export const PPT_QUESTION_RESPONSE = {
     code: 1,
     questionName: '常见问题1',
     content: '<h1>这是一个<em>常见</em>的<i>问题</i></h1>'
+};
+
+export const ADD_COMMON_QUESTION = {
+    code: 1,
+    questionId: 999
 };
 
 export const EXERCISE_DESIGN = {
@@ -938,4 +910,30 @@ export const GET_LABEL_CHECKED = {
 export const SECTION_STEP={
     code:1,
     courseStepId:12
+};
+
+export const PUSH_PROGRESS={//判断是否上传进度
+    code:1,
+};
+export const LOGIN_ADMIN_RESPONSE={
+    code:1,
+    adminId:123
+};
+
+export const FILTER_COURSE_TAG = {
+    code: 1,
+    courseList: [
+        {
+            courseId: 1,
+            courseName: '3d打印'
+        },
+        {
+            courseId: 2,
+            courseName: '4d打印'
+        },
+        {
+            courseId: 3,
+            courseName: '5d打印'
+        }
+    ]
 };

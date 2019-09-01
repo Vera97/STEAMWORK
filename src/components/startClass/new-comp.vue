@@ -19,13 +19,14 @@
     import attendance from "../../components/startClass/attendance";
     import questionAnswer from "../../components/startClass/question-answer";
     import textPlay from "../../components/startClass/text-play";
+    import ElseActivity from './else-activity'
 
     import utils from '../../utils'
     import { api, fakeData } from '../../api'
 
     export default {
         name: 'new-comp',
-        components: {resourceShow, grouping, attendance, questionAnswer, textPlay},
+        components: {resourceShow, grouping, attendance, questionAnswer, textPlay, ElseActivity},
         props: {
             classroomId: Number,
             pptIndex: Number,
@@ -41,18 +42,25 @@
         },
         methods: {
             open(current) {
-                utils.request({
-                    invoke: api.requestEndActivity,
-                    params: {
-                        exerciseId: this.exercise.exerciseId
-                    },
-                    result: fakeData.SINGLE_NUMBER_CODE
-                })
-                    .then(function (res) {
-                        if (res.data.code === 1) {
-                            this.$emit('onEmmitCurrent', current);
-                        } else this.$message.error('关闭失败')
-                    }.bind(this))
+                switch (this.exercise.type) {
+                case '人员统计':
+                case '小组分组':
+                    this.$emit('onEmmitCurrent', current);
+                    break;
+                default:
+                    utils.request({
+                        invoke: api.requestEndActivity,
+                        params: {
+                            exerciseId: this.exercise.exerciseId
+                        },
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    })
+                        .then(function (res) {
+                            if (res.data.code === 1) {
+                                this.$emit('onEmmitCurrent', current);
+                            } else this.$message.error('关闭失败')
+                        }.bind(this))
+                }
             },
             /**
              * @param exercise the exercise object of the exercise
@@ -74,6 +82,8 @@
                     this.currentTabComponent = 'text-play';
                 } else if (this.exercise.type === '互动问答') {
                     this.currentTabComponent = 'question-answer';
+                } else {
+                    this.currentTabComponent = 'else-activity';
                 }
             }
         }

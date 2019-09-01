@@ -32,8 +32,7 @@
                   @onEmitIndex="onEmitIndex"
                   ref="activity"
           ></start-activities>
-          <monitor @progress-get="getProgress"></monitor>
-          <chart></chart>
+          <monitor ref="monitor" @progress-get="getProgress"></monitor>
         </el-col>
       </el-row>
     </el-main>
@@ -94,7 +93,8 @@
                 store.commit('startClass/GET_PROG', progressList);
                 // the progress list is submitted above.
                 console.log(progressList);
-                console.log(store.state.startClass.prog)
+                this.$refs.monitor.initData()
+                // console.log(store.state.startClass.prog);
             },
             // start the class, request the classroom, load the material
             loadMaterial(courseSectionId, classId) {
@@ -141,6 +141,7 @@
                     }).bind(this))
             },
             startClass () {
+                console.log('hit');
                 this.$refs.askList.getQueue();
                 this.$refs.show.getSlides(this.selectedSectionId);
             },
@@ -149,20 +150,27 @@
                     this.$message.warning('请先选择课时')
                 } else {
                     this.current = false;
-                    utils.request({
-                        invoke: api.requestStartActivity,
-                        params: {
-                            exerciseId: index.exerciseId
-                        },
-                        result: fakeData.SINGLE_NUMBER_CODE
-                    })
-                        .then(function (res) {
-                            if (res.data.code === 1) {
-                                this.$refs.newComp.getCurrentComponent(index);
-                            } else {
-                                this.$message.error('开启失败')
-                            }
-                        }.bind(this))
+                    switch (index.type) {
+                    case '人员统计':
+                    case '小组分组':
+                        this.$refs.newComp.getCurrentComponent(index);
+                        break;
+                    default:
+                        utils.request({
+                            invoke: api.requestStartActivity,
+                            params: {
+                                exerciseId: index.exerciseId
+                            },
+                            result: fakeData.SINGLE_NUMBER_CODE
+                        })
+                            .then(function (res) {
+                                if (res.data.code === 1) {
+                                    this.$refs.newComp.getCurrentComponent(index);
+                                } else {
+                                    this.$message.error('开启失败')
+                                }
+                            }.bind(this))
+                    }
                 }
             },
             onEmmitCurrent(current) {

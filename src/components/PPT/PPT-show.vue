@@ -1,14 +1,23 @@
 <template>
   <el-card class="box-card">
     <el-row :gutter="0">
-      <el-col :span="6" class="ppt-wrapper">
+      <el-col :span="4" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
-          <course-ppt class="slide-cell" :src="item" @click.native="selectSlide(index)" :class="{highlight: index === select}"></course-ppt>
+          <course-ppt
+                  class="slide-cell"
+                  :src="item"
+                  @click.native="selectSlide(index)"
+                  :class="{highlight: index === select}"
+                  @delete-ppt="removePage(index)"
+          ></course-ppt>
+        </div>
+        <div class="add-ppt">
+          <el-button class="add-ppt" size="small" @click="addPage" round><i class="el-icon-circle-plus-outline"></i>添加ppt</el-button>
         </div>
       </el-col>
-      <el-col :span="17" style="float:right;">
+      <el-col :span="19" style="float:right;">
         <div style="margin-bottom:5px;">
-          <el-tabs type="border-card" class="border-card">
+          <el-tabs type="border-card" class="border-card tabs">
             <el-tab-pane label="+ 添加教学活动" class="pane">
               <el-tree
                       class="activities-tree"
@@ -19,7 +28,7 @@
                       :render-content="renderContent"
                       @node-click="handleNodeClick">
               </el-tree>
-              <div id="menu3" style="z-index:1;float:right;width:100%;" class="box-card3 text-center">
+              <div id="menu3" class="box-card3 text-center">
                 <component
                         :is="displayComponent"
                         :exercise-id="exerciseId"
@@ -30,28 +39,30 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="+ 编辑当页常见问题及解答">
-              <div class="ali">
+              <div v-for="(item,index) in commonQuestion" :key="index" class="ali">
                 <el-input
                         class="text"
                         type="textarea"
                         autosize
                         :rows="2"
-                        placeholder="请输入问题名称"
-                        v-model="textarea1">
+                        placeholder="请输入问题"
+                        v-model="item.question">
                 </el-input>
                 <el-input
                         class="text"
                         type="textarea"
-                        :autosize="{ minRows:6, maxRows:12}"
+                        :autosize="{ minRows:4, maxRows:12}"
                         :rows="2"
-                        placeholder="请输入问题内容及解答"
-                        v-model="textarea2">
+                        placeholder="输入问题解答"
+                        v-model="item.answer">
                 </el-input>
+                <el-button type="primary" size="small" @click="saveQuestion(item)">保存</el-button>
+                <el-button type="danger" size="small" @click="deleteQuestion(item.questionId, index)">删除</el-button>
               </div>
-              <div class="buttonlist" style="float:right;margin-bottom:5%;">
-                <el-button type="primary" @click="save">保存</el-button>
-                <el-button type="primary">修改</el-button>
-                <el-button type="primary">删除</el-button>
+              <div class="add-question">
+                <el-button type="plain" size="medium" class="add-option" @click="addItems">
+                  <i class="el-icon-circle-plus-outline"></i>新增常见问题
+                </el-button>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -103,6 +114,7 @@
                     '文本播放'
                 ],
                 displayComponent: null,
+                commonQuestion: [],
                 exerciseId: null                  /* for the current editing exercise. */
             }
         },
@@ -112,6 +124,10 @@
             }
         },
         methods: {
+            clearActivities () {
+                this.listData = [];
+                this.commonQuestion = [];
+            },
             renderContent(h, {node, data}) {
                 let children, that = this;
                 if (node.level === 1) {
@@ -253,7 +269,19 @@
                         for(let i of res.data.exerciseList) {
                             this.listData[0].activities.push(i)
                         }
-                    }).bind(this))
+                    }).bind(this));
+                utils.request({
+                    invoke: api.requestClassStuQuestion,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        pptPage: index
+                    },
+                    result: fakeData.STU_QUESTIONS
+                })
+                    .then(function (res) {
+                        this.commonQuestion = [];
+                        this.commonQuestion.push(...res.data.question)
+                    }.bind(this))
             },
             addTextDisplay () {
                 utils.request({
@@ -332,25 +360,93 @@
             init() {
                 this.selectSlide(0)
             },
-            save() {
-                let that = this;
-                utils.request({
-                    invoke: api.requestNewQuestion,
-                    params: {
-                        pptId: that.pptId,
-                        pptPage: that.pptPage,
-                        name: that.textarea1,
-                        content: that.textarea2
-                    },
-                    result: fakeData.NEW_QUESTIONS
-                }).then(res => {
-                    if(res.data.code===1)
-                        alert("保存成功!");
-                });
-            },
             // this function is to handle the delete request emitted by the sub component
             deleteHandler({exerciseId}) {
                 this.deleteActivity({exerciseId})
+            },
+            removePage (index) {
+                this.$confirm('是否删除该页ppt?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                })
+                    .then(function () {
+                        this.$emit('remove-page', index)
+                    }.bind(this)).catch()
+            },
+            addPage () {
+                utils.request({
+                    invoke: api.requestAddPage,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        page: this.pptData.pptImagesList.length
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('添加成功');
+                            this.pptData.pptImagesList.push('#')
+                        } else {
+                            this.$message.error('添加失败')
+                        }
+                    }.bind(this))
+            },
+            addItems() {
+                utils.request({
+                    invoke: api.requestNewQuestion,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        pptPage: this.select,
+                        content: ''
+                    },
+                    result: fakeData.ADD_COMMON_QUESTION
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('添加成功');
+                            this.commonQuestion.push({
+                                question: '新问题',
+                                answer: '',
+                                questionId: res.data.questionId
+                            })
+                        } else {
+                            this.$message.error('新增失败')
+                        }
+                    }.bind(this))
+            },
+            saveQuestion (item) {
+                utils.request({
+                    invoke: api.requestEditCommonQuestion,
+                    params: {
+                        questionId: item.questionId,
+                        content: ''
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('保存成功');
+                        } else {
+                            this.$message.error('保存失败')
+                        }
+                    }.bind(this))
+            },
+            deleteQuestion (questionId, index) {
+                utils.request({
+                    invoke: api.requestDeleteCommonQuestion,
+                    params: {
+                        questionId: questionId
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('成功删除');
+                            this.commonQuestion.splice(index, 1)
+                        } else {
+                            this.$message.error('删除失败')
+                        }
+                    }.bind(this))
             }
         }
     }
@@ -365,6 +461,7 @@
     width: 100%;
     height: 100%;
     margin-bottom: 2%;
+    max-height: 40em;
   }
   .ali {
     margin-top: 20px;
@@ -378,6 +475,7 @@
   }
   .activities-tree {
     width: 30%;
+    position: absolute;
   }
   .highlight {
     border: #6495ED solid .1em;
@@ -392,5 +490,35 @@
   }
   p{
     margin-top: 0;
+  }
+
+  .add-ppt {
+    text-align: center;
+    width: 100%;
+    margin: .5em 0;
+  }
+
+  .add-ppt .el-button {
+    width: 90%;
+  }
+
+  .add-question {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tabs {
+    max-height: 30em;
+    overflow-y: scroll;
+  }
+
+  #menu3 {
+    width: 65%;
+    left: 34%;
+    position: relative;
+  }
+
+  .pane {
+    height: 25em;
   }
 </style>

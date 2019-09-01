@@ -6,7 +6,6 @@
               :data="listData"
               :props="defaultProps"
               :expand-on-click-node="true"
-              :render-content="renderContent"
               accordion
               @node-click="handleNodeClick">
       </el-tree>
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-    import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
 
@@ -44,21 +42,35 @@
             },
         },
         async created() {
-            await utils.request({
-                invoke: api.requestTeacherOwnCourses,
+            let amount = await utils.request({
+                invoke: api.getCourseChunk,
                 params: {
-                    teacherId: store.state.teacherId
+                    code: 'course_all'
                 },
-                result: fakeData.TEACHER_OWN_COURSE
-            }).then(res => {
-                this.listData = res.data.courses.map(item => {
-                    return {
-                        courseId: item.courseId,
-                        title: item.title,
-                        courseSection: []
-                    }
+                result: fakeData.COURSE_COUNT
+            })
+                .then(function (res) {
+                    return Promise.resolve(res.data.totalCount)
                 });
-            });
+            await utils.request({
+                invoke: api.getCourseChunk,
+                params: {
+                    code: 'course_chunk',
+                    gotten: 0,
+                    length: amount
+                },
+                result: fakeData.COURSE_CHUNK
+            })
+                .then(function (res) {
+                    this.listData = res.data.chunks.map(item => {
+                        return {
+                            courseId: item.courseId,
+                            title: item.title,
+                            courseSection: []
+                        }
+                    });
+                }.bind(this));
+
             for (let i = 0; i < this.listData.length; i++) {
                 utils.request({
                     invoke: api.requestCourseDetail,
