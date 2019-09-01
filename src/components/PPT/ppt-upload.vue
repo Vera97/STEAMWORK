@@ -5,7 +5,7 @@
             ref="upload"
             action="#"
             class="upload-demo"
-            :http-request="pptUpload"
+            :http-request="uploadPrompt"
             :auto-upload="false"
             :limit="1"
             :on-exceed="handleExceed"
@@ -42,8 +42,7 @@
             uploadPPT() {
                 this.$refs.upload.submit()
             },
-            pptUpload(e) {
-                let that = this;
+            uploadPrompt (e) {
                 if(!this.courseSectionId) {
                     this.$message.error('请先选择课时');
                     return
@@ -52,26 +51,31 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    let formData = new FormData();
-                    formData.append('ppt_file', e.file);
-                    formData.append('courseSectionId', this.courseSectionId);
-                    console.log(formData.get("ppt_file"));
-                    utils.request({
-                        invoke: api.uploadFile,
-                        params: formData,
-                        result: fakeData.UPLOAD_RESPONSE
-                    })
-                        .then(res => {
-                            if (res.data.code === 1) {
-                                this.$message.success('成功上传');
-                                that.uploaded = true;
-                                that.$emit('upload', res.data.pptId, res.data.pptImagesList);
-                            } else {
-                                this.$message.error('上传失败')
-                            }
-                        })
-                }).catch()
+                })
+                    .then(function () {
+                        this.pptUpload(e)
+                    }.bind(this)).catch()
+            },
+            pptUpload(e) {
+                let formData = new FormData();
+                formData.append('ppt_file', e.file);
+                formData.append('courseSectionId', this.courseSectionId);
+                console.log(formData.get("ppt_file"));
+                utils.request({
+                    invoke: api.uploadFile,
+                    params: formData,
+                    result: fakeData.UPLOAD_RESPONSE
+                })
+                    .then(function(res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('成功上传');
+                            this.uploaded = true;
+                            console.log(res.data);
+                            this.$emit('upload', res.data.pptId, res.data.pptImagesList);
+                        } else {
+                            this.$message.error('上传失败')
+                        }
+                    }.bind(this))
             },
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);

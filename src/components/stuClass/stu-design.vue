@@ -6,13 +6,14 @@
             placeholder="请输入内容"
             v-model="textarea">
     </el-input>
-    <el-button type="primary" class="button" @click="refresh">确认完成</el-button>
   </div>
 </template>
 
 <script>
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
+    import store from '../../store'
+
     export default {
         name: "stu-design",
         data() {
@@ -21,28 +22,25 @@
             }
         },
         props: {
-            complete: {
-                type: Function,
-                default: null
-            },
-            currentExercise:Object//可从中获取当前活动的id
+            exerciseBody: Object//可从中获取当前活动的id
         },
         methods: {
-            refresh() {
+            complete() {
                 utils.request({
                     invoke: api.requestUploadCourseExerciseDesign,
                     params: {
-                        stuId: this.stuId,
+                        stuId: store.state.stuId,
+                        courseSectionId: store.state.courseSectionId,
+                        exerciseId: this.exerciseBody.exerciseId,
                         designContent: this.textarea
                     },
                     result: fakeData.EXERCISE_DESIGN
                 })
-                    .then(res => {
+                    .then(function(res) {
                         if (res.data.code === 1) {
-                            alert("上传设计方案成功！");
-                            this.complete();
+                            this.$message.success('上传设计方案成功！');
                         }
-                    });
+                    }.bind(this));
             }
         }
     }

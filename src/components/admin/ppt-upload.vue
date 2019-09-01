@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="uploaded" class="change">
+    <div v-if="!uploaded" class="change">
       <el-upload
               ref="upload"
               action="#"

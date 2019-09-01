@@ -3,6 +3,7 @@
     <el-card class="ppt-box">
       <i class="el-icon-close" @click="open"></i>
       <component
+              ref="exerciseComp"
               :complete="complete"
               v-bind:is="currentTabComponent"
               :exercise-body="exerciseBody"
@@ -52,7 +53,7 @@
                 case '互动问答':
                     this.currentTabComponent = 'answer';
                     break;
-                case '方案设计':
+                case '设计方案':
                     this.currentTabComponent = 'stu-design';
                     break;
                 case '作品展示':
@@ -64,26 +65,38 @@
                 this.$parent.onEmmitCur();
             },
             complete() {
-                utils.request({
-                    invoke: api.requestIsOver,
-                    params: {
-                        classroomId: store.state.classroomId,
-                        exerciseId: store.state.resource.currentExercise.exerciseId,
-                    },
-                    result: fakeData.IS_OVER,
-                })
-                    .then(res => {
-                        if (res.data.code === 1)//教师端未关闭此活动
+                if (this.$refs.exerciseComp.complete) {
+                    this.$refs.exerciseComp.complete()
+                }
+                this.$parent.requestActivityStatus(this.exerciseBody)
+                    .then(function (data) {
+                        if (data.code === 1)//教师端未关闭此活动
                         {
-                            this.$parent.onEmmitCur();
-                            this.$parent.addWealth();
+                            utils.request({
+                                invoke: api.requireConfirmTask,
+                                params: {
+                                    stuId: store.state.stuId,
+                                    exerciseId: this.exerciseBody.exerciseId,
+                                    courseSectionId: store.state.courseSectionId
+                                },
+                                result: fakeData.SINGLE_NUMBER_CODE
+                            })
+                                .then(function (res) {
+                                    if (res.data.code === 1) {
+                                        this.$parent.onEmmitCur();
+                                        this.$parent.addWealth();
+                                    } else {
+                                        this.$message.error('请求完成失败')
+                                    }
+                                }.bind(this))
                         } else {//教师端关闭此活动
                             this.$parent.onEmmitCur();
                             this.$alert('本活动完成时间已超时', '提示', {
                                 confirmButtonText: '确定',
                             });
                         }
-                    });
+                    }.bind(this));
+
                 //向后端请求更改活动状态，
                 for(let i = 0;i < store.state.stuClass.exerciseList.length; i++){
                     if(store.state.stuClass.exerciseList[i].exerciseId === store.state.stuClass.currentExercise.exerciseId){

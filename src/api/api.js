@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -504,10 +504,17 @@ export const requestClassStuQuestion = params => {
     return axios.post(`${base}/stu/classroom/get_ppt_question`, params, options);
 };
 
+/**
+ * url: /classroom/stu_online
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number, stuReadyList: Array<{stuId: number, stuName: String, stuNumber: number}>}>}
+ */
 export const requestAttendance = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/classroom/stu_statics`, params, options);
+    return axios.post(`${base}/classroom/stu_online`, params, options);
 };
+
 export const requestExerciseText = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/exercise/text`, params, options);
@@ -516,10 +523,43 @@ export const requestExerciseQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/classroom/exercise/question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/new_question
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {Array<{questionName: String, question: String}>} params.questionList
+ * @returns {Promise<{code: number, questionList: Array<{questionId: number, questionName: String, question: String}>}>}
+ */
 export const requestNewQuestion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_question`, params, options);
 };
+
+/**
+ * url: /courses_prepare/edit_question
+ * @param {Object} params
+ * @param {number} params.questionId
+ * @param {String} params.content
+ * @returns {Promise<{code: number}>}
+ */
+export const requestEditCommonQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_question`, params, options);
+};
+
+/**
+ * url: /courses_prepare/delete_question
+ * @param {Object} params
+ * @param {number} params.questionId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestDeleteCommonQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/delete_question`, params, options);
+};
+
 export const requestGetCourseWealth = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/course/course_section_wealth/get`, params, options);
@@ -880,3 +920,35 @@ export const loginAdmin = params => {
     return axios.post(`${base}/login/admin`, params, options);
 };
 
+/**
+ * url: /stu/classroom/confirm_task
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @param {number} params.exerciseId
+ * @param {number} params.courseSectionId
+ * @returns {Promise<{code: number}>}
+ */
+export const requireConfirmTask = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/classroom/confirm_task`, params, options);
+};
+
+/**
+ * url: /teacher/classroom/ppt_append
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestAddPage = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/ppt_append`, params, options);
+};
+
+/**
+ * url: /stu/course/course_section_exercise_photo/upload
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestUploadCourseExercisePhoto = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_photo/upload`, params, options);
+};

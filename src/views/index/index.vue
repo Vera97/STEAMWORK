@@ -105,7 +105,7 @@
                     .then((function (res) {
                         if(res.data.code === 1) {
                             store.commit('LOG_IN_ADMIN', {
-                                adminId: 3322,
+                                adminId: res.data.adminId,
                                 userName: this.form.userName
                             });
                             this.$router.push({path: '/admin'})

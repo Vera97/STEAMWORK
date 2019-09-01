@@ -34,4 +34,9 @@
     margin-top:2%;
     min-height:550px;
   }
+
+  #id {
+    margin-left: 0;
+    margin-right: 0;
+  }
 </style>

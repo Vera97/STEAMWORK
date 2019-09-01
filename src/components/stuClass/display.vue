@@ -1,69 +1,51 @@
 <template>
   <div>
-    上传你的作品
-    <el-upload
-            ref="upload"
-            action="#"
-            class="upload-demo"
-            :http-request="imageUpload"
-            :auto-upload="false"
-            :limit="1"
-            :on-exceed="handleExceed"
-            :on-remove="beforeRemove"
-            :file-list="fileList"
-    >
-      <el-button slot="trigger" size="medium" type="">&emsp;选择&emsp;</el-button>
-      <el-button class="upload-button" size="medium" type="primary" @click="uploadImage">&emsp;上传&emsp;</el-button>
-      <div class="el-upload__tip" slot="tip">只能图片文件</div>
-    </el-upload>
+    <image-uploader @upload="uploadHandler"></image-uploader>
   </div>
 </template>
 
 <script>
+    import ImageUploader from '../image-uploader'
+
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
+    import store from '../../store'
 
     export default {
         name: "display",
+        components: {ImageUploader},
+        props: {
+            exerciseBody: Object
+        },
         methods: {
-            uploadImage() {
-                this.$refs.upload.submit()
-            },
-            imageUpload(e) {
-                let that = this;
+            uploadHandler (file) {
                 this.$confirm('确认上传此照片？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
+                }).then(function () {
                     let formData = new FormData();
-                    formData.append('image', e.file);
-                    formData.append('courseSectionId', this.courseSectionId);
+                    formData.append('image', file);
+                    console.log(this.exerciseBody.exerciseId);
+                    // formData.append('courseSectionId', this.courseSectionId);
                     utils.request({
-                        invoke: api.uploadFile,
-                        params: formData,
+                        invoke: api.requestUploadCourseExercisePhoto,
+                        params: {
+                            stuId: store.state.stuId,
+                            courseSectionId: store.state.courseSectionId,
+                            exerciseId: this.exerciseBody.exerciseId,
+                            photo: formData
+                        },
                         result: fakeData.UPLOAD_RESPONSE
                     })
-                        .then(res => {
+                        .then(function(res) {
                             if (res.data.code === 1) {
-                                this.$message.success('成功上传');
-                                that.uploaded = true;
-                                that.url = res.data.url;
-                                that.$emit('upload', res.data.url, res.data.pptImagesList);
+                                this.$confirm('上传成功，请点击确认完成按钮完成任务获得财富');
                             } else {
                                 this.$message.error('上传失败')
                             }
-                        })
-                }).catch()
-            },
-            beforeRemove(file) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
-            },
-            handleExceed() {
-                this.$message.info("只能上传一个文件")
-            },
-            deletePPT() {
-                console.log('delete')
+                        }.bind(this))
+                }.bind(this)).catch()
             }
         }
     }
