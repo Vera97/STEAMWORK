@@ -15,6 +15,7 @@
                     :course-section-id="courseSectionId"
                     :course-section-name="courseSectionName"
                     @upload="handleUpload"
+                    @delete="handleDelete"
             ></ppt-upload>
             <PPTshow ref="PPTshow" :ppt-data="pptData" @remove-page="removePage"></PPTshow>
             <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;
@@ -80,11 +81,14 @@
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
             handleUpload(pptId, pptImagesList) {
-                console.log(pptId);
-                console.log(pptImagesList);
                 this.pptData.pptId = pptId;
                 this.pptData.pptImagesList = [];
                 this.pptData.pptImagesList.push(...pptImagesList)
+            },
+            handleDelete () {
+                this.$set(this.pptData, 'pptId', null);
+                this.$set(this.pptData, 'pptImagesList', []);
+                this.$refs.PPTshow.clearActivities()
             },
             sectionSelect({courseSectionId, courseSectionName}) {
                 this.courseSectionId = courseSectionId;

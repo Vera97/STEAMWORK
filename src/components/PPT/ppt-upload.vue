@@ -84,7 +84,9 @@
                 this.$message.info("只能上传一个文件")
             },
             deletePPT() {
-                console.log('delete')
+                console.log('delete');
+                this.uploaded = false;
+                this.$emit('delete')
             },
             inject() {
                 this.uploaded = true

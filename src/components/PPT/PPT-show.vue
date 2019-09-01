@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <el-row :gutter="0">
-      <el-col :span="6" class="ppt-wrapper">
+      <el-col :span="4" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
           <course-ppt
                   class="slide-cell"
@@ -15,7 +15,7 @@
           <el-button class="add-ppt" size="small" @click="addPage" round><i class="el-icon-circle-plus-outline"></i>添加ppt</el-button>
         </div>
       </el-col>
-      <el-col :span="17" style="float:right;">
+      <el-col :span="19" style="float:right;">
         <div style="margin-bottom:5px;">
           <el-tabs type="border-card" class="border-card tabs">
             <el-tab-pane label="+ 添加教学活动" class="pane">
@@ -28,7 +28,7 @@
                       :render-content="renderContent"
                       @node-click="handleNodeClick">
               </el-tree>
-              <div id="menu3" style="z-index:1;float:right;width:100%;" class="box-card3 text-center">
+              <div id="menu3" class="box-card3 text-center">
                 <component
                         :is="displayComponent"
                         :exercise-id="exerciseId"
@@ -124,6 +124,10 @@
             }
         },
         methods: {
+            clearActivities () {
+                this.listData = [];
+                this.commonQuestion = [];
+            },
             renderContent(h, {node, data}) {
                 let children, that = this;
                 if (node.level === 1) {
@@ -471,6 +475,7 @@
   }
   .activities-tree {
     width: 30%;
+    position: absolute;
   }
   .highlight {
     border: #6495ED solid .1em;
@@ -494,7 +499,7 @@
   }
 
   .add-ppt .el-button {
-    width: 50%;
+    width: 90%;
   }
 
   .add-question {
@@ -505,5 +510,15 @@
   .tabs {
     max-height: 30em;
     overflow-y: scroll;
+  }
+
+  #menu3 {
+    width: 65%;
+    left: 34%;
+    position: relative;
+  }
+
+  .pane {
+    height: 25em;
   }
 </style>
