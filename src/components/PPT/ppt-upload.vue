@@ -5,6 +5,7 @@
             ref="upload"
             action="#"
             class="upload-demo"
+            :class="{full: full, half: !full}"
             :http-request="uploadPrompt"
             :auto-upload="false"
             :limit="1"
@@ -12,8 +13,8 @@
             :on-remove="beforeRemove"
             :file-list="fileList"
     >
-      <el-button slot="trigger" size="medium" type="">&emsp;选择&emsp;</el-button>
-      <el-button class="upload-button" size="medium" type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button>
+      <el-button slot="trigger" size="mini" type="plain">&emsp;选择&emsp;</el-button>
+      <el-button class="upload-button" size="mini" type="primary" @click="uploadPPT">&emsp;上传&emsp;</el-button>
       <div class="el-upload__tip" slot="tip">只能上传ppt/pptx文件</div>
     </el-upload>
     <div class="ppt-name" v-else>
@@ -29,6 +30,10 @@
     export default {
         name: "ppt-upload",
         props: {
+            full: {
+                type: Boolean,
+                default: false
+            },
             courseSectionId: Number,
             courseSectionName: String
         },
@@ -84,7 +89,9 @@
                 this.$message.info("只能上传一个文件")
             },
             deletePPT() {
-                console.log('delete')
+                console.log('delete');
+                this.uploaded = false;
+                this.$emit('delete')
             },
             inject() {
                 this.uploaded = true
@@ -97,7 +104,6 @@
   .upload-demo {
     margin-bottom: 1em;
     float-offset: 2%;
-    width: 50%;
   }
   .upload-button {
     margin-left: 1em;
@@ -108,5 +114,14 @@
       font-size: .8em;
       margin-right: 1em;
     }
+  }
+
+  .full {
+    margin-top: 1em;
+    width: 100%;
+  }
+
+  .half {
+    width: 50%;
   }
 </style>

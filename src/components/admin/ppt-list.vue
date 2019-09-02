@@ -4,12 +4,14 @@
       <el-col :span="5">
         <course-directory @section-selected="sectionSelect"></course-directory>
         <ppt-upload
+                v-show="isShow"
+                :full="true"
                 ref="pptUpload"
                 :course-section-id="courseSectionId"
                 :course-section-name="courseSectionName"
                 @upload="handleUpload"
+                @delete="handleDelete"
                 class="upload"
-                v-if="!isSelect"
         ></ppt-upload>
       </el-col>
       <el-col :span="19">
@@ -17,7 +19,12 @@
           请先选择课时
         </el-card>
         <div v-show="isShow">
-          <PPTshow ref="PPTshow" @addPPT="addPPT"></PPTshow>
+          <PPTshow
+                  ref="PPTshow"
+                  @addPPT="addPPT"
+                  :ppt-data="pptData"
+                  @remove-page="removePage"
+          ></PPTshow>
           <el-upload
                   class="upload-demo"
                   action="https://jsonplaceholder.typicode.com/posts/"
@@ -37,8 +44,8 @@
 
 <script>
     import courseDirectory from "./course-directory";
-    import PPTshow from "./PPT-show";
-    import PptUpload from "./ppt-upload";
+    import PPTshow from "../PPT/PPT-show";
+    import PptUpload from "../PPT/ppt-upload";
 
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
@@ -72,10 +79,21 @@
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
-            handleUpload(url, pptImagesList) {
+            handleUpload(pptId, pptImagesList) {
                 this.isShow=true;
-                this.pptData.url = url;
+                this.pptData.pptId = pptId;
+                this.pptData.pptImagesList = [];
                 this.pptData.pptImagesList.push(...pptImagesList)
+            },
+            handleDelete () {
+                this.$set(this.pptData, 'pptId', null);
+                this.$set(this.pptData, 'pptImagesList', []);
+                this.$refs.PPTshow.clearActivities()
+            },
+            removePage (index) {
+                // TODO remove the corresponding page.
+                this.pptData.pptImagesList.splice(index, 1);
+                this.$message.success('成功删除')
             },
             sectionSelect({courseSectionId, courseSectionName}) {
                 this.isSelect=false;
@@ -91,9 +109,10 @@
                     .then((function(res) {
                         if(res.data.code === 1) {
                             this.pptData.pptId = res.data.pptId;
+                            this.pptData.pptImagesList = [];
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
                             this.$refs.pptUpload.inject();
-                            this.$refs.PPTshow.init(this.pptData);
+                            this.$refs.PPTshow.init();
                             this.isShow = true
                         }
                     }).bind(this))

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = false;
+export const DEVELOPMENT = true;
 
 export const WATCH_ALL = false;
 
@@ -951,4 +951,15 @@ export const requestAddPage = params => {
 export const requestUploadCourseExercisePhoto = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/stu/course/course_section_exercise_photo/upload`, params, options);
+};
+
+/**
+ * url: /admins/courses/label_filter
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestFilterCourseByTag = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label_filter`, params, options);
 };

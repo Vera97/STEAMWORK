@@ -919,3 +919,21 @@ export const LOGIN_ADMIN_RESPONSE={
     code:1,
     adminId:123
 };
+
+export const FILTER_COURSE_TAG = {
+    code: 1,
+    courseList: [
+        {
+            courseId: 1,
+            courseName: '3d打印'
+        },
+        {
+            courseId: 2,
+            courseName: '4d打印'
+        },
+        {
+            courseId: 3,
+            courseName: '5d打印'
+        }
+    ]
+};

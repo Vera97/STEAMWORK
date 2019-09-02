@@ -94,25 +94,30 @@
                     }).bind(this))
             },
             loginAdmin () {
-                utils.request({
-                    invoke: api.loginAdmin,
-                    params: {
-                        userName: this.form.userName,
-                        passWord: this.form.password
-                    },
-                    result: fakeData.LOGIN_ADMIN_RESPONSE
-                })
-                    .then((function (res) {
-                        if(res.data.code === 1) {
-                            store.commit('LOG_IN_ADMIN', {
-                                adminId: res.data.adminId,
-                                userName: this.form.userName
-                            });
-                            this.$router.push({path: '/admin'})
-                        } else {
-                            this.$message.error('用户名或密码错误')
-                        }
-                    }).bind(this))
+                store.commit('LOG_IN_ADMIN', {
+                    adminId: 123,
+                    userName: this.form.userName
+                });
+                this.$router.push({path: '/admin'});
+                // utils.request({
+                //     invoke: api.loginAdmin,
+                //     params: {
+                //         userName: this.form.userName,
+                //         passWord: this.form.password
+                //     },
+                //     result: fakeData.LOGIN_ADMIN_RESPONSE
+                // })
+                //     .then((function (res) {
+                //         if(res.data.code === 1) {
+                //             store.commit('LOG_IN_ADMIN', {
+                //                 adminId: res.data.adminId,
+                //                 userName: this.form.userName
+                //             });
+                //             this.$router.push({path: '/admin'})
+                //         } else {
+                //             this.$message.error('用户名或密码错误')
+                //         }
+                //     }).bind(this))
             },
             register () {
                 this.$message.info('register')
