@@ -75,11 +75,11 @@
                 this.selectedList = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.changeOverlay();
             },
-            handleDelete(index, row) {//删除标签暂时缺少api
+            handleDelete(index, row) {
                 utils.request({
-                    invoke: api.requestDeleteTeacher,
+                    invoke: api.requestDeleteLabel,
                     params: {
-                        teacherId: row.id
+                        labelId: row.labelId
                     },
                     result: fakeData.DELETE_TEACHER
                 }).then(res => {

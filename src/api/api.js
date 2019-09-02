@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -323,23 +323,23 @@ export const requestGetProgressStu = params => {
 };
 export const requestNewCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/course_prepare/new_course', params, options);
+    return axios.post(`${base}/courses_prepare/new_course`, params, options);
 };
 export const requestNewCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/course_prepare/new_coursesection`, params, options);
+    return axios.post(`${base}/courses_prepare/new_coursesection`, params, options);
 };
 export const requestDeleteCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_coursesection', params, options);
+    return axios.post(`${base}/courses_prepare/delete_coursesection`, params, options);
 };
 export const requestDeleteCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_course', params, options);
+    return axios.post(`${base}/courses_prepare/delete_course`, params, options);
 };
 export const requestEditCourseName = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/edit_course_name', params, options);
+    return axios.post(`${base}/courses_prepare/edit_course_name`, params, options);
 };
 
 /**
@@ -864,6 +864,16 @@ export const requestGetLabelList = params => {
 export const requestAddLabel= params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/label/add`, params, options);
+};
+/**
+ * url: /admin/delete_label
+ * @param {object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number}>}>}
+ */
+export const requestDeleteLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admin/delete_label`, params, options);
 };
 //admin资源管理
 /**

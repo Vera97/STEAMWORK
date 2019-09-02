@@ -18,7 +18,6 @@
               :render-after-expand="false"
               :render-content="renderContent"
               @node-click="handleNodeClick"
-              accordion
               ref="tree"
       >
       </el-tree>
@@ -124,7 +123,7 @@
                         on: {
                             click() {
                                 if (node.level === 1) {
-                                    that.editCourse(node, data.courseSectionId)
+                                    that.editCourse(node, data.courseId)
                                 } else if (node.level === 2) {
                                     that.editCourseSection(node, data.courseSectionId)
                                 } else
@@ -197,7 +196,7 @@
                     ]
                 )
             },
-            editStep(node, stepId) {//缺少api
+            editStep(node) {//缺少api
                 this.$prompt('修改步骤名称为', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -263,6 +262,7 @@
                         },
                         result: fakeData.EDIT_COURSE
                     }).then(res => {
+                        alert(res.data);
                         if (res.data.code === 1)
                             this.$set(node.data, 'title', value);
                     });
@@ -287,7 +287,7 @@
                     utils.request({//api修改
                         invoke: api.requestDeleteCourse,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseId:courseId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
@@ -388,11 +388,12 @@
                     utils.request({
                         invoke: api.requestNewCourse,
                         params: {
-                            adminId: this.adminId,
+                            teacherId: 1,
                             courseName: value
                         },
-                        result: fakeData.ADD_COURSE
+                        //result: fakeData.ADD_COURSE
                     }).then(res => {
+                        alert(value);
                         this.listData.push({
                             courseId: res.data.courseId,
                             title: value,
@@ -420,7 +421,7 @@
                         invoke: api.requestNewCourseSection,
                         params: {
                             courseId: courseId,
-                            courseName: value
+                            courseSectionName: value
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(res => {
@@ -534,12 +535,12 @@
                         utils.request({
                             invoke: api.requestCourseSteps,
                             params: {
-                                code: 'step_contents',
-                                stepId: ''
+                                courseId: this.listData[i].courseId
                             },
                             result: fakeData.PERIOD_STEPS
                         })
                             .then(res => {
+                                console.log(res.data);
                                 this.listData[i].child[j].child = res.data.map(item => {
                                     return {
                                         stepId: item.stepId,

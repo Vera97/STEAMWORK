@@ -51,10 +51,10 @@
             stepId:Number,
             stepName:String,
             isSelect:Boolean,
+            selectData:Array
         },
         data(){
             return{
-                selectData:[],
                 allLabel:[],
                 temp:[],
                 dialogVisible:false,
@@ -76,19 +76,6 @@
                 }).then(res => {
                     if (res.data.code === 1) {
                         alert("新建步骤完成！");
-                    }
-                });
-            },
-            getLabel() {
-                utils.request({
-                    invoke: api.requestAssignedGet,
-                    params: {
-                        courseId:this.courseId
-                    },
-                    result: fakeData.GET_LABEL_HAVE
-                }).then(res => {
-                    if (res.data.code === 1) {
-                        this.selectData = res.data.labelList;
                     }
                 });
             },
@@ -126,8 +113,21 @@
             },
             add(){
                 let that=this;
+                console.log(that.temp);
                 for(let i=0;i< that.temp.length;i++){
                     if(that.temp[i].isChecked){
+                        utils.request({
+                            invoke: api.requestAssignLabel,
+                            params: {
+                                labelId: that.temp[i].labelId,
+                                courseId:that.courseId
+                            },
+                            //result: fakeData.GET_LABEL_LIST
+                        }).then(res=>{
+                            if(res.data.code===1){
+                                alert("添加成功！");
+                            }
+                        });
                         that.selectData.push(that.temp[i]);
                     }
                 }
