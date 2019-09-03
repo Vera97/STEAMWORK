@@ -4,7 +4,17 @@
      <resourceList @course-selected="selectedCourse" @section-selected="selectedSection" @step-selected="selectedStep"></resourceList>
     </el-col>
     <el-col :span="18">
-      <resourceContent ref="child" :isSelect="isSelect" :courseId="courseId" :courseName="courseName" :courseSectionId="courseSectionId" :courseSectionName="courseSectionName" :stepId="stepId" :stepName="stepName" @addStep="addStep"></resourceContent>
+      <resourceContent
+              ref="child"
+              :selectData="selectData"
+              :isSelect="isSelect"
+              :courseId="courseId"
+              :courseName="courseName"
+              :courseSectionId="courseSectionId"
+              :courseSectionName="courseSectionName"
+              :stepId="stepId"
+              :stepName="stepName"
+              @addStep="addStep"></resourceContent>
     </el-col>
   </el-row>
 </template>
@@ -12,6 +22,10 @@
 <script>
     import resourceList from '../admin/resource-list'
     import resourceContent from '../admin/resource-content'
+
+    import {api, fakeData} from '../../api'
+    import utils from '../../utils'
+
     export default {
         name: "resource-manage",
         components:{resourceList,resourceContent},
@@ -25,7 +39,8 @@
                 stepName:'',
                 newStepId:-1,
                 isSelect:true,
-                isUpload:false
+                isUpload:false,
+                selectData:[]
             }
         },
         methods:{
@@ -33,7 +48,17 @@
                 this.isSelect=false;
                 this.courseId=data.courseId;
                 this.courseName=data.title;
-                this.$refs.child.getLabel();
+                utils.request({
+                    invoke: api.requestAssignedGet,
+                    params: {
+                        courseId:this.courseId
+                    },
+                    result: fakeData.GET_LABEL_HAVE
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.selectData = res.data.labelList;
+                    }
+                });
             },
             selectedSection(data){
                 this.isSelect=false;
