@@ -973,3 +973,14 @@ export const requestFilterCourseByTag = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/courses/label_filter`, params, options);
 };
+
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestAssignedRemove = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/assign_remove_course`, params, options);
+};
