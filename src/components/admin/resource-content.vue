@@ -5,7 +5,7 @@
   </div>
   <div v-else>
     <el-tag v-for="(item,index) in selectData" :key="index" class="tag">{{item.labelName}}<i class="el-icon-close" @click="del(item,index)"></i></el-tag>
-    <el-button type="primary" class="addLabel" @click="newAdd">新增标签</el-button>
+    <el-button type="primary" class="addLabel" @click="newAdd" size="medium">新增标签</el-button>
   </div>
     <div v-if="upLoad">
     <div class="content">
@@ -172,6 +172,7 @@
   }
   .addLabel{
     margin-right:1em;
+    margin-top:0.7%;
   }
   .tip{
     padding:15em;

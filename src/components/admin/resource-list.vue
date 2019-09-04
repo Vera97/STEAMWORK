@@ -125,7 +125,8 @@
                                 if (node.level === 1) {
                                     that.editCourse(node, data.courseId)
                                 } else if (node.level === 2) {
-                                    that.editCourseSection(node, data.courseSectionId)
+                                    that.editCourseSection(node, data.courseSectionId);
+                                    // alert(data.courseSectionId);
                                 } else
                                     that.editStep(node, data.stepId)
                             }
@@ -208,7 +209,7 @@
                             courseName: value
                         },
                         result: fakeData.ADD_COURSE
-                    }).then(res => {
+                    }).then(() => {
                         this.$set(node.data, 'title', value);
                     });
                     this.$message({
@@ -233,9 +234,11 @@
                             courseSectionId: courseSectionId,
                             courseSectionName: value
                         },
-                        result: fakeData.EDIT_COURSE
+                        result: fakeData.EDIT_COURSE,
+
                     }).then(res => {
-                        console.log(res.data);
+                        alert(node.data.title);
+                        console.log();
                         if (res.data.code === 1){
                             this.$set(node.data, 'title', value);
                         }
@@ -315,9 +318,9 @@
                     type: 'warning'
                 }).then(() => {
                     utils.request({//api修改
-                        invoke: api.requestDeleteCourse,
+                        invoke: api.requestDeleteCourseSection,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseSectionId: courseSectionId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
@@ -348,7 +351,7 @@
                     type: 'warning'
                 }).then(() => {
                     utils.request({//api缺少
-                        invoke: api.requestDeleteCourse,
+                        invoke: api.requestDeleteCourseSectionStep,
                         params: {
                             courseSectionId: store.state.courseSectionId,
                         },
