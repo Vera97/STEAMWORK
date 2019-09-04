@@ -273,8 +273,8 @@ export const STUDENT_SCORE = {
     score: 90
 };
 
-export const PERIOD_STEPS = [
-    {
+export const PERIOD_STEPS = {
+    steps:[{
         title: '步骤1',
         stepId: 1
     },{
@@ -292,9 +292,8 @@ export const PERIOD_STEPS = [
     },{
         title: '步骤6',
         stepId: 6
-    },
-];
-
+    }]
+};
 export const STEP_CONTENT = {
     html: '<p>i am <i>the</i> <span style="color: red">content</span></p>'
 };

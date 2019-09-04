@@ -866,6 +866,16 @@ export const requestAddLabel= params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/label/add`, params, options);
 };
+/**
+ * url: /admin/delete_label
+ * @param {object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number}>}>}
+ */
+export const requestDeleteLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admin/delete_label`, params, options);
+};
 //admin资源管理
 /**
  * url: /admins/courses/label/get
@@ -989,4 +999,13 @@ export const requestCloseClassroom = params => {
 export const requestMediaDisplay = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_exercise/media`, params, options);
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestAssignedRemove = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/assign_remove_course`, params, options);
 };
