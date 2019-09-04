@@ -587,7 +587,16 @@ export const PPT_QUESTION_RESPONSE = {
 
 export const ADD_COMMON_QUESTION = {
     code: 1,
-    questionId: 999
+    questionList: [
+        {
+            questionId: 1234,
+            questionName: 'aborted',
+            question: JSON.stringify({
+                title: 'name',
+                answer: 'body'
+            })
+        }
+    ]
 };
 
 export const EXERCISE_DESIGN = {

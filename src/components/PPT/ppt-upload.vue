@@ -44,6 +44,9 @@
             }
         },
         methods: {
+            cleanPPT () {
+                this.uploaded = false
+            },
             uploadPPT() {
                 this.$refs.upload.submit()
             },

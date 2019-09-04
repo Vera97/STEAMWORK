@@ -101,6 +101,7 @@
             // store.commit('startClass/SELECT_CLASS', this.classId);
             // await store.dispatch('startClass/getStuList');
 
+            this.groups = [];
             utils.request({
                 invoke: api.requestStuGroup,
                 params: {
@@ -136,12 +137,29 @@
         },
         methods: {
             addGroup() {
-                this.groups.push({
-                    groupName: '新建分组',
-                    groupId: null,
-                    leader: [],
-                    members: []
+                utils.request({
+                    invoke: api.requestNewStuGroup,
+                    params: {
+                        classroomId: this.classroomId,
+                        leaderStuId: 0,                   // add a blank group and alter it later
+                        groupName: '新增分组',
+                        members: []
+                    },
+                    result: fakeData.NEW_GROUP_RESPONSE
                 })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('新建成功');
+                            this.groups.push({
+                                groupName: '新建分组',
+                                groupId: res.data.groupId,
+                                leader: [],
+                                members: []
+                            })
+                        } else {
+                            this.$message.error('新建失败')
+                        }
+                    }.bind(this))
             },
             removeGroup(e, index) {
                 this.$confirm('确定要删除这个分组吗？', '提示', {

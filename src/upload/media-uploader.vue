@@ -16,6 +16,10 @@
             exerciseId: {
                 type: Number,
                 default: 1
+            },
+            apiBase: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -23,9 +27,10 @@
                 options: {
                     testChunks: true,
                     chunkSize: '2048000',
-                    target: '/api/files/courses_prepare/file_upload_chunks', //
+                    target: `${this.apiBase}/files/courses_prepare/file_upload_chunks`, //
                     query: this.compleParams,
-                    headers: window.headers
+                    headers: window.headers,
+                    method: 'POST'
                 },
                 attrs: {
                     accept: 'image/*'

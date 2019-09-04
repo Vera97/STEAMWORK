@@ -22,7 +22,8 @@
     "vue-drawing": "^0.2.3",
     "iconv-lite": "^0.5.0",
     "simple-uploader.js": "^0.5.1",
-    "vue-upload-component": "^2.8.20"
+    "vue-upload-component": "^2.8.20",
+    "vue-ueditor-wrap": "^2.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
