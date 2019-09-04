@@ -7,6 +7,7 @@
       <el-row :gutter="24">
         <el-col :span="5">
           <class-list :show-section="true" :show-options="false" @section-selected="loadMaterial"></class-list>
+          <el-button type="danger" class="class-over" @click="overPrompt">下课</el-button>
           <askList ref="askList" :classroom-id="classroomId"></askList>
         </el-col>
         <el-col :span="14">
@@ -182,6 +183,36 @@
             getPPTId (pptId) {
                 this.pptId = pptId;
                 this.$refs.activity.getExercise(this.pptId, this.pptIndex)
+            },
+            overPrompt () {
+                if (this.classroomId === null) {
+                    this.$message.error('现在还没有开始上课');
+                    return
+                }
+                this.$confirm('确认要下课吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                })
+                    .then(function () {
+                        this.classOver()
+                    }.bind(this)).catch()
+            },
+            classOver () {
+                utils.request({
+                    invoke: api.requestCloseClassroom,
+                    params: {
+                        classroomId: this.classroomId
+                    },
+                    result: fakeData.SINGLE_NUMBER_CODE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('成功下课');
+                            this.$router.go(0)
+                        } else {
+                            this.$message.error('下课失败')
+                        }
+                    }.bind(this))
             }
         }
     }
@@ -191,6 +222,11 @@
   * {
     margin-left: 0;
     padding-left: 0;
+  }
+
+  .class-over {
+    margin-top: 1em;
+    width: 100%;
   }
 
   .main-box {

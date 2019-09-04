@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-let base = 'http://localhost:2333/api';
+export const base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = true;
+export const DEVELOPMENT = false;
 
 export const WATCH_ALL = false;
 
@@ -323,23 +323,23 @@ export const requestGetProgressStu = params => {
 };
 export const requestNewCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/course_prepare/new_course', params, options);
+    return axios.post(`${base}/courses_prepare/new_course`, params, options);
 };
 export const requestNewCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/course_prepare/new_coursesection`, params, options);
+    return axios.post(`${base}/courses_prepare/new_coursesection`, params, options);
 };
 export const requestDeleteCourseSection = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_coursesection', params, options);
+    return axios.post(`${base}/courses_prepare/delete_coursesection`, params, options);
 };
 export const requestDeleteCourse = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/delete_course', params, options);
+    return axios.post(`${base}/courses_prepare/delete_course`, params, options);
 };
 export const requestEditCourseName = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post('${base)/courses_prepare/edit_course_name', params, options);
+    return axios.post(`${base}/courses_prepare/edit_course_name`, params, options);
 };
 
 /**
@@ -611,6 +611,7 @@ export const requestAlterGroup = params => {
  * @param {number} params.classroomId
  * @param {number} params.leaderStuId
  * @param {String} params.groupName
+ * @param {Array<number>} params.members
  * @returns {Promise<{code: number, groupId: number}>}
  */
 export const requestNewStuGroup = params => {
@@ -899,8 +900,9 @@ export const requestNewCourseSectionStep = params => {
 /**
  * url:/courses_prepare/edit_course_section_name
  * @param {object} params
- * @param {number} params.labelName
- * @returns {Promise<{code: number,labelId:number}>}>}
+ * @param {number} params.courseSectionId
+ * @param {String} params.courseSectionName
+ * @returns {Promise<{code: number}>}
  * add
  */
 export const requestEditCourseSectionName = params => {
@@ -962,4 +964,29 @@ export const requestUploadCourseExercisePhoto = params => {
 export const requestFilterCourseByTag = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/courses/label_filter`, params, options);
+};
+
+/**
+ * url: /classroom/exit
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestCloseClassroom = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exit`, params, options);
+};
+
+/**
+ * url: /courses_prepare/new_exercise/media
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @param {String} params.fileType
+ * @returns {Promise<{code: number, exerciseId: number}>}
+ */
+export const requestMediaDisplay = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/media`, params, options);
 };

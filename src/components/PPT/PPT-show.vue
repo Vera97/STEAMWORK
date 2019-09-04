@@ -1,6 +1,6 @@
 <template>
   <el-card class="box-card">
-    <el-row :gutter="0">
+    <el-row :gutter="0" v-if="onShow">
       <el-col :span="4" class="ppt-wrapper">
         <div class="box-card" v-for="(item, index) in pptData.pptImagesList" :key="index" :offset="index > 0 ? 1 : 0">
           <course-ppt
@@ -46,7 +46,7 @@
                         autosize
                         :rows="2"
                         placeholder="请输入问题"
-                        v-model="item.question">
+                        v-model="item.title">
                 </el-input>
                 <el-input
                         class="text"
@@ -69,6 +69,7 @@
         </div>
       </el-col>
     </el-row>
+    <h3 v-else>请先上传PPT</h3>
   </el-card>
 </template>
 
@@ -76,13 +77,20 @@
     import coursePpt from "./course-ppt";
     import reactiveQuestion from './reactive-question'
     import textDisplay from './text-display'
+    import MediaDisplay from './media-display'
+
     import utils from '../../utils';
     import {api, fakeData} from '../../api';
     import store from '../../store';
+
     export default {
         name: "PPT",
-        components: {coursePpt, reactiveQuestion, textDisplay},
+        components: {coursePpt, reactiveQuestion, textDisplay, MediaDisplay},
         props: {
+            onShow: {
+                type: Boolean,
+                default: false
+            },
             pptData: Object,
             courseSectionId: Number
         },
@@ -125,7 +133,9 @@
         },
         methods: {
             clearActivities () {
-                this.listData = [];
+                this.listData = [{
+                    activities: []
+                }];
                 this.commonQuestion = [];
             },
             renderContent(h, {node, data}) {
@@ -174,9 +184,11 @@
                         this.displayComponent = 'textDisplay';
                         break;
                     case '资源播放':
-                        alert('暂不支持的类型');
+                        this.exerciseId = data.exerciseId;
+                        this.displayComponent = 'mediaDisplay';
                         break;
                     default:
+                        this.$message.success('活动已添加');
                         break
                     }
                     store.commit("ppt/ADD_FLAG", data.type);
@@ -215,8 +227,8 @@
                         case '互动问答':
                             this.addReactiveQuestion();
                             break;
-                        case '视频播放':
-                            alert('not supported yet ');
+                        case '资源播放':
+                            this.addMediaDisplay();
                             break;
                         default:
                             this.addExercise(this.type)
@@ -280,7 +292,16 @@
                 })
                     .then(function (res) {
                         this.commonQuestion = [];
-                        this.commonQuestion.push(...res.data.question)
+                        if (res.data.questionList.length === 0) return;
+                        for (let item of res.data.questionList) {
+                            console.log(item);
+                            let question = JSON.parse(item.question);
+                            this.commonQuestion.push({
+                                title: question.title,
+                                answer: question.answer,
+                                questionId: item.questionId
+                            })
+                        }
                     }.bind(this))
             },
             addTextDisplay () {
@@ -327,6 +348,30 @@
                                 exerciseId: res.data.exerciseId,
                                 title: '互动问答',
                                 type: '互动问答'
+                            })
+                        } else {
+                            this.$message.error('添加失败')
+                        }
+                    }.bind(this))
+            },
+            addMediaDisplay () {
+                utils.request({
+                    invoke: api.requestMediaDisplay,
+                    params: {
+                        pptId: this.pptData.pptId,
+                        pptPage: this.select,
+                        type: '资源播放',
+                        fileType: 'mp4'
+                    },
+                    result: fakeData.NEW_EXERCISE_RESPONSE
+                })
+                    .then(function (res) {
+                        if (res.data.code === 1) {
+                            this.$message.success('添加成功');
+                            this.listData[0].activities.push({
+                                exerciseId: res.data.exerciseId,
+                                title: '资源播放',
+                                type: '资源播放'
                             })
                         } else {
                             this.$message.error('添加失败')
@@ -397,7 +442,15 @@
                     params: {
                         pptId: this.pptData.pptId,
                         pptPage: this.select,
-                        content: ''
+                        questionList: [
+                            {
+                                questionName: 'aborted',
+                                question: JSON.stringify({
+                                    title: '',
+                                    answer: ''
+                                })
+                            }
+                        ]
                     },
                     result: fakeData.ADD_COMMON_QUESTION
                 })
@@ -405,9 +458,9 @@
                         if (res.data.code === 1) {
                             this.$message.success('添加成功');
                             this.commonQuestion.push({
-                                question: '新问题',
+                                title: '新问题',
                                 answer: '',
-                                questionId: res.data.questionId
+                                questionId: res.data.questionList[0].questionId
                             })
                         } else {
                             this.$message.error('新增失败')
@@ -419,7 +472,10 @@
                     invoke: api.requestEditCommonQuestion,
                     params: {
                         questionId: item.questionId,
-                        content: ''
+                        content: JSON.stringify({
+                            title: item.title,
+                            answer: item.answer
+                        })
                     },
                     result: fakeData.SINGLE_NUMBER_CODE
                 })
