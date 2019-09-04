@@ -235,8 +235,11 @@
                         },
                         result: fakeData.EDIT_COURSE
                     }).then(res => {
-                        if (res.data.code === 1)
+                        console.log(res.data);
+                        if (res.data.code === 1){
                             this.$set(node.data, 'title', value);
+                        }
+
                     });
                     this.$message({
                         type: 'success',
@@ -321,7 +324,7 @@
                         for (let i = 0; i < this.listData.length; i++) {
                             for (let j = 0; j < this.listData[i].child.length; j++) {
                                 if (this.listData[i].child[j].courseSectionId === courseSectionId) {
-                                    const index = this.listData[i].child.findIndex(d => d.courseSectionId === courseSectionId)
+                                    const index = this.listData[i].child.findIndex(d => d.courseSectionId === courseSectionId);
                                     this.listData[i].child.splice(index, 1);
                                 }
                             }

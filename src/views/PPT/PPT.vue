@@ -17,7 +17,7 @@
                     @upload="handleUpload"
                     @delete="handleDelete"
             ></ppt-upload>
-            <PPTshow ref="PPTshow" :ppt-data="pptData" @remove-page="removePage"></PPTshow>
+            <PPTshow ref="PPTshow" :on-show="onDisplay" :ppt-data="pptData" @remove-page="removePage"></PPTshow>
             <el-button type="primary" style="margin-bottom:2%;margin-top:2%;">&emsp;上传相关学习资源（上传后将出现在学生端“课程资源”处）&emsp;
             </el-button>
             <a href="#" class="ll">导出内容</a>
@@ -51,13 +51,16 @@
     import PPTshow from "../../components/PPT/PPT-show";
     import Footer from "../../components/hd-footer";
     import PptUpload from "../../components/PPT/ppt-upload";
+
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
+
     export default {
         name: "PPT",
         components: {PptUpload, PPTshow ,courseDirectory, Nav, Footer},
         data() {
             return {
+                onDisplay: false,
                 pptData: {
                     pptImagesList: [],
                     pptId: null
@@ -83,7 +86,9 @@
             handleUpload(pptId, pptImagesList) {
                 this.pptData.pptId = pptId;
                 this.pptData.pptImagesList = [];
-                this.pptData.pptImagesList.push(...pptImagesList)
+                this.pptData.pptImagesList.push(...pptImagesList);
+                this.$refs.PPTshow.init();
+                this.onDisplay = true;
             },
             handleDelete () {
                 this.$set(this.pptData, 'pptId', null);
@@ -101,12 +106,17 @@
                     result: fakeData.UPLOAD_RESPONSE
                 })
                     .then((function(res) {
+                        this.pptData.pptImagesList = [];
+                        this.pptData.pptId = null;
+                        this.$refs.PPTshow.clearActivities();
+                        this.$refs.pptUpload.cleanPPT();
+                        this.onDisplay = false;
                         if(res.data.code === 1) {
                             this.pptData.pptId = res.data.pptId;
-                            this.pptData.pptImagesList = [];
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
                             this.$refs.pptUpload.inject();
-                            this.$refs.PPTshow.init()
+                            this.$refs.PPTshow.init();
+                            this.onDisplay = true;
                         }
                     }).bind(this))
             },

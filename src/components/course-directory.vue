@@ -36,7 +36,7 @@
         },
         methods: {
             handleNodeClick(data, node) {
-                if (node.isLeaf) {
+                if (node.level === 2) {
                     this.$emit('section-selected', {
                         courseSectionId: data.courseSectionId,
                         courseSectionName: data.courseSectionName
@@ -44,11 +44,10 @@
                 }
             },
             open() {
-                let that = this;
                 this.$prompt('请输入课程名称：', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                }).then(({value}) => {
+                }).then(function({value}) {
                     //向后端请求加入数据库
                     utils.request({
                         invoke: api.requestNewCourse,
@@ -57,23 +56,23 @@
                             courseName: value
                         },
                         result: fakeData.ADD_COURSE
-                    }).then(res => {
-                        that.listData.push({
+                    }).then(function(res) {
+                        this.listData.push({
                             courseId: res.data.courseId,
                             title: value,
                             courseSection: []
                         });
-                    });
+                    }.bind(this));
                     this.$message({
                         type: 'success',
                         message: '你新建的课程名称: ' + value
                     });
-                }).catch(() => {
+                }.bind(this)).catch(function() {
                     this.$message({
                         type: 'info',
                         message: '取消输入'
                     });
-                });
+                }.bind(this));
             },
             renderContent(h, {node, data}) {
                 let that = this;
@@ -109,7 +108,7 @@
                                 if (node.level === 1) {
                                     that.editCourse(data.courseId)
                                 } else if (node.level === 2) {
-                                    that.editCourseSection(data.courseSectionId)
+                                    that.editCourseSection(data.courseSectionId, node)
                                 }
                             }
                         },
@@ -200,7 +199,7 @@
                         invoke: api.requestNewCourseSection,
                         params: {
                             courseId: courseId,
-                            courseName: value
+                            courseSectionName: value
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(res => {
@@ -254,69 +253,65 @@
                 alert(`add for ${teacherId}`);
             },
             editCourse(courseId) {
-                let that = this;
                 this.$prompt('修改课程名称：', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                }).then(({value}) => {
+                }).then(function({value}) {
                     utils.request({
                         invoke: api.requestEditCourseName,
                         params: {
                             courseId: courseId,
                             courseName: value,
                         },
-                        result: fakeData.EDIT_COURSE
-                    }).then(() => {//编辑
-                        const index = that.listData.findIndex(d => d.courseId === courseId);
-                        const temp = that.listData[index];
-                        that.$set(temp, 'title', value);
-                        that.$set(that.listData, index, temp);
-                    });
-                    this.$message({
-                        type: 'success',
-                        message: '您更改后的课程名称是: ' + value
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                    });
-                });
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    }).then(function(res) {//编辑
+                        if (res.data.code === 1) {
+                            const index = this.listData.findIndex(d => d.courseId === courseId);
+                            this.$set(this.listData[index], 'title', value);
+                            this.$message({
+                                type: 'success',
+                                message: '您更改后的课程名称是: ' + value
+                            });
+                        } else {
+                            this.$message.error('修改失败')
+                        }
+
+                    }.bind(this));
+                }.bind(this))
             },
-            editCourseSection(courseSectionId) {//缺少修改课程名称的api
-                let that = this;
+            editCourseSection(courseSectionId, node) {//缺少修改课程名称的api
                 this.$prompt('修改课时名称：', '提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({value}) => {
+                    cancelButtonText: '取消'
+                }).then(function({value}) {
                     utils.request({
-                        invoke: api.requestEditCourseName,
+                        invoke: api.requestEditCourseSectionName,
                         params: {
                             courseSectionId: courseSectionId,
-                            courseSectionName: value,
+                            courseSectionName: value
                         },
-                        result: fakeData.EDIT_COURSE
-                    }).then(() => {//编辑
-                        for (let i = 0; i < that.listData.length; i++) {
-                            const index = that.listData[i].courseSection.findIndex(d => d.courseSectionId === courseSectionId);
-                            if (index!==undefined) {
-                                const temp = that.listData[i].courseSection[index];
-                                that.$set(temp, 'courseSectionName', value);
-                                that.$set(that.listData[i], index, temp);
-                                break;
-                            }
+                        result: fakeData.SINGLE_NUMBER_CODE
+                    }).then(function(res) {//编辑
+                        if (res.data.code === 1) {
+                            node.data.courseSectionName = value;
+                            // for (let i = 0; i < this.listData.length; i++) {
+                            //     const index = this.listData[i].courseSection.findIndex(d => d.courseSectionId === courseSectionId);
+                            //     if (index!==undefined) {
+                            //         const temp = this.listData[i].courseSection[index];
+                            //         this.$set(temp, 'courseSectionName', value);
+                            //         this.$set(this.listData[i], index, temp);
+                            //         break;
+                            //     }
+                            // }
+                            this.$message({
+                                type: 'success',
+                                message: '您更改后的课时名称是: ' + value
+                            });
+                        } else {
+                            this.$message.error('修改失败')
                         }
-                    });
-                    this.$message({
-                        type: 'success',
-                        message: '您更改后的课时名称是: ' + value
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                    });
-                });
+                    }.bind(this));
+                }.bind(this))
             },
             delCourse(courseId) {
                 let that = this;

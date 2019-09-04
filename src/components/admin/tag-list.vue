@@ -83,6 +83,7 @@
                     },
                     result: fakeData.DELETE_TEACHER
                 }).then(res => {
+                    alert('ni');
                     if (res.data.code === 1) {
                         this.$delete(this.tableData, index);
                         this.$message('删除成功！');

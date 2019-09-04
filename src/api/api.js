@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = 'http://localhost:2333/api';
+export const base = 'http://localhost:2333/api';
 
 export const DEVELOPMENT = false;
 
@@ -611,6 +611,7 @@ export const requestAlterGroup = params => {
  * @param {number} params.classroomId
  * @param {number} params.leaderStuId
  * @param {String} params.groupName
+ * @param {Array<number>} params.members
  * @returns {Promise<{code: number, groupId: number}>}
  */
 export const requestNewStuGroup = params => {
@@ -909,8 +910,9 @@ export const requestNewCourseSectionStep = params => {
 /**
  * url:/courses_prepare/edit_course_section_name
  * @param {object} params
- * @param {number} params.labelName
- * @returns {Promise<{code: number,labelId:number}>}>}
+ * @param {number} params.courseSectionId
+ * @param {String} params.courseSectionName
+ * @returns {Promise<{code: number}>}
  * add
  */
 export const requestEditCourseSectionName = params => {
@@ -972,4 +974,38 @@ export const requestUploadCourseExercisePhoto = params => {
 export const requestFilterCourseByTag = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/courses/label_filter`, params, options);
+};
+
+/**
+ * url: /classroom/exit
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @returns {Promise<{code: number}>}
+ */
+export const requestCloseClassroom = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/classroom/exit`, params, options);
+};
+
+/**
+ * url: /courses_prepare/new_exercise/media
+ * @param {Object} params
+ * @param {number} params.pptId
+ * @param {number} params.pptPage
+ * @param {String} params.type
+ * @param {String} params.fileType
+ * @returns {Promise<{code: number, exerciseId: number}>}
+ */
+export const requestMediaDisplay = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/new_exercise/media`, params, options);
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestAssignedRemove = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/assign_remove_course`, params, options);
 };

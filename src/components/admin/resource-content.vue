@@ -4,7 +4,7 @@
     <el-card class="tip">请选择课程</el-card>
   </div>
   <div v-else>
-    <el-tag v-for="(item,index) in selectData" :key="index" class="tag">{{item.labelName}}<i class="el-icon-close" @click="del(index)"></i></el-tag>
+    <el-tag v-for="(item,index) in selectData" :key="index" class="tag">{{item.labelName}}<i class="el-icon-close" @click="del(item,index)"></i></el-tag>
     <el-button type="primary" class="addLabel" @click="newAdd">新增标签</el-button>
   </div>
     <div v-if="upLoad">
@@ -117,6 +117,7 @@
                 for(let i=0;i< that.temp.length;i++){
                     if(that.temp[i].isChecked){
                         utils.request({
+
                             invoke: api.requestAssignLabel,
                             params: {
                                 labelId: that.temp[i].labelId,
@@ -125,7 +126,7 @@
                             //result: fakeData.GET_LABEL_LIST
                         }).then(res=>{
                             if(res.data.code===1){
-                                alert("添加成功！");
+                                console.log('标签添加成功！！');
                             }
                         });
                         that.selectData.push(that.temp[i]);
@@ -134,16 +135,17 @@
                 that.temp=[];
                 that.dialogVisible=false;
             },
-            del(index){
+            del(item,index){
                 utils.request({
                     invoke: api.requestAssignedRemove,
                     params: {
-                        adminId: 10
+                        labelId:item.labelId,
+                        courseId: this.courseId,
                     },
-                    result: fakeData.REMOVE_COURSE_LABEL
+                    //result: fakeData.REMOVE_COURSE_LABEL
                 }).then(res => {
                     if(res.data.code===1){
-                        this.selectData.splice(index,1)
+                        this.selectData.splice(index,1);
                     }
                 });
             }
