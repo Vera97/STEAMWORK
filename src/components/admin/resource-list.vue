@@ -19,6 +19,7 @@
               :render-content="renderContent"
               @node-click="handleNodeClick"
               ref="tree"
+              accordion
       >
       </el-tree>
     </el-card>
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-    import store from '../../store'
+    // import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
 
@@ -64,7 +65,7 @@
                     result: fakeData.GET_LABEL_LIST
                 }).then(res => {
                     if (res.data.code === 1) {
-                        console.log(res.data.labelList);
+                        // console.log(res.data.labelList);
                         this.options = res.data.labelList;
                     }
                 });
@@ -83,7 +84,7 @@
                 } else {
                     this.$emit('step-selected', {
                         stepId: data.stepId,
-                        stepName: data.title
+                        stepName: data.title,
                     })
                 }
             },
@@ -197,16 +198,17 @@
                     ]
                 )
             },
-            editStep(node) {//缺少api
+            editStep(node, stepId) {//缺少api
                 this.$prompt('修改步骤名称为', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
                     utils.request({
-                        invoke: api.requestNewCourse,
+                        invoke: api.requestEditCourseSectionStep,
                         params: {
-                            adminId: this.adminId,
-                            courseName: value
+                            courseStepId: stepId,
+                            stepName: value,
+                            stepContent: 'html',//??
                         },
                         result: fakeData.ADD_COURSE
                     }).then(() => {
@@ -237,8 +239,8 @@
                         result: fakeData.EDIT_COURSE,
 
                     }).then(res => {
-                        alert(node.data.title);
-                        console.log();
+                        // alert(node.data.title);
+                        // console.log();
                         if (res.data.code === 1){
                             this.$set(node.data, 'title', value);
                         }
@@ -350,39 +352,31 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    utils.request({//api缺少
+                    utils.request({
                         invoke: api.requestDeleteCourseSectionStep,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseStepId: stepId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
-                        utils.request({//api缺少
-                            invoke: api.requestDeleteCourse,
-                            params: {
-                                courseSectionId: store.state.courseSectionId,
-                            },
-                            result: fakeData.COURSE_SECTION
-                        }).then(() => {
-                            for (let i = 0; i < this.listData.length; i++) {
-                                for (let j = 0; j < this.listData[i].child.length; j++) {
-                                    for (let t = 0; t < this.listData[i].child[j].child.length; t++)
-                                        if (this.listData[i].child[j].child[t].stepId === stepId) {
-                                            const index = this.listData[i].child[j].child.findIndex(d => d.stepId === stepId);
-                                            this.listData[i].child[j].child.splice(index, 1);
-                                        }
-                                }
+                        for (let i = 0; i < this.listData.length; i++) {
+                            for (let j = 0; j < this.listData[i].child.length; j++) {
+                                for (let t = 0; t < this.listData[i].child[j].child.length; t++)
+                                    if (this.listData[i].child[j].child[t].stepId === stepId) {
+                                        const index = this.listData[i].child[j].child.findIndex(d => d.stepId === stepId);
+                                        this.listData[i].child[j].child.splice(index, 1);
+                                    }
                             }
-                        });
+                        }
                     });
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
-                    });
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: '取消删除'
                     });
                 });
             },
@@ -448,11 +442,20 @@
                     });
                 });
             },
-            addCourseSectionStep(node, sectionId) {
+            addCourseSectionStep(node, courseSectionId) {
                 this.$prompt('新建的步骤名称:', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
+                    utils.request({
+                        invoke: api.requestNewCourseSectionStep,
+                        params: {
+                            courseSectionId: courseSectionId,
+                            stepName: value,
+                            stepContent:'',
+                        },
+                        result: fakeData.COURSE_SECTION
+                    });
                     this.$emit('addStep',value);
                     node.data.child.push({
                         title: value
@@ -537,17 +540,18 @@
                             child: []
                         }
                     });
+
                     for (let j = 0; j < this.listData[i].child.length; j++) {
+                        // console.log(this.listData[i].child[j].courseSectionId);
                         utils.request({
-                            invoke: api.requestCourseSteps,
+                            invoke: api.requestCourseSectionSteps,
                             params: {
-                                courseId: this.listData[i].courseId
+                                courseSectionId: this.listData[i].child[j].courseSectionId,//测试
                             },
                             result: fakeData.PERIOD_STEPS
                         })
                             .then(res => {
-                                console.log(res.data);
-                                this.listData[i].child[j].child = res.data.map(item => {
+                                this.listData[i].child[j].child = res.data.steps.map(item => {
                                     return {
                                         stepId: item.stepId,
                                         title: item.title

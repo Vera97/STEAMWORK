@@ -92,14 +92,14 @@ export const requestCourseDetail = params => {
 };
 
 /**
- * url: /courses/steps
+ * url: /courses/course_section/steps
  * @param {Object} params
  * @param {number} params.courseId
  * @returns {Promise<any> | Array<{title: String, stepId: number}>}
  */
-export const requestCourseSteps = params => {
+export const requestCourseSectionSteps = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/steps`, params, options);
+    return axios.post(`${base}/courses/course_section/steps`, params, options);
 };
 
 /**

@@ -18,16 +18,12 @@
                 prop="password">
         </el-table-column>
         <el-table-column
-                label="Sex"
-                prop="sex">
-        </el-table-column>
-        <el-table-column
                 label="Introduce"
                 prop="introduceHtml">
         </el-table-column>
         <el-table-column
                 align="right">
-          <template slot="header" slot-scope="scope">
+          <template slot="header">
             <el-input
                     v-model="search"
                     size="mini"
@@ -50,6 +46,7 @@
       <div class="button-box-father">
         <el-button class="button-box" type="primary" round @click="add">增添用户</el-button>
       </div>
+<!--      <div><VueUeditorWrap></VueUeditorWrap></div>-->
     </div>
       <model :list="selectedList" :type="type" v-else v-cloak @modify="modify" @changeOverlay="changeOverlay"></model>
   </div>
@@ -59,6 +56,7 @@
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
     import model from '../admin/model'
+    // import VueUeditorWrap from "vue-ueditor-wrap";
 
     export default {
         name: 'teacher-list',
@@ -94,18 +92,28 @@
                 this.changeOverlay();
             },
             handleDelete(index, row) {
-                console.log(index, row);
-                utils.request({
-                    invoke: api.requestDeleteTeacher,
-                    params: {
-                        teacherId: row.id
-                    },
-                    result: fakeData.DELETE_TEACHER
-                }).then(res => {
-                    if (res.data.code === 1) {
-                        this.$delete(this.tableData, index);
-                        this.$message('删除成功！');
-                    }
+                this.$confirm('此操作将永久删除该教师, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    utils.request({
+                        invoke: api.requestDeleteTeacher,
+                        params: {
+                            teacherId: row.id
+                        },
+                        result: fakeData.DELETE_TEACHER
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$delete(this.tableData, index);
+                            this.$message('删除成功！');
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });
                 });
             },
             add(){

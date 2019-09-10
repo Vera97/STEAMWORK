@@ -9,12 +9,6 @@
         <el-form-item label="Password" prop="list.password">
           <el-input type="text" v-model="list.password" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Sex" prop="list.sex">
-          <el-radio-group v-model="list.sex">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="IntroduceHtml" prop="list.introduceHtml">
           <el-input type="textarea" v-model="list.introduceHtml" auto-complete="off"></el-input>
         </el-form-item>
@@ -44,11 +38,10 @@
                     utils.request({
                         invoke: api.requestEditTeacher,
                         params: {
-                            teacherId: 0,
+                            teacherId: list.id,
                             //不需要修改的字段设为0
                             name: list.name,
                             password:list.password,
-                            sex: list.sex,
                             introduceHtml: list.introduceHtml
                         },
                         result: fakeData.EDIT_TEACHER
@@ -62,10 +55,9 @@
                     utils.request({
                         invoke: api.requestAddTeacher,
                         params: {
-                            name: '',
-                            password: '',
-                            sex: '',
-                            introduceHtml: '',
+                            name: list.name,
+                            password:list.password,
+                            introduceHtml: list.introduceHtml
                         },
                         result: fakeData.ADD_TEACHER
                     }).then(res => {
