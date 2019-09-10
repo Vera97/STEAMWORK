@@ -92,14 +92,14 @@ export const requestCourseDetail = params => {
 };
 
 /**
- * url: /courses/steps
+ * url: /courses/course_section/steps
  * @param {Object} params
  * @param {number} params.courseId
  * @returns {Promise<any> | Array<{title: String, stepId: number}>}
  */
-export const requestCourseSteps = params => {
+export const requestCourseSectionSteps = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/steps`, params, options);
+    return axios.post(`${base}/courses/course_section/steps`, params, options);
 };
 
 /**
@@ -999,6 +999,8 @@ export const requestCloseClassroom = params => {
 export const requestMediaDisplay = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_exercise/media`, params, options);
+};
+
 /**
  * url: /admins/courses/label/assign_remove_course
  * @param {Object} params
@@ -1008,4 +1010,26 @@ export const requestMediaDisplay = params => {
 export const requestAssignedRemove = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/courses/label/assign_remove_course`, params, options);
+};
+
+/**
+ * url: /courses_prepare/delete_course_section_step
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestDeleteCourseSectionStep = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/delete_course_section_step`, params, options);
+};
+
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestEditCourseSectionStep = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_course_section_step`, params, options);
 };

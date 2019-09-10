@@ -76,18 +76,28 @@
                 this.changeOverlay();
             },
             handleDelete(index, row) {
-                utils.request({
-                    invoke: api.requestDeleteLabel,
-                    params: {
-                        labelId: row.labelId
-                    },
-                    result: fakeData.DELETE_TEACHER
-                }).then(res => {
-                    alert('ni');
-                    if (res.data.code === 1) {
-                        this.$delete(this.tableData, index);
-                        this.$message('删除成功！');
-                    }
+                this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    utils.request({
+                        invoke: api.requestDeleteLabel,
+                        params: {
+                            labelId: row.labelId
+                        },
+                        result: fakeData.DELETE_TEACHER
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$delete(this.tableData, index);
+                            this.$message('删除成功！');
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });
                 });
             },
             handleAdd() {//新增标签
