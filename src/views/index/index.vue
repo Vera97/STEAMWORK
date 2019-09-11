@@ -25,6 +25,8 @@
     import {api, fakeData} from '../../api'
     import store from '../../store'
 
+    const SHA256 = require("crypto-js/sha256");
+
     export default {
         name: "index",
         data () {
@@ -51,7 +53,7 @@
                     invoke: api.loginTeacher,
                     params: {
                         userName: this.form.userName,
-                        passWord: this.form.password
+                        passWord: SHA256(this.form.password).toString()
                     },
                     result: fakeData.LOGIN_RESPONSE
                 })
@@ -75,7 +77,7 @@
                     invoke: api.loginStudent,
                     params: {
                         userName: this.form.userName,
-                        passWord: this.form.password
+                        passWord: SHA256(this.form.password).toString()
                     },
                     result: fakeData.LOGIN_STU_RESPONSE
                 })
@@ -103,7 +105,7 @@
                 //     invoke: api.loginAdmin,
                 //     params: {
                 //         userName: this.form.userName,
-                //         passWord: this.form.password
+                //         passWord: SHA256(this.form.password).toString()
                 //     },
                 //     result: fakeData.LOGIN_ADMIN_RESPONSE
                 // })

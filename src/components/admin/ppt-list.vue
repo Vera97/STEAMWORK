@@ -15,11 +15,12 @@
         ></ppt-upload>
       </el-col>
       <el-col :span="19">
-        <el-card v-if="isSelect" class="tip">
+        <el-card v-if="!isShow" class="tip">
           请先选择课时
         </el-card>
         <div v-show="isShow">
           <PPTshow
+                  :on-show="onDisplay"
                   ref="PPTshow"
                   @addPPT="addPPT"
                   :ppt-data="pptData"
@@ -62,8 +63,8 @@
                 courseSectionId: null,
                 courseSectionName: null,
                 fileList:[],
-                isSelect:true,
-                isShow:false
+                isShow:false,
+                onDisplay: false
             }
         },
         methods: {
@@ -81,9 +82,11 @@
             },
             handleUpload(pptId, pptImagesList) {
                 this.isShow=true;
+                this.onDisplay = true;
                 this.pptData.pptId = pptId;
                 this.pptData.pptImagesList = [];
-                this.pptData.pptImagesList.push(...pptImagesList)
+                this.pptData.pptImagesList.push(...pptImagesList);
+                this.$refs.PPTshow.init();
             },
             handleDelete () {
                 this.$set(this.pptData, 'pptId', null);
@@ -96,7 +99,7 @@
                 this.$message.success('成功删除')
             },
             sectionSelect({courseSectionId, courseSectionName}) {
-                this.isSelect=false;
+                this.isShow = true;
                 this.courseSectionId = courseSectionId;
                 this.courseSectionName = courseSectionName;
                 utils.request({
@@ -107,13 +110,17 @@
                     result: fakeData.UPLOAD_RESPONSE
                 })
                     .then((function(res) {
+                        this.pptData.pptImagesList = [];
+                        this.pptData.pptId = null;
+                        this.$refs.PPTshow.clearActivities();
+                        this.$refs.pptUpload.cleanPPT();
+                        this.onDisplay = false;
                         if(res.data.code === 1) {
                             this.pptData.pptId = res.data.pptId;
-                            this.pptData.pptImagesList = [];
                             this.pptData.pptImagesList.push(...res.data.pptImagesList);
                             this.$refs.pptUpload.inject();
                             this.$refs.PPTshow.init();
-                            this.isShow = true
+                            this.onDisplay = true;
                         }
                     }).bind(this))
             },

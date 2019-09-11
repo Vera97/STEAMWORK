@@ -137,6 +137,8 @@
                     activities: []
                 }];
                 this.commonQuestion = [];
+                this.exerciseId = null;
+                this.displayComponent = null;
             },
             renderContent(h, {node, data}) {
                 let children, that = this;
@@ -267,6 +269,7 @@
                 })
             },
             selectSlide(index) {
+                this.clearActivities();
                 this.select = index;
                 utils.request({
                     invoke: api.requestExercise,

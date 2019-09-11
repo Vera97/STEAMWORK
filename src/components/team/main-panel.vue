@@ -2,7 +2,7 @@
   <el-card>
     <div class="title">{{ memberShow }}的讨论内容</div>
     <div v-if="!inOwn" class="close" @click="closePeek"><i class="el-icon-circle-close"></i></div>
-    <div class="not-submitted" v-if="!submitted">你还没有提交过讨论内容（在画板中编辑讨论内容，然后点击右上角小箭头提交）</div>
+    <div class="not-submitted" v-if="!submitted">{{ inOwn ? '您' : '这位组员' }}还没有提交过讨论内容（在画板中编辑讨论内容，然后点击右上角小箭头提交）</div>
     <div class="record" v-else v-html="content"></div>
     <div v-if="submitted && inOwn" class="clue">你也可以提交新的内容，覆盖之前的提交</div>
     <vue-drawing v-if="inOwn" @image-export="submit"></vue-drawing>
@@ -78,6 +78,10 @@
                     }.bind(this))
             },
             load (student) {
+                if (student.stuId === store.state.stuId) {
+                    this.memberShow = '您';
+                    this.getHistory()
+                }
                 this.memberShow = `${student.stuName}(${student.stuNumber})`;
                 this.getHistory(student.stuId)
             },

@@ -27,7 +27,7 @@ const state = {
     groupList: [],
     courseSectionId: null,
     pptId: null,
-    currentPage: null
+    currentPage: 0
 };
 
 // 创建 store 实例

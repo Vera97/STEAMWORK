@@ -2,7 +2,7 @@
   <div class="main">
     <div v-for="(item,index) in exercise" :key="item.exerciseId" class="button-box">
       <el-button type="primary" plain style="width: 100%;margin-bottom:10px" @click="emitIndex(item)">
-        {{'启动活动'+index+':'+item.title}}
+        {{'启动活动'+index+':'+item.type}}
       </el-button>
     </div>
     <el-button type="primary" plain style="width: 100%">……</el-button>
