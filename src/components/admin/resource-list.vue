@@ -18,8 +18,8 @@
               :render-after-expand="false"
               :render-content="renderContent"
               @node-click="handleNodeClick"
-              accordion
               ref="tree"
+              accordion
       >
       </el-tree>
     </el-card>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import store from '../../store'
+    // import store from '../../store'
     import {api, fakeData} from '../../api'
     import utils from '../../utils'
 
@@ -65,7 +65,7 @@
                     result: fakeData.GET_LABEL_LIST
                 }).then(res => {
                     if (res.data.code === 1) {
-                        console.log(res.data.labelList);
+                        // console.log(res.data.labelList);
                         this.options = res.data.labelList;
                     }
                 });
@@ -84,7 +84,7 @@
                 } else {
                     this.$emit('step-selected', {
                         stepId: data.stepId,
-                        stepName: data.title
+                        stepName: data.title,
                     })
                 }
             },
@@ -124,9 +124,10 @@
                         on: {
                             click() {
                                 if (node.level === 1) {
-                                    that.editCourse(node, data.courseSectionId)
+                                    that.editCourse(node, data.courseId)
                                 } else if (node.level === 2) {
-                                    that.editCourseSection(node, data.courseSectionId)
+                                    that.editCourseSection(node, data.courseSectionId);
+                                    // alert(data.courseSectionId);
                                 } else
                                     that.editStep(node, data.stepId)
                             }
@@ -203,13 +204,14 @@
                     cancelButtonText: '取消',
                 }).then(({value}) => {
                     utils.request({
-                        invoke: api.requestNewCourse,
+                        invoke: api.requestEditCourseSectionStep,
                         params: {
-                            adminId: this.adminId,
-                            courseName: value
+                            courseStepId: stepId,
+                            stepName: value,
+                            stepContent: 'html',//??
                         },
                         result: fakeData.ADD_COURSE
-                    }).then(res => {
+                    }).then(() => {
                         this.$set(node.data, 'title', value);
                     });
                     this.$message({
@@ -234,10 +236,15 @@
                             courseSectionId: courseSectionId,
                             courseSectionName: value
                         },
-                        result: fakeData.EDIT_COURSE
+                        result: fakeData.EDIT_COURSE,
+
                     }).then(res => {
-                        if (res.data.code === 1)
+                        // alert(node.data.title);
+                        // console.log();
+                        if (res.data.code === 1){
                             this.$set(node.data, 'title', value);
+                        }
+
                     });
                     this.$message({
                         type: 'success',
@@ -263,6 +270,7 @@
                         },
                         result: fakeData.EDIT_COURSE
                     }).then(res => {
+                        alert(res.data);
                         if (res.data.code === 1)
                             this.$set(node.data, 'title', value);
                     });
@@ -287,7 +295,7 @@
                     utils.request({//api修改
                         invoke: api.requestDeleteCourse,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseId:courseId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
@@ -312,16 +320,16 @@
                     type: 'warning'
                 }).then(() => {
                     utils.request({//api修改
-                        invoke: api.requestDeleteCourse,
+                        invoke: api.requestDeleteCourseSection,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseSectionId: courseSectionId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
                         for (let i = 0; i < this.listData.length; i++) {
                             for (let j = 0; j < this.listData[i].child.length; j++) {
                                 if (this.listData[i].child[j].courseSectionId === courseSectionId) {
-                                    const index = this.listData[i].child.findIndex(d => d.courseSectionId === courseSectionId)
+                                    const index = this.listData[i].child.findIndex(d => d.courseSectionId === courseSectionId);
                                     this.listData[i].child.splice(index, 1);
                                 }
                             }
@@ -344,39 +352,31 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    utils.request({//api缺少
-                        invoke: api.requestDeleteCourse,
+                    utils.request({
+                        invoke: api.requestDeleteCourseSectionStep,
                         params: {
-                            courseSectionId: store.state.courseSectionId,
+                            courseStepId: stepId,
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(() => {
-                        utils.request({//api缺少
-                            invoke: api.requestDeleteCourse,
-                            params: {
-                                courseSectionId: store.state.courseSectionId,
-                            },
-                            result: fakeData.COURSE_SECTION
-                        }).then(() => {
-                            for (let i = 0; i < this.listData.length; i++) {
-                                for (let j = 0; j < this.listData[i].child.length; j++) {
-                                    for (let t = 0; t < this.listData[i].child[j].child.length; t++)
-                                        if (this.listData[i].child[j].child[t].stepId === stepId) {
-                                            const index = this.listData[i].child[j].child.findIndex(d => d.stepId === stepId);
-                                            this.listData[i].child[j].child.splice(index, 1);
-                                        }
-                                }
+                        for (let i = 0; i < this.listData.length; i++) {
+                            for (let j = 0; j < this.listData[i].child.length; j++) {
+                                for (let t = 0; t < this.listData[i].child[j].child.length; t++)
+                                    if (this.listData[i].child[j].child[t].stepId === stepId) {
+                                        const index = this.listData[i].child[j].child.findIndex(d => d.stepId === stepId);
+                                        this.listData[i].child[j].child.splice(index, 1);
+                                    }
                             }
-                        });
+                        }
                     });
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
-                    });
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: '取消删除'
                     });
                 });
             },
@@ -388,11 +388,12 @@
                     utils.request({
                         invoke: api.requestNewCourse,
                         params: {
-                            adminId: this.adminId,
+                            teacherId: 1,
                             courseName: value
                         },
-                        result: fakeData.ADD_COURSE
+                        //result: fakeData.ADD_COURSE
                     }).then(res => {
+                        alert(value);
                         this.listData.push({
                             courseId: res.data.courseId,
                             title: value,
@@ -420,7 +421,7 @@
                         invoke: api.requestNewCourseSection,
                         params: {
                             courseId: courseId,
-                            courseName: value
+                            courseSectionName: value
                         },
                         result: fakeData.COURSE_SECTION
                     }).then(res => {
@@ -441,11 +442,20 @@
                     });
                 });
             },
-            addCourseSectionStep(node, sectionId) {
+            addCourseSectionStep(node, courseSectionId) {
                 this.$prompt('新建的步骤名称:', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
+                    utils.request({
+                        invoke: api.requestNewCourseSectionStep,
+                        params: {
+                            courseSectionId: courseSectionId,
+                            stepName: value,
+                            stepContent:'',
+                        },
+                        result: fakeData.COURSE_SECTION
+                    });
                     this.$emit('addStep',value);
                     node.data.child.push({
                         title: value
@@ -530,17 +540,18 @@
                             child: []
                         }
                     });
+
                     for (let j = 0; j < this.listData[i].child.length; j++) {
+                        // console.log(this.listData[i].child[j].courseSectionId);
                         utils.request({
-                            invoke: api.requestCourseSteps,
+                            invoke: api.requestCourseSectionSteps,
                             params: {
-                                code: 'step_contents',
-                                stepId: ''
+                                courseSectionId: this.listData[i].child[j].courseSectionId,//测试
                             },
                             result: fakeData.PERIOD_STEPS
                         })
                             .then(res => {
-                                this.listData[i].child[j].child = res.data.map(item => {
+                                this.listData[i].child[j].child = res.data.steps.map(item => {
                                     return {
                                         stepId: item.stepId,
                                         title: item.title

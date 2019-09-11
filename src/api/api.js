@@ -92,14 +92,14 @@ export const requestCourseDetail = params => {
 };
 
 /**
- * url: /courses/steps
+ * url: /courses/course_section/steps
  * @param {Object} params
  * @param {number} params.courseId
  * @returns {Promise<any> | Array<{title: String, stepId: number}>}
  */
-export const requestCourseSteps = params => {
+export const requestCourseSectionSteps = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
-    return axios.post(`${base}/courses/steps`, params, options);
+    return axios.post(`${base}/courses/course_section/steps`, params, options);
 };
 
 /**
@@ -866,6 +866,16 @@ export const requestAddLabel= params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/admins/label/add`, params, options);
 };
+/**
+ * url: /admin/delete_label
+ * @param {object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number}>}>}
+ */
+export const requestDeleteLabel= params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admin/delete_label`, params, options);
+};
 //admin资源管理
 /**
  * url: /admins/courses/label/get
@@ -1009,4 +1019,37 @@ export const requestLaunchDiscussion = params => {
 export const requestCloseDiscussion = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/teacher/classroom/close_exercise_discussion`, params, options);
+};
+
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestAssignedRemove = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/admins/courses/label/assign_remove_course`, params, options);
+};
+
+/**
+ * url: /courses_prepare/delete_course_section_step
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestDeleteCourseSectionStep = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/delete_course_section_step`, params, options);
+};
+
+/**
+ * url: /admins/courses/label/assign_remove_course
+ * @param {Object} params
+ * @param {number} params.labelId
+ * @returns {Promise<{code: number, courseList: Array<{courseId: number, courseName: String}>}>}
+ */
+export const requestEditCourseSectionStep = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/courses_prepare/edit_course_section_step`, params, options);
 };
