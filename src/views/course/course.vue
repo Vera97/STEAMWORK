@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <Nav></Nav>
+      <Nav active-index="1"></Nav>
     </el-header>
     <el-main>
       <el-row :gutter="75">

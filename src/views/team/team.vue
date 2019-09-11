@@ -58,12 +58,23 @@
                 },
                 result: fakeData.GET_GROUP
             }).then(function (res) {
+                let self = {
+                    stuId: store.state.stuId,
+                    stuName: store.state.userName
+                };
                 if (res.data.code === 1) {
                     for (let i = 0; i < res.data.groupList.length; i++) {
+                        if (store.state.stuId === res.data.groupList[i].leaderStuId) {
+                            this.groupData = res.data.groupList[i].members;
+                            this.groupId = res.data.groupList[i].groupId;
+                            this.groupData.push(self);
+                            return
+                        }
                         for (let j = 0; j < res.data.groupList[i].members.length; j++) {
                             if (store.state.stuId === res.data.groupList[i].members[j].stuId) {
                                 this.groupData = res.data.groupList[i].members;
                                 this.groupId = res.data.groupList[i].groupId;
+                                this.groupData.push(self);
                                 return
                             }
                         }

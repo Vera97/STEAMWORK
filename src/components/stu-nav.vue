@@ -1,15 +1,16 @@
 <template>
   <div>
-    <el-menu router
-             :default-active="activeIndex"
-             class="el-menu-demo"
-             mode="horizontal"
-             ref="menu">
+    <el-menu
+            router
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            ref="menu">
       <div class="nav-type">学生端</div>
       <el-menu-item index="1" :route="{path: '/resource'}">课程资源</el-menu-item>
       <el-menu-item index="2" :route="{path: '/mySuccess'}">我的成就</el-menu-item>
-      <el-menu-item index="3" @click="foundTeam">我的小组</el-menu-item>
-      <el-menu-item index="4" :route="{path: '/stuClass'}">开始听课</el-menu-item>
+      <el-menu-item index="3" :route="{name: 'team'}" @click="foundTeam">我的小组</el-menu-item>
+      <el-menu-item index="4" :route="{path: '/stuClass'}" @click="enterClassroom">开始听课</el-menu-item>
       <div class="login">
         <el-button type="primary" round size="mini" @click="logout" v-if="stuId !== ''">注销</el-button>
         <el-button round size="mini" @click="login" v-else>注册</el-button>
@@ -63,12 +64,14 @@
             stuId() {
                 return store.getters.get_stuId
             },
-            ...mapState(['pptId, currentPage'])
+            ...mapState({
+                pptId: state => state.pptId,
+                currentPage: state => state.currentPage,
+                classroomId: state => state.classroomId
+            })
         },
         props: {
-            ['active-index']: String,
-            pptId: Number,
-            page: Number
+            ['active-index']: String
         },
         data() {
             return {
@@ -141,6 +144,32 @@
                         }
                     }
                 })
+            },
+            enterClassroom () {
+                if (this.classroomId) {
+                    this.$router.push({path: '/stuClass'})
+                } else {
+                    utils.request({
+                        invoke: api.requestJoinClass,
+                        params: {
+                            stuId: store.state.stuId
+                        },
+                        result: fakeData.REQUEST_JOIN_CLASS_RESPONSE_SUCCESSFUL
+                    })
+                        .then(function (res) {
+                            if(res.data.code === 1) {
+                                store.commit('STU_CLASSROOM_ID', {classroomId: res.data.classroomId});
+                                store.commit('STU_GROUP_LIST', {groupList: res.data.groupList});
+                                store.commit('STU_COURSE_SECTION_ID', {courseSectionId: res.data.courseSectionId});
+                                store.commit('STU_PPT_ID', {pptId: res.data.pptId});
+                                this.$emit('get-images', res.data.pptImagesList);
+                                this.$message.success('成功进入上课')
+                            } else {
+                                this.$message.error('上课尚未开始');
+                                this.$router.go(-1)
+                            }
+                        }.bind(this))
+                }
             }
         },
         created() {

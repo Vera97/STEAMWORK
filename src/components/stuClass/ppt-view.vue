@@ -18,7 +18,7 @@
         <el-menu-item v-for="item in exerciseList" :key="item.exerciseId" @click="openAct(item)">
           <i class="el-icon-star-off" v-if="!item.state"></i>
           <i class="el-icon-star-on"  v-else></i>
-          <span slot="title">{{item.title}}</span>
+          <span slot="title">{{item.type}}</span>
         </el-menu-item>
       </el-menu>
     </div>

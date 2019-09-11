@@ -42,14 +42,18 @@
         },
         methods: {
             open(current) {
+                let openMethod = api.requestEndActivity;
                 switch (this.exercise.type) {
                 case '人员统计':
                 case '小组分组':
                     this.$emit('onEmmitCurrent', current);
                     break;
+                case '讨论记录':
+                    openMethod = api.requestCloseDiscussion;
+                // eslint-disable-next-line no-fallthrough
                 default:
                     utils.request({
-                        invoke: api.requestEndActivity,
+                        invoke: openMethod,
                         params: {
                             exerciseId: this.exercise.exerciseId
                         },

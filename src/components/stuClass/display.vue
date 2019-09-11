@@ -26,16 +26,13 @@
                 }).then(function () {
                     let formData = new FormData();
                     formData.append('image', file);
+                    formData.append('stuId', store.state.stuId);
+                    formData.append('courseSectionId', store.state.courseSectionId);
+                    formData.append('exerciseId', this.exerciseBody.exerciseId);
                     console.log(this.exerciseBody.exerciseId);
-                    // formData.append('courseSectionId', this.courseSectionId);
                     utils.request({
                         invoke: api.requestUploadCourseExercisePhoto,
-                        params: {
-                            stuId: store.state.stuId,
-                            courseSectionId: store.state.courseSectionId,
-                            exerciseId: this.exerciseBody.exerciseId,
-                            photo: formData
-                        },
+                        params: formData,
                         result: fakeData.UPLOAD_RESPONSE
                     })
                         .then(function(res) {

@@ -213,9 +213,9 @@
                         invoke: api.requestAlterGroup,
                         params: {
                             groupId: this.groups[index].groupId,
-                            leaderStuId: this.groups[index].leader.stuId,
+                            leaderStuId: this.groups[index].leader[0].stuId,
                             groupName: this.groups[index].groupName,
-                            members: this.groups[index].members
+                            members: this.groups[index].members.map(item => item.stuId)
                         },
                         result: fakeData.SINGLE_NUMBER_CODE
                     })

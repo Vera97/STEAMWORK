@@ -63,6 +63,7 @@ let routes = [
         beforeEnter: teacherGuard
     },
     {
+        name: 'assignment',
         path: '/assignment',
         component: Assignment,
         props: true,
@@ -71,12 +72,6 @@ let routes = [
     {
         path: '/ppt',
         component: PPT,
-        props: true,
-        beforeEnter: teacherGuard
-    },
-    {
-        path: '/design',
-        component: Design,
         props: true,
         beforeEnter: teacherGuard
     },

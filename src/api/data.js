@@ -946,3 +946,9 @@ export const FILTER_COURSE_TAG = {
         }
     ]
 };
+
+export const OPEN_DISCUSSION = {
+    code: 1,
+    discussionNumber: 1,
+    pptPage: 1
+};

@@ -1,7 +1,13 @@
 <template>
   <div id="periods">
     <h3>{{ title }}</h3>
-    <el-button class="period" v-for="item in periodList" :key="item.courseSectionId">{{ item.courseSectionName }}
+    <el-button
+            class="period"
+            v-for="item in periodList"
+            :key="item.courseSectionId"
+            @click="jump(item.courseSectionName, item.courseSectionId)"
+    >
+      {{ item.courseSectionName }}
     </el-button>
   </div>
 </template>
@@ -12,6 +18,17 @@
         props: {
             title: String,
             periodList: Array
+        },
+        methods: {
+            jump (courseSectionName, courseSectionId) {
+                this.$router.push({
+                    name: 'assignment',
+                    params: {
+                        courseSectionName: courseSectionName,
+                        courseSectionId: courseSectionId
+                    }
+                })
+            }
         }
     }
 </script>

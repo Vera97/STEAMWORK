@@ -156,6 +156,23 @@
                     case '小组分组':
                         this.$refs.newComp.getCurrentComponent(index);
                         break;
+                    case '讨论记录':
+                        utils.request({
+                            invoke: api.requestLaunchDiscussion,
+                            params: {
+                                exerciseId: index.exerciseId,
+                                classroomId: this.classroomId
+                            },
+                            result: fakeData.OPEN_DISCUSSION
+                        })
+                            .then(function (res) {
+                                if (res.data.code === 1) {
+                                    this.$message.success('学生讨论已开始');
+                                    this.$refs.newComp.getCurrentComponent(index);
+                                }
+                                else this.$message.error('学生讨论开启失败')
+                            }.bind(this));
+                        break;
                     default:
                         utils.request({
                             invoke: api.requestStartActivity,

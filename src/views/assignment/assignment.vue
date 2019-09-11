@@ -1,10 +1,10 @@
 <template>
   <el-container>
     <el-header>
-      <Nav></Nav>
+      <Nav active-index="1"></Nav>
     </el-header>
     <el-main class="main-box">
-      <h3 style="margin-top:5px;">3D打印&nbsp;课时1：&nbsp;#课时1的标题#</h3>
+      <h3 style="margin-top:5px;">3D打印&nbsp;{{ courseSectionName }}</h3>
       <el-row :gutter="0">
         <!-- 这里是教学步骤栏，放置一列按钮组展示相应课程的教学步骤 -->
         <el-col :span="7">
@@ -36,7 +36,8 @@
         name: "assignment",
         components: {Videoshow ,Steps, Footer, Nav},
         props: {
-            id: String
+            courseSectionId: Number,
+            courseSectionName: String
         },
         data () {
             return {
@@ -51,7 +52,7 @@
                 invoke: api.requestCourseSteps,
                 params: {
                     code: 'course_steps',
-                    courseId: parseInt(this.id)           /* period id */
+                    courseId: this.courseSectionId           /* period id */
                 },
                 result: fakeData.PERIOD_STEPS
             })
@@ -80,8 +81,8 @@
 
 <style scoped>
   * {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
   }
 
   .main-box {

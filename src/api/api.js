@@ -4,7 +4,7 @@ export const base = 'http://localhost:2333/api';
 
 export const DEVELOPMENT = false;
 
-export const WATCH_ALL = false;
+export const WATCH_ALL = true;
 
 //csrf验证
 export function setCookie(cname, cvalue, exdays) {
@@ -989,4 +989,24 @@ export const requestCloseClassroom = params => {
 export const requestMediaDisplay = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/new_exercise/media`, params, options);
+};
+
+/**
+ * url: /teacher/classroom/start_exercise_discussion
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestLaunchDiscussion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/start_exercise_discussion`, params, options);
+};
+
+/**
+ * url: /teacher/classroom/close_exercise_discussion
+ * @param params
+ * @returns {Promise<unknown>|Promise<AxiosResponse<T>>}
+ */
+export const requestCloseDiscussion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/close_exercise_discussion`, params, options);
 };
