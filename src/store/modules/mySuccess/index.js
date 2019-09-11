@@ -5,8 +5,8 @@ const state = {
     wealthAll:'',
     answerList:[],
     designContent:'',
-    photoList:[]
-
+    photoList:[],
+    selected: false
 };
 
 const getters = {};
@@ -14,6 +14,9 @@ const getters = {};
 const actions = {};
 
 const mutations = {
+    SELECT_SECTION (state) {
+        state.selected = true
+    },
     SHOW_COURSE(state, course) {
         state.course= course;
     },

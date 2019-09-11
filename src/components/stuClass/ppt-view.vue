@@ -176,7 +176,6 @@
                     result: fakeData.IS_START
                 })
                     .then(function (res) {
-                        console.log(`not null: ${item.title}`);
                         return Promise.resolve({
                             ...res.data,
                             exerciseId: item.exerciseId,

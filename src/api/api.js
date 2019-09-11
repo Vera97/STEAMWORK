@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const base = 'http://localhost:2333/api';
 
-export const DEVELOPMENT = false;
+export const DEVELOPMENT = true;
 
 export const WATCH_ALL = true;
 
@@ -919,6 +919,7 @@ export const requestEditCourseSectionName = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_course_section_name`, params, options);
 };
+
 /**
  * url:/login/admin
  * @param {object} params
@@ -1052,4 +1053,31 @@ export const requestDeleteCourseSectionStep = params => {
 export const requestEditCourseSectionStep = params => {
     if (DEVELOPMENT) return new Promise(resolve => resolve());
     return axios.post(`${base}/courses_prepare/edit_course_section_step`, params, options);
+};
+
+/**
+ * url: /stu/course/course_section_exercise_question/upload
+ * @param {Object} params
+ * @param {number} params.stuId
+ * @param {number} params.courseSectionId
+ * @param {number} params.exerciseId
+ * @param {Array<String>} params.answerList
+ * @returns {Promise<{code: number}>}
+ */
+export const requestUploadCourseExerciseQuestion = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/stu/course/course_section_exercise_question/upload`, params, options);
+};
+
+/**
+ * url: /teacher/classroom/course_section_exercise_question/get
+ * @param {Object} params
+ * @param {number} params.classroomId
+ * @param {number} params.courseSectionId
+ * @param {number} params.exerciseId
+ * @returns {Promise<unknown>}
+ */
+export const requestReactiveQuestionResult = params => {
+    if (DEVELOPMENT) return new Promise(resolve => resolve());
+    return axios.post(`${base}/teacher/classroom/course_section_exercise_question/get`, params, options);
 };

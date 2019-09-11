@@ -951,3 +951,14 @@ export const OPEN_DISCUSSION = {
     discussionNumber: 1,
     pptPage: 1
 };
+
+export const REACTIVE_QUESTION_ANSWER = {
+    code: 1,
+    trueNum: 12,
+    falseNum: 12,
+    notNum: 12,
+    choiceStaticsList: [
+        {choice: 'A', num: 20},
+        {choice: 'B', num: 23}
+    ]
+};
