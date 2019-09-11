@@ -3,23 +3,20 @@
     <div class="type">【{{ type }}】</div>
     <p>{{ stem }}</p>
     <div class="option" v-for="(item, index) in options" :key="index">
-      <el-radio :label="index" v-model="checked">{{ item }}</el-radio>
+      <el-radio :label="alpha[index]" v-model="checked">{{ item }}</el-radio>
     </div>
-    <el-button type="primary" class="button" @click="submit">确认完成</el-button>
   </div>
 </template>
 
 <script>
+    import store from '../../store'
     import utils from '../../utils'
     import {api, fakeData} from '../../api'
+
     export default {
         name: "answer",
         props: {
-            complete: {
-                type: Function,
-                default: null
-            },
-            currentExercise:Object
+            exerciseBody: Object
         },
         data () {
             return {
@@ -31,25 +28,23 @@
                     '红太狼',
                     '绿太狼'
                 ],
+                alpha: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
                 checked: null
             }
         },
         methods: {
-            submit() {
+            complete () {
+                console.log(this.checked);
                 utils.request({
-                    invoke: api.requestUploadCourseExerciseDesign,
+                    invoke: api.requestUploadCourseExerciseQuestion,
                     params: {
-                        stuId: this.stuId,
-                        designContent: this.textarea
+                        stuId: store.state.stuId,
+                        courseSectionId: store.state.courseSectionId,
+                        exerciseId: this.exerciseBody.exerciseId,
+                        answerList: [this.checked]
                     },
-                    result: fakeData.EXERCISE_DESIGN
+                    result: fakeData.SINGLE_NUMBER_CODE
                 })
-                    .then(res => {
-                        if (res.data.code === 1) {
-                            alert('谢谢作答');
-                            this.complete();
-                        }
-                    });
             }
         }
     }

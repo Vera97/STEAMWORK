@@ -9,6 +9,7 @@
               :ppt-index="pptIndex"
               :class-id="classId"
               :students-list="studentsList"
+              :course-section-id="courseSectionId"
       ></component>
     </el-card>
   </div>
@@ -31,7 +32,8 @@
             classroomId: Number,
             pptIndex: Number,
             classId: Number,
-            studentsList: Array
+            studentsList: Array,
+            courseSectionId: Number
         },
         data() {
             return {

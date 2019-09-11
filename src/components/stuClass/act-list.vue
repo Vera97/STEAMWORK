@@ -4,7 +4,6 @@
       <i class="el-icon-close" @click="open"></i>
       <component
               ref="exerciseComp"
-              :complete="complete"
               v-bind:is="currentTabComponent"
               :exercise-body="exerciseBody"
       ></component>

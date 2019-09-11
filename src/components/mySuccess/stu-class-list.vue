@@ -40,6 +40,7 @@
                 }
                 if(node.level===2)
                 {
+                    store.commit('mySuccess/SELECT_SECTION');
                     store.commit('mySuccess/SHOW_COURSESECTION',data);
                     utils.request({
                         invoke: api.requestGetCourseWealth ,

@@ -23,6 +23,7 @@
                   :ppt-index="pptIndex"
                   :classroom-id="classroomId"
                   :students-list="studentsList"
+                  :course-section-id="selectedSectionId"
                   v-show="!current"
                   @onEmmitCurrent="onEmmitCurrent"
                   ref="newComp"
